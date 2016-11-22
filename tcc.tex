@@ -1,0 +1,115 @@
+\documentclass[oneside,a4paper,12pt]{normas-utf-tex}
+\usepackage[alf,abnt-emphasize=bf,bibjustif,recuo=0cm,abnt-etal-cite=2]{abntcite}
+\usepackage{graphicx,color}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm,amsfonts}
+
+\graphicspath{{figures/}}
+
+
+%=======================================================================
+%Informações Gerais (a serem preenchidas pelo aluno)
+%=======================================================================
+
+%======Instituição e programa
+\instituicao{Universidade Tecnológica Federal do Paraná}
+\departamento{Departamento Acadêmico de Informática}
+\programa{Bacharelado em Engenharia da Computação}
+
+\orientador{Prof. Dr. Bogdan Tomoyuki Nassu}
+\documento{Trabalho de Conclusão de Curso}
+
+\cita{Kurpiel, Francisco Delmar}
+\autor{Francisco Delmar Kurpiel}
+
+\titulo{Localização de Placas Veiculares em Vídeo Usando Redes Neurais Convolucionais Profundas}
+\title{License Plate Localization From Video Using Convolutional Neural Networks}
+
+\palavraschave{Localização de Placas Veiculares, Redes Neurais Convolucionais}
+\keywords{License Plate Localization, Convolutional Neural Networks}
+
+%======Comentário da folha de rosto.
+\comentario{\UTFPRdocumentodata\ apresentado ao Departamento Acadêmico de
+Informática como requisito parcial para obtenção do grau de Bacharel
+em Engenharia de Computação da
+\ABNTinstituicaodata\ .
+}
+
+%======Local e data
+\local{Curitiba}
+\data{\the\year}
+
+
+%=======================================================================
+%Início do documento
+%=======================================================================
+
+\begin{document}
+\setcounter{figure}{200}
+
+%--------------------------------------
+%Elementos Pré-Textuais
+%--------------------------------------
+
+\capa
+
+\folhaderosto
+
+%ficha catalográfica: deve ser impressa separadamente no verso da folha de rosto. somente para a versão final do documento (biblioteca).
+
+\begin{dedicatoria}
+	Dedico este trabalho ao meu filho Luka.
+\end{dedicatoria}
+
+\begin{agradecimentos}
+	Muito obrigado.	
+\end{agradecimentos}
+
+\begin{resumo}
+	\input{src/resumo}
+\end{resumo}
+
+\begin{abstract}
+	\input{src/abstract}
+\end{abstract}
+
+
+%Listas. Obrigatório quando constar no desenvolvimento do trabalho. Consultar o documento das normas da ABNT para maiores detalhes.
+\listadefiguras
+\listadetabelas
+%\listadesiglas
+%\listadesimbolos
+
+\sumario
+
+%--------------------------------------
+%Texto
+%--------------------------------------
+
+%Incluir arquivos .tex da pasta src/
+\input{src/capitulo1} % introdução
+\input{src/capitulo2} % redes neurais convolucionais
+\input{src/capitulo3} % trabalhos relacionados
+\input{src/capitulo4} % localização de placas veiculares usando cnn
+\input{src/capitulo5} % implementacao e experimentos
+\input{src/capitulo6} % conclusões
+
+%--------------------------------------
+%Elementos Pós-Textuais
+%--------------------------------------
+
+%Bibliografia, gerada automaticamente a partir do arquivo .bib em conjunto com as citações presentes no texto.
+\bibliography{bib/bibliografia}
+
+%Apendices. Use caso necessário. Todos capítulos após o comando \apendice serão tratados como Apêndices. 
+%\apendice
+%\input{src/apendice_a}
+%\input{src/apendice_b}
+
+%Anexos. Use caso necessário. Todos capítulos após o comando \anexo serao tratados como Anexos. 
+%\anexo
+%\input{src/anexo_a}
+%\input{src/anexo_b}
+
+\end{document}

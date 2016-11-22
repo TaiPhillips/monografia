@@ -1,0 +1,50 @@
+%Exemplo de capitulo
+
+\chapter{Introdução}
+
+Soluções de monitoração e fiscalização de veículos apresentam
+uma grande demanda por sistemas de visão computacional. Seja
+para contar tráfego, fiscalizar o uso das vias, monitorar
+rodízios ou para cobrar pedágios, a capacidade de obter
+informações a partir de imagens é de grande interesse. Existem
+soluções propostas para parte destes problemas, no entanto há a
+possibilidade da busca por estratégias com menor custo ou melhor
+desempenho, à medida que avanços no campo do reconhecimento de
+imagens acontecem.
+
+Redes neurais convolucionais (CNN, convolutional neural networks)
+são tipos de redes neurais biologicamente inspiradas no conceito
+de campos receptivos \cite{hubel1968receptive}. Este tipo de
+rede viabilizou o uso de redes neurais que são alimentadas
+diretamente pelos pixels da imagem \cite{lecun1998gradient}. O
+advento das Redes Neurais Convolucionais Profundas (DCNN, deep CNN)
+viabilizou um grande salto na capacidade de sistemas computacionais
+de classificação. O uso de mais camadas permite níveis maiores de
+abstração na análise da imagem, o que resulta em maior taxa de
+acerto, ao custo de maior tempo de treinamento. Este tipo de rede
+neural representa o atual estado-da-arte em reconhecimento de
+imagens \cite{szegedy2015going}.
+
+Este projeto procura fazer aplicação direta de DCNN para localizar
+placas de veículos em vídeos como forma de produzir um sistema
+robusto, flexível, e de alto desempenho, como ilustrado na figura 1.
+
+\section{Objetivo}
+O objetivo deste trabalho é desenvolver uma abordagem para
+treinamento e uso de redes neurais convolucionais para para a
+construção de um sistema robusto e eficiente de localização de
+placas de veículos em vídeo, e realizar uma implementação para
+medição de dados de desempenho.
+
+\section{Estrutura da Monografia}
+O restante deste trabalho é organizado da seguinte forma: O
+capítulo 2 discorre sobre redes neurais convolucionais em geral,
+comparando-as com as redes neurais não-convolucionais. Como este
+tópico é relativamente novo optou-se por fazer sua apresentação
+o mais cedo possível no documento. O capítulo 3 é uma revisão da
+bibliografia atual sobre detecção e localização de placas veiculares. O
+capítulo 4 apresenta uma proposta de um método para aplicar redes neurais
+convolucionais para localizar placas veiculares. O capítulo 5 apresenta uma
+implementação do método proposto, experimentos e os seus resultados. O
+capítulo 6 apresenta as conclusões deste trabalho.
+
