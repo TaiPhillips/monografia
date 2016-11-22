@@ -321,7 +321,196 @@ geometria da imagem foi destruída. Não é mais possível determinar quando doi
 pixels estão próximos, e essa é uma informação muito importante sobre a imagem.
 
 \subsection{Redes Neurais Convolucionais em Imagens}
-\subsection{Uso de Cores}
-\subsection{Reconhecimento de Objetos}
-\subsection{Localização de Objetos}
+As redes neurais convolucionais resolvem todos esses problemas simultaneamente.
+O primeiro ponto é a preservação da geometria da imagem. Se uma imagem de 50
+pixels de altura por 100 pixels de largura contendo 3 canais de cor for usado na
+entrada de uma rede neural convolucional, ela precisa ser representada por um
+tensor apropriado, como $32 \times 40 \times 120 \times 3$. Este tensor
+permite alimentar a rede neural com 32 imagens.
 
+Para aplicar uma camada convolucional à imagem de entrada escolhe-se o tamanho
+da convolução, o número de filtros e o modo de operação nas bordas. A figura
+\ref{fig:ex_cnn_img} ilustra um filtro 33 sendo aplicado à uma imagem RGB.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{ex_cnn_img.png}
+	\caption{Convolução sendo aplicada em uma imagem RGB}
+	\label{fig:ex_cnn_img}
+	Como a imagem possui 3 canais o filtro será 3x3x3. Um segmento da imagem
+	original com o mesmo tamanho do filtro, 3x3x3 é extraído da imagem, e um
+	produto interno é realizado entre os dois, resultando em um escalar. Este
+	escalar é armazenado no tensor de saída nas coordenadas corretas. A
+	ilustração só mostra uma imagem de entrada e só um filtro e, portanto, uma
+	imagem de saída (próprio autor).
+\end{figure}
+
+Para que o filtro tenha profundidade 64, por exemplo, o tensor que define o
+filtro será $64 \times 3 \times 3 \times 3$ e o tensor resultante da
+convolução será $32 \times 40 \times 120 \times 64$,
+considerando que seja usado padding nas bordas.
+
+Para finalizar a camada convolucional adiciona-se um bias. Para isso usa-se um
+escalar para cada uma das 64 imagens resultantes. O tensor que define os bias é
+um tensor unidimensional com tamanho 64.
+
+Camadas maxpool e ReLu podem ser adicionadas para reduzir as dimensões da imagem
+ou aumentar a sua não-linearidade. A figura \ref{fig:ex_full_cnn_img}
+ilustra o uso das três camadas em sequência.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{ex_full_cnn_img.png}
+	\caption{Exemplo de rede neural convolucional completa aplicada à uma imagem
+	RGB}
+	\label{fig:ex_full_cnn_img}
+	Exemplo de uma sequência de operações feitas usando uma rede neural
+	convolucional incluindo 64 convoluções 3x3, maxpool e ReLu aplicadas em uma
+	batch de 32 imagens $40 \times 120 times 3$. Os parâmetros treináveis
+	estão destacados (próprio autor).
+\end{figure}
+
+A imagem é tratada por camadas sucessivas de convolução, maxpool e ReLu até que
+o tamanho total do tensor seja pequeno o suficiente para poder ser processado
+por duas camadas totalmente conectadas. 
+
+\subsection{Uso de Cores}
+Em alguns sistemas de visão computacional costuma-se usar imagens em
+tons de cinza. No caso de redes convolucionais o mais comum é usar
+imagens coloridas.
+
+O primeiro motivo para isso é que as imagens e vídeos são normalmente
+captadas com cores, então colorir vai requere processar a imagem para
+que a conversao seja feita. 
+
+Pode-se demonstrar todos os métodos de conversão lineares de RGB para escala de
+cinzas, como:
+
+\begin{equation} \label{eq:rgb2gray}
+	G=0.299R + 0,587G + 0.114B
+\end{equation}
+
+Podem ser representados como uma convolução $1 \times 1$. Visto que as
+convoluções são implementadas de forma bastante eficientes nas bibliotecas
+de redes neurais convolucionais, algumas vezes até usando aceleração por
+hardware, então não necessariamente haverá economia durante a execução
+durante a execução da rede neural, pois, no pior caso, ela mesma pode fazer
+essa conversão de forma eficiente, sendo que os coeficientes associados
+à cada canal, que no exemplo da equação \ref{eq:rgb2gray} são fixos, podem
+treinados pelo otimizador, potencialmente obtendo uma conversão mais apropriada
+para a rede neural.
+
+Outro ponto é que os sistemas os classificadores de imagem usam cores
+\cite{szegedy2015going} \cite{hasanpour2016lets}, portanto nos casos onde
+existe \emph{budget} computacional suficiente para se usar um número razoável
+de convoluções na primeira camada, a informação da cor pode ser vantajosa
+para para minimizar os erros da rede neural.
+
+
+\subsection{Reconhecimento de Objetos}
+Existem várias maneiras de se usar redes neurais para reconhecer objetos. Duas
+das opções envolvem configurar a neural como classificador e como sistema de
+regressão.
+
+Para usar a rede como classificador pode-se incluir na última camada da rede
+neural um sistema softmax, também conhecido como exponencial normalizada. Isso
+permite que a rede neural seja treinada e, após o treinamento, estime a
+probabilidade da sua entrada pertencer a cada uma de N classes. A rede neural é
+implementada usando $N$ saídas, de forma que cada saída é treinada para
+representar a probabilidade da entrada ser classificada em em uma das classes.
+Uma saída \emph{softmax} realiza uma normalização das saídas da rede neural,
+usando a equação:
+
+\begin{equation}
+	softmax[i] = \frac
+		{exp\left( \widehat{out}[i] \right)}
+		{\sum_j exp\left( \widehat{out}[j] \right)}
+\end{equation}
+
+Para identificar a presença ou não de uma placa de um veículo, duas classes
+seriam definidas: "placa" e "não-placa", resultando em uma rede neural como
+mostrada na figura \ref{fig:ex_classif_logist}.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{ex_classif_logist.png}
+	\caption{Exemplo de Classificador Logístico}
+	\label{fig:ex_classif_logist}
+	Este exemplo de rede neural possui uma imagem como entrada e possui duas
+	saídas, uma informando a probabilidade da imagem conter uma placa e a
+	outra indicando a probabilidade de não conter (próprio autor).
+\end{figure}
+
+Este modelo pode ser treinado usando modo supervisionado, onde imagens
+pré-classificadas são fornecidas. A função de perda a ser minimizada pelo
+otimizador é a função cross entropy:
+
+\begin{equation}
+	\widehat{H} = - \sum_i \widehat{y_i} log(y_i)
+\end{equation}
+
+Onde $y$ é um tensor de dimensão $2$ que indica as probabilidades manualmente
+marcadas de uma imagem pertencer a cada classe (no caso, a probabilidade ser uma
+placa de carro e a probabilidade de não ser) e $y$ é um tensor com o mesmo número
+de dimensões que indica o valor estimado pela rede neural. $H$ é o valor estimado
+de cross entropy.
+
+No nosso caso temos total certeza de que uma imagem é ou não uma placa, então
+serão usados somente os valores $0$ e $1$ para $y$.
+
+As redes neurais também podem ser usadas para fazer regressão, ou seja, modelar
+uma função. A forma mais óbvia de implementação é a regressão L2. Neste tipo de
+função o otimizador vai minimizar o erro quadrático:
+
+\begin{equation}
+	E=\left( y - \widehat{y} \right)^2
+\end{equation}
+
+A rede neural pode ser usada para modelar a função $P$, definida por:
+
+\begin{equation}
+	P(img) = \begin{cases}
+		1 \text{, se img contém uma placa} \\
+		0 \text{, se img não contém uma placa}
+	\end{cases}
+\end{equation}
+
+Exatamente essa definição não seria ideal. Uma definição alternativa que possa
+representar uma placa parcialmente visível na imagem usando um número entre 0 e
+$1$ vai ser necessária para evitar a criação de ruído no valor da perda que está
+sendo minimizado.
+
+\subsection{Localização de Objetos}
+Até agora foi mostrado como usar redes neurais convolucionais para detectar um
+objeto em uma imagem. Isso envolve apenas determinar se uma imagem possui ou não
+o objeto de interesse. Localização, ao contrário, requer a determinação das
+coordenadas do objeto.
+
+Um sistema de localização pode ser construído a partir de um sistema de
+detecção. A abordagem mais simples para isso envolve construir um sistema capaz
+de detectar o objeto de interesse, no caso uma placa de trânsito, e aplicar este
+detector à imagem usando um operador de cross-correlação em duas dimensões. Se o
+detector for construído para produzir “1” quando detectar o objeto e “0” então
+os pontos de máxima são candidatos a centros dos objetos.
+
+Como em uma cross-correlação, assim como na convolução, cada número de um dos
+operandos é multiplicado por todos os números contidos no outro operando, como
+demonstrado visualmente na figura \ref{fig:ex_sliding_stride1}. A propriedade
+é extensível para qualquer número de dimensões. O número de somas é igual ao
+número de multiplicações menos 1.
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{ex_sliding_stride1.png}
+	\caption{Multiplicações resultantes do uso de janela deslisante}
+	\label{fig:ex_sliding_stride1}
+	Demonstração visual de que cada termo de cada operando em uma operação de
+	cross-correlação é multiplicado exatamente uma vez por cada um dos termos do
+	outro operando, resultando em um número de multiplicações igual ao produto
+	do número de termos em cada operando. (próprio autor)
+\end{figure}
+
+A consequência disso é que quando se calcula a cross-correlação entre duas
+imagens o número total de multiplicações é igual ao produto do número de pixels
+em cada imagem.
