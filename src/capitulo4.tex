@@ -2,4 +2,301 @@
 
 \chapter{Localização de Placas Veiculares usando Redes Neurais Convolucionais}
 
-Este \'e o segundo cap\'itulo, a fundamenta\c{c}\~ao te\'orica.
+O método proposto para a extração de placas envolve uma série de etapas,
+conforme ilustrado na figura \ref{fig:etapas_metodo_proposto}.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{etapas_metodo_proposto.png}
+	\caption{Etapas do método proposto para localização de placas veiculares}
+	\label{fig:etapas_metodo_proposto}
+	(próprio autor).
+\end{figure}
+
+O processo “extração” é responsável por obter as frames do vídeo. Uma frame é
+equivalente a uma imagem 2D, e pode ser representada por tensores de dimensões
+HWC (largura, altura e canais de cor). Todos os frames de um mesmo vídeo geram
+tensores do mesmo tamanho.
+
+O processo “segmentação” toma como entrada uma frame do vídeo e gera múltiplas
+sub-imagens aqui denominados “segmentos”, gerados através de um recorte
+retangular de pixels contíguos. Os segmentos têm dimensões compatíveis com a
+rede neural que será usada no passo seguinte.
+
+A etapa denominada “rede neural” é, mais especificamente, uma rede neural
+artificial convolucional profunda treinada para modelar uma função escalar cujo
+valor, denominado “escore”, é determinado pela presença e posição, ou não
+presença, de uma placa veicular.
+
+A etapa “binarização” estima, a partir do resultado da rede neural, se um
+segmento possui uma placa de trânsito.
+
+Este processo envolve algumas decisões que são parte fundamental da atual
+proposta. Elas dizem respeito:
+
+\begin{itemize}
+\item ao tamanho dos segmentos de imagem a serem recortados e, por
+	consequência, ao tamanho da entrada da rede neural;
+\item a escolha do stride dos segmentos da rede neural
+\item a escolha da função que a rede neural está modelando
+\item a escolha da arquitetura e dos hiperparâmetros da rede neural;
+\end{itemize}
+
+\section{Tamanho dos Segmentos}
+O tamanho dos segmentos definem as dimensões do tensor da rede neural, portanto
+o tamanho do seu “campo visual”.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{ex_tres_segmentos.png}
+	\caption{Exemplo de três tamanhos de segmentos}
+	\label{fig:ex_tres_segmentos}
+	Em (a) o segmento possui um grande campo visual, porém tem baixa precisão.
+	Em (b) há um campo visual muito pequeno para permitir que a rede neural
+	opere corretamente. O terceiro é apropriado, pois é relativamente pequeno e
+	inclui a placa inteira e vários pixels adicionais, permitindo que a rede
+	neural aprenda o contraste entre placa e o fundo (autoria própria).
+\end{figure}
+
+Quanto maior o campo visual da rede neural mais dados ela vai ter para
+processar, porém menor será a precisão. Se o campo visual for muito pequeno,
+como na figura \ref{fig:ex_tres_segmentos}b a precisão seria maximizada,
+mas a área não é suficiente para a rede neural operar corretamente. Se
+o campo visual for muito grande, como na figura \ref{fig:ex_tres_segmentos}a,
+a rede neural terá mais características para usar, mas a precisão da
+localização será muito prejudicada.
+
+De forma geral, as dimensões dos segmentos devem ser minimizados, mas deve-se
+garantir que a placa caiba inteira caiba no seu interior, com um pouco de
+sobra. As figuras \ref{fig:ex_tres_segmentos}c e \ref{fig:ex_placa} mostram
+um bom tamanho. A região adicional fora da placa vai servir para a rede
+neural aprender que existe um contraste de features entre o
+interior e o exterior da placa. Este contraste vai ser usado não só para
+identificar quando existe uma placa, mas também para excluir muitos casos de
+falsos positivos, como banners e outros textos que podem ser encontrados em
+veículos.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{ex_placa.png}
+	\caption{Exemplo de segmento com bom tamanho}
+	\label{fig:ex_placa}
+	(próprio autor).
+\end{figure}
+
+\section{Strides dos Segmentos}
+A abordagem que está sendo proposta envolve usar um detector para construir um
+localizador. Uma implementação ingênua desta abordagem seria treinar o detector
+para detectar placas de trânsito que estejam centradas na sua entrada e aplicar
+este detector como descrito na sessão \ref{sec:localiz_objetos}, usando
+stride $1 \times 1$.  Isso iria requerer aplicar a rede neural centrada em
+cada pixel da imagem. Se for feita a aplicação de um detector com campo
+visual $D_1 \times D_2$ em uma frame com dimensões $F_1 \times F_2$ com stride
+$1 \times 1$ sem estender as bordas pode-se demonstrar que o detector terá
+que ser aplicado $N$ vezes, onde:
+
+\begin{equation}
+	N = (F_1 - D_1 + 1) \cdot (F_2 - D_2 + 1)
+\end{equation}
+
+Para um detector com dimensões HW de $40 \times 120$ em uma imagem
+$480 \times 768$ seriam gerados 286.209 segmentos, e cada um deles precisaria
+ser aplicado pelo detector, o que é proibitivo.
+
+Para resolver este problema propõe-se o uso de um stride de
+$50\% \times 50\%$ do tamanho do segmento. Isso significa que duas amostras
+consecutivas em linha tem os seus centros a uma distância igual a sua
+largura sobre dois, gerando segmentos como os ilustrados na figura
+\ref{fig:ex_3_segmentos}.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{ex_3_segmentos.png}
+	\caption{Ilustração de 3 segmentos sucessivos}
+	\label{fig:ex_3_segmentos}
+	Observar que o centro de um segmento está contido no perímetro dos
+	segmentos vizinhos (próprio autor).
+\end{figure}
+
+Uma propriedade dessa escolha é que o centro de um segmento de imagem está
+contido no perímetro de todos os segmentos vizinhos. Esta propriedade é
+justamente o objetivo do stride de 50\%, conforme será descrito na sessão
+\ref{ses:funcao_a_modelar}.
+
+O número de segmentos na direção da altura será $T_H$, e na largura será
+$T_W$, sendo:
+
+\begin{equation}
+	T_H=\left\lfloor \frac{2F_1}{D_1-1} \right\rfloor \\
+\end{equation}
+
+\begin{equation}
+	T_W=\left\lfloor \frac{2F_2}{D_2-1} \right\rfloor \\
+\end{equation}
+
+E o  número de segmentos a serem classificados será:
+
+\begin{equation}
+	N=\left\lfloor \frac{2F_1}{D_1-1} \right\rfloor \cdot
+		\left\lfloor \frac{2F_2}{D_2-1} \right\rfloor
+\end{equation}
+
+Tomando o mesmo caso calculado anteriormente (detector $40 \times 120$ em
+frames $480 \times 768$ sem extensão de borda) com a estratégia proposta
+de segmentação o número de segmentos a serem classificados cai de 286.209
+para $24 \cdot 12=288$.
+
+\section{Função a ser Modelada} \label{ses:funcao_a_modelar}
+
+A rede neural vai ser treinada para modelar o valor de uma função $P$ que
+leva um tensor que representa  um segmento da frame à um real no intervalo
+$[0;1]$:
+
+\begin{equation}
+	P:S \to [0;1] \in \mathbb{R} 
+\end{equation}
+
+O valor dessa função é resultante da presença de uma placa veicular. Devido ao
+fato de que a segmentação será feita com stride maior que 1 não há garantia de
+que a placa estará centralizada, e ainda assim a função precisa identificar que
+ela está presente.
+
+A função proposta foi construída baseado na forma com que a placa veicular
+passa de um segmento para o segmento vizinho. A função deve possuir as
+seguintes características:
+
+\begin{itemize}
+\item a função é contínua quando uma placa é movida de forma contínua na
+	entrada por qualquer caminho;
+\item quando a placa veicular está no centro de um segmento a função de
+	saída deve ser 1, e quando está no centro do segmento vizinho deve ser 0;
+\item um, e apenas um segmento deve possuir valor 1 como consequência da
+	presença da placa.
+\end{itemize}
+
+A figura \ref{fig:placa_movida_entre_segmentos} ilustra os pontos principais
+quando uma placa é movida horizontalmente entre dois segmentos.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{placa_movida_entre_segmentos.png}
+	\caption{Placa veicular sendo movida entre dois segmentos}
+	\label{fig:placa_movida_entre_segmentos}
+	Ilustração do dos pontos críticos para a definição da função a ser modelada
+	pela rede neural, mostrando dois segmentos vizinhos, um pintado de verde e
+	o outro amarelo com borda pontilhada. Em (a) a placa está centrada no
+	segmento da esquerda e no perímetro do segmento da direita.
+	Em (b) o centro da placa está no meio caminho entre os centros dos dois
+	segmentos. Em (c) o centro da placa está no centro do segmento da direita e
+	perímetro do segmento da esquerda.
+\end{figure}
+
+A figura \ref{fig:func_a_modelar_2_seg} mostra o valor da função para
+dois segmentos vizinhos a medida que a placa é movida. Pode-se observar apenas
+um dos segmentos possui valor 1 por vez, exceto em um ponto. Também observa-se
+que quando a placa está centrada em um segmento a função possui valor zero
+no outro segmento.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{func_a_modelar_2_seg.png}
+	\caption{Valor da função em dois segmentos a medida que a placa se move
+	entre eles}
+	\label{fig:func_a_modelar_2_seg}
+	Observa-se que valor da saída da função para dois segmentos a medida que a
+	placa é movida do centro do segmento 1 (o da esquerda) para o segmento 2 (o
+	da direita) (próprio autor).
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{func_a_modelar_1_seg.png}
+	\caption{Valor da função a modelar, de $\infty$ a $+\infty$}
+	\label{fig:func_a_modelar_1_seg}
+	Observa-se que o valor da variável dependente a em medida que a placa
+	é deslocada desde $-\infty$ até $+\infty$ da esquerda para a direita,
+	enquanto a mesma está centrada na altura. A abscissa é a distância
+	normalizada entre os centros do segmento e da placa.
+\end{figure}
+
+Na figura \ref{fig:func_a_modelar_1_seg} observa-se o valor de uma função
+quando a placa está alinhada na altura e é deslocada horizontalmente. Como
+a abscissa é a distância normalizada entre os centros obtém-se o valor 0,5
+quando o centro da placa está a uma distância igual a metade do tamanho do
+segmento para a direita, como ilustrado na figura
+\ref{fig:placa_movida_entre_segmentos}c.
+
+No caso de uma placa alinhada na direção $y$ (distância em $y$ é 0), e sendo
+deslocada apenas em $x$, variando a distância normalizada $\Delta x$, a função
+proposta é:
+
+\begin{equation}
+	f_x(\Delta x) = \begin{cases}
+		1 \text{, se } |\Delta x| \leq 1/4
+		\\
+		\frac{1/2-|\Delta x|}{1/2-1/4} \text{, se } 1/4<|\Delta x|<1/2
+		\\
+		0 \text{, se } |\Delta x| \geq 1/2
+	\end{cases}
+\end{equation}
+
+Da maneira semelhante, quando a distância em x é zero e a distância 
+normalizada $\Delta y$ é livre:
+
+\begin{equation}
+	f_y(\Delta x) = \begin{cases}
+		1 \text{, se } |\Delta y| \leq 1/4
+		\\
+		\frac{1/2-|\Delta y|}{1/2-1/4} \text{, se } 1/4<|\Delta y|<1/2
+		\\
+		0 \text{, se } |\Delta y| \geq 1/2
+	\end{cases}
+\end{equation}
+
+Quando usado com as direções x e y livres a função a ser estimada pela rede
+neural é:
+
+\begin{equation}
+	f=f_x \cdot f_y
+\end{equation}
+
+O gráfico \emph{3D} desta função está representado na figura
+\ref{fig:func_a_modelar_3d}, mostrando o
+efeito simultâneo dos eixos $x$ e $y$.  Observa-se que quando a placa
+está com o seu centro a uma distância normalizada inferior 1/4 em $x$ e em $y$
+simultaneamente, a função vai produzir o valor 1. O gráfico não possui
+descontinuidades. Quando a distância normalizada supera 1/2 em qualquer
+direção o valor da função é 0.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{func_a_modelar_3d.png}
+	\caption{Gráfico 3D da função à modelar}
+	\label{fig:func_a_modelar_3d}
+	Plot da função que a rede neural deve modelar. As abscissas representam a
+	distância normalizada entre o centro do segmento e da placa em cada direção
+	(próprio autor).
+\end{figure}
+
+
+\section{Arquitetura da Rede Neural}
+
+A arquitetura da rede neural, incluindo seus hiperparâmetros, deve ser
+escolhida de forma a balancear desempenho de classificação com tempo de
+propagação. Se a rede neural requerer muitas operações pode aumentar o
+desempenho de classificação, mas o tempo de processamento vai aumentar.
+Idealmente a rede neural deve ser restrita a um tamanho que permita que todos
+os segmentos da imagem sejam classificados de forma que o sistema como um todo
+entregue a taxa de frames desejada para a resolução do vídeo necessária e
+hardware disponíveis onde a solução vai ser implantada.
+
+Na implementação da rede neural convolucional existem otimizações que podem ser
+feitas para reduzir o número de operações enquanto mantendo ou reduzindo pouco
+a capacidade da rede neural de executar a operação para a qual vai ser
+treinada. Estas otimizações são um campo ativo de pesquisa, sendo relevantes os
+papers produzidos como resultado da competição \emph{ImageNet Large Scale
+Visual Recognition Competition (ILSVRC)}. Os \emph{papers}
+\cite{szegedy2015going} e \cite{szegedy2015rethinking},
+por exemplo, detalham várias substituições que podem ser feitas para este fim.
+
+
