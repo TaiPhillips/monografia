@@ -301,7 +301,8 @@ $(1; H \cdot W \cdot C)$.
 
 O uso de camadas totalmente conectadas é proibitivo para classificação de
 imagens desta maneira. Se uma rede neural for usada para processar imagens de 1
-megapixel, ou 720x1280, e a primeira camada possuir um número de neurônios igual
+megapixel, ou $720 \times 1280$, e a primeira camada possuir um
+número de neurônios igual
 ao número de neurônios da camada de entrada, a matriz de pesos teria
 $(720 \cdot 1280 \cdot 3)^2 \approx 7.6 \cdot 10^{12}$ parâmetros. Se for
 representado por números ponto-flutuante de 32 bits isso ocuparia mais de
@@ -337,8 +338,9 @@ da convolução, o número de filtros e o modo de operação nas bordas. A figur
 	\includegraphics{ex_cnn_img.png}
 	\caption{Convolução sendo aplicada em uma imagem RGB}
 	\label{fig:ex_cnn_img}
-	Como a imagem possui 3 canais o filtro será 3x3x3. Um segmento da imagem
-	original com o mesmo tamanho do filtro, 3x3x3 é extraído da imagem, e um
+	Como a imagem possui 3 canais o filtro será $3 \times 3 \times 3$.
+	Um segmento da imagem original com o mesmo tamanho do filtro,
+	$3 \times 3 \times 3$ é extraído da imagem, e um
 	produto interno é realizado entre os dois, resultando em um escalar. Este
 	escalar é armazenado no tensor de saída nas coordenadas corretas. A
 	ilustração só mostra uma imagem de entrada e só um filtro e, portanto, uma
@@ -365,8 +367,9 @@ ilustra o uso das três camadas em sequência.
 	RGB}
 	\label{fig:ex_full_cnn_img}
 	Exemplo de uma sequência de operações feitas usando uma rede neural
-	convolucional incluindo 64 convoluções 3x3, maxpool e ReLu aplicadas em uma
-	batch de 32 imagens $40 \times 120 times 3$. Os parâmetros treináveis
+	convolucional incluindo 64 convoluções $3 \times 3$, maxpool e ReLu
+	aplicadas em uma
+	batch de 32 imagens $40 \times 120 \times 3$. Os parâmetros treináveis
 	estão destacados (próprio autor).
 \end{figure}
 

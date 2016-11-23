@@ -117,15 +117,16 @@ Desde os primeiros experimentos a abordagem usando redes neurais foi muito bem
 sucedida.
 
 \section{Escolha de Tecnologias}
-A versão final da DCNN usa o framework TensorFlow do Google.
-No TensorFlow usa-se a linguagem python para descrever um ou mais grafos onde
+A versão final da DCNN usa o \emph{framework} \emph{TensorFlow} do Google.
+No \emph{TensorFlow} usa-se a linguagem python para descrever um ou mais
+grafos onde
 os nós são operações e as arestas são tensores. Uma vez que o grafo esteja
 totalmente definido pode-se fornecer dados e solicitar o cálculo de qualquer
 quantidade de nós. A execução em si ocorre em um runtime de alto desempenho
-escrito em C++ e cuda, que pode ser distribuído entre múltiplas máquinas e pode
-rodar em CPUs e GPUs.
+escrito em C++ e \emph{CUDA}, que pode ser distribuído entre múltiplas
+máquinas e pode rodar em CPUs e GPUs.
 
-A tecnologia foi escolhida por ser open source, e por ser a ferramenta
+A tecnologia foi escolhida por ser \emph{open source}, e por ser a ferramenta
 utilizada pelo Google. Esta biblioteca é fácil de usar para pequenos projetos,
 como este, e poderosa para poder escalar para sistemas com múltiplos
 computadores usando GPUs de alto desempenho. Portanto adquirir conhecimento
@@ -143,8 +144,9 @@ interface gráfica.
 
 Tanto o wrapper python do opencv quanto o TensorFlow representam dados
 numéricos, como tensores, usando uma biblioteca numérica para python chamada
-numpy. Ela será usada para várias operações, como extrair sub-imagens da frame
-de vídeo que foi lida pelo opencv e fornecer estes dados para o TensorFlow.
+numpy. Ela será usada para várias operações, como extrair sub-imagens da
+\emph{frame} de vídeo que foi lida pelo opencv e fornecer estes dados para
+o \emph{TensorFlow}.
 
 Para representar as marcações que o usuário faz nos vídeos, para identificar
 onde estão as placas, será usado o formato json. Este formato está se tornado o
@@ -172,7 +174,7 @@ e produtivo quando usado com uma linguagem como python.
 O único recurso de hardware necessário é um computador. Como o treinamento de
 redes neurais com imagens consome horas, possivelmente dias para cada sessão,
 este computador idealmente seria um desktop de alto desempenho com pelo menos
-uma placa de vídeo com suporte a tecnologia cuda.
+uma placa de vídeo com suporte a tecnologia \emph{CUDA}.
 
 Não foi possível ter acesso a computadores com a configuração recomendada.
 Os computadores disponíveis durante a execução do projeto foram:
@@ -180,7 +182,7 @@ Os computadores disponíveis durante a execução do projeto foram:
 \begin{itemize}
 \item Um notebook Core i7-3632QM com 4 cores (2 threads por core), 16 GiB
 	de RAM;
-\item Um notebook Core i5 com 2 cores (2 threads por core), 8 GiB de RAM,
+\item Um notebook Core i5-4210U com 2 cores (2 threads por core), 8 GiB de RAM,
 	placa de video NVidia GT-750M com 2 GiB de RAM compatível com TensorFlow.
 \end{itemize}
 
@@ -209,7 +211,7 @@ um arquivo de vídeo como parâmetro. Ele permite:
 \item Reproduzir o vídeo;
 \item Pausar a reprodução do vídeo
 \item Avançar / voltar frame-a-frame;
-\item Saltar para uma frame digitando-se o número dela;
+\item Saltar para uma \emph{frame} digitando-se o número dela;
 \item Quando o vídeo está em pausa, permite clicar no vídeo para adicionar um
 	marcador de placa;
 \item Usar o teclado para mover, rotacionar e alterar o marcador, de forma que ele
@@ -223,34 +225,40 @@ carros e motos, e é possível identificar o número da placa. Isto tem como
 objetivo permitir que as mesmas marcações possam ser usadas futuramente para
 fazer OCR das placas. As marcações são salvas em um arquivo \emph{json}.
 
-Quando uma frame possui pelo menos uma placa veicular marcada todo o resto da
+Quando uma \emph{frame} possui pelo menos uma placa veicular marcada todo
+o resto da
 imagem vai ser considerado pelo software de treinamento como região sem placa.
-Por isso, se uma placa for marcada em uma frame, deve-se marcar todas as
+Por isso, se uma placa for marcada em uma \emph{frame}, deve-se marcar todas as
 placas.
 
 \begin{table}
 	\center
 	\caption{Arquivos de vídeo usados durante o desenvolvimento}
+	\renewcommand{\arraystretch}{1.6}
 	\begin{tabular}{ccccc}
 		\Xhline{6\arrayrulewidth}
-		Vídeo & Resolução HW & FPS & Tamanho & Duração \\ [2mm]
+		\textbf{Vídeo} &
+			\textbf{Resolução} &
+			\textbf{FPS} &
+			\textbf{Tamanho} &
+			\textbf{Duração} \\
 		\Xhline{2\arrayrulewidth}
-		video1.avi & 480x768 & 25,0 & 141 MiB & 8:27 \\ [2mm]
-		video2.avi & 1080x1920 & 25,0 & 1,0 GiB & 36:16  \\ [2mm]
-		video3.avi & 1080x1920 & 25,0 & 465 MiB & 8:02  \\ [2mm]
+		video1.avi & $480 \times 768$   & 25,0 & 141 MiB & 8:27  \\
+		video2.avi & $1080 \times 1920$ & 25,0 & 1,0 GiB & 36:16 \\
+		video3.avi & $1080 \times 1920$ & 25,0 & 465 MiB & 8:02  \\
 		\Xhline{6\arrayrulewidth}
 	\end{tabular}
 	\label{tbl:videos}
 \end{table}
 
 Todo o desenvolvimento foi feito usando três vídeos. As características dos
-vídeos estão listadas na tabela \ref{tbl:videos}, e uma frame de cada vídeo
-está mostrada na figura \ref{fig:cap5_3_videos}.
+vídeos estão listadas na tabela \ref{tbl:videos}, e uma \emph{frame} de
+cada vídeo está mostrada na figura \ref{fig:cap5_3_videos}.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{cap5_3_videos.png}
-	\caption{Uma frame de cada vídeo usado durante o desenvolvimento}
+	\caption{Uma \emph{frame} de cada vídeo usado durante o desenvolvimento}
 	\label{fig:cap5_3_videos}
 	(próprio autor).
 \end{figure}
@@ -261,7 +269,7 @@ vídeo. A maior parte das marcações foram feitas no \emph{video1}.
 \begin{table}
 	\center
 	\caption{Marcações feitas em cada vídeo}
-	\renewcommand{\arraystretch}{1.5}
+	\renewcommand{\arraystretch}{1.6}
 	\begin{tabular}{c c c}
 		\Xhline{6\arrayrulewidth}
 		\textbf{Vídeo} &
@@ -277,9 +285,421 @@ vídeo. A maior parte das marcações foram feitas no \emph{video1}.
 	\label{tbl:marc_videos}
 \end{table}
 
-
 \subsection{Gerador de Dados de Treinamento}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_tela_gerador.png}
+	\caption{Interface gráfica do gerador de dados}
+	\label{fig:cap5_tela_gerador}
+	A imagem da esquerda mostra o quadro que está sendo processado e mostra as
+	regiões onde os exemplos negativos estão sendo coletados. A imagem da
+	direita mostra os próprios exemplos negativos que estão sendo enviados para
+	o arquivo (próprio autor).
+\end{figure}
+
+O software gerador de dados de treinamento também recebe como parâmetro o nome
+do arquivo de vídeo onde vai operar, e vai abrir este arquivo de vídeo e as
+marcações feitas nele. Este software roda de modo não-interativo,
+terminando sem intervenção do usuário quando a geração do set de
+treinamento está concluída. A interface gráfica está ilustrada na figura
+\ref{fig:cap5_tela_gerador}
+
+O set de treinamento é armazenado em formato binário contendo registros de
+tamanho fixo. Cada registro contém a imagem seguida de um \emph{label}. A
+imagem é codificada no formato HWC usando 1 byte por canal de cor,
+sendo a cor na ordem RGB. O \emph{label} representa o valor que a rede neural
+deve aprender (float de 0 à 1), mas é codificado como um inteiro de
+8 bits sem sinal.  Como a imagem é $40 \times 120 \times 3$ e o \emph{label}
+tem 1 byte, então cada registro possui 14401 bytes.
+
+Este software vai iniciar tomando a lista de \emph{frames} marcadas em
+uma ordem
+aleatória. Então vai coletar exemplos de placas veiculares centradas e fora
+de centro e exemplos de imagens que não contém placas, e vai salvá-las no
+arquivo de saída. A cada um dos exemplos de treinamento este software
+também salva um número que é o valor da função que a rede neural deve
+produzir para esta placa, conforme equação \ref{eq:funcao_a_modelar}.
+
+Tomando uma placa nas coordenadas $y \times x$, o software primeiro gera um
+recorte centrado nessas coordenadas e com o tamanho $40 \times 120$. Este
+tamanho é definido em um arquivo de configuração. Todos os exemplos
+coletados desta forma recebem o \emph{label} 1 (codificado como 255).
+
+Para coletar os exemplos de placas não centralizadas coleta-se recortes de
+aproximadamente 4 em 4 \emph{pixels} dentro de uma região próxima da placa. O
+algoritmo avança precisamente na taxa de 4 \emph{pixels}, porém adiciona um
+número aleatório de -2 à 2 em cada um deles. Isso tem como objetivo evitar de
+fornecer dados muito regulares para a rede neural para evitar que ela
+aprenda algum truque relacionado à este padrão de distância. A região onde
+coleta-se estes exemplos é tal que o centro fica dentro de uma região
+$40 \times 120$ centrada na placa do veículo, como ilustrado na figura
+\ref{fig:cap5_regiao_coleta_amostras}.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_regiao_coleta_amostras.png}
+	\caption{Região onde amostras são coletadas}
+	\label{fig:cap5_regiao_coleta_amostras}
+	Esta região delimita os centros dos Segmentos, então pixels fora dessa
+	região são coletados.  Segmentos centrados dentro da região delimitada são
+	coletados de 4 em 4 pixels, sendo que cada uma dessas regiões é deslocada 2
+	pixels para a direita ou para a esquerda. Em verde estão marcados três
+	pontos, a, b e c, que serão atribuídos respectivamente aos \emph{labels} 0,
+	$^1/_2$ e 1 (próprio autor).
+\end{figure}
+
+A região delimitada é exatamente a região na qual o valor é não-zero. O ponto
+(c) na figura \ref{fig:cap5_regiao_coleta_amostras} mostra o limiar que está
+a $^1/_4$ de distância do centro na direção da largura. Neste ponto a função
+começa a decair de 1 para 0 (que são codificados como 255 e 0). O ponto (a)
+é onde a função atinge o valor 0, e o ponto (b) está precisamente no
+meio do caminho, possuindo o valor 0,5 (codificado como 128).
+
+Após coletar os exemplos de placas contidas na região acima indicada ocorre a
+coleta de imagens  fora da região, denominada coleta de “exemplos negativos”. A
+todos os exemplos coletados dessa maneira é atribuído o \emph{label} 0.
+
+O algorítmo que coleta esses exemplos passou por vários aprimoramentos. A
+versão final, que vai ser descrita, melhorou consideravelmente o desempenho do
+treinamento comparado com as versões iniciais.
+
+A primeira, e mais importante otimização foi a eliminação de exemplos
+parecidos. Quando se coleta exemplos de regiões da imagem que não são placas de
+carro pode-se acabar obtendo um recorte que inclui apenas o asfalto. Se outro
+recorte for feito em outra \emph{frame} na mesma região pode acabar sendo
+um exemplo muito parecido, como ilustrado na figura
+\ref{fig:cap5_coleta_negativa_igual}.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_coleta_negativa_igual.png}
+	\caption{Exemplo de duas regiões iguais em frames diferentes}
+	\label{fig:cap5_coleta_negativa_igual}
+	As regiões possuem as mesmas coordenadas, e contém pixels de fundo da
+	imagem (próprio autor).
+\end{figure}
+
+Por este motivo o software mantém as últimas 100 \emph{frames} processadas.
+Quando um “exemplo negativo” vai ser coletado em uma região a imagem é
+comparada com os
+pixels da mesma região nestas frames que foram armazenadas. O critério de
+comparação é:
+
+\begin{equation}
+	d_C=\frac{1}{N} \sum_{n=1}^N \sqrt{\left| R_C [n] -I_C [n] \right|}
+\end{equation}
+
+Onde $R_C[n]$ é o valor do canal de cor “C” do n-ésimo píxel do segmento de
+referência, e $I_C[n]$ é o mesmo canal do n-ésimo pixel do
+segmento que está sendo testado. Quando o valor da média dessa métrica
+para os três canais é menor que $\sqrt{8}$ as imagens são consideradas
+semelhantes, e a amostra é recusada. Foram
+testadas métricas, como média do módulo da diferença, e média da diferença
+quadrática, mas tiveram desempenho inferior ao serem comparados usando a
+percepção humana como referência. A figura
+\ref{fig:cap5_tela_gerador} mostra o efeito desta otimização.
+Cada retângulo azul mostra a região onde um exemplo negativo foi coletado.
+Observa-se que o asfalto não está sendo coletado.
+
+A segunda otimização foi a distância entre duas amostras negativas. Duas
+amostras muito próximas tem pouco valor para treinamento da rede neural devido
+à invariância a deslocamento. Por isso, para uma amostra ser aceita como
+“exemplo negativo” ela precisa estar a mais de 4 pixels de todos os outros
+exemplos coletados.
+
+A terceira otimização foi o processo de escolha das coordenadas onde os
+exemplos são coletados. Inicialmente usava-se um grid regular, mas essa
+abordagem acabava coletando uma quantidade muito grande de exemplos negativos.
+
+Como isso a rede neural acabava aprendendo a favorecer valores negativos, pois
+errar “para mais” acabava sendo punido mais severamente que errar “para menos”
+durante a otimização. Para poder balancear a quantidade de exemplos negativos e
+positivos foi necessário substituir o grid linear, já que ele favorecia coletar
+exemplos negativos na parte superior da imagem, pois a coleta terminava antes
+da imagem chegar na parte inferior.
+
+Para resolver isso foi adotado um processo que escolhe coordenadas usando uma
+distribuição uniforme e testa se nas coordenadas existe um exemplo negativo
+válido. Infelizmente este algoritmo é $O(\infty)$ no pior caso. Por isso um
+novo algoritmo de busca
+que tem probabilidade próxima de uniforme para a busca, vai sempre encontrar
+todas as soluções, e sempre termina precisou ser criado. Este algoritmo é uma
+modificação do BFS (\emph{breadth-first search}), no no qual a ordem na
+qual a busca é adicionada à pilha é aleatória. O algoritmo pega
+de uma pilha uma região
+retangular na qual deve encontrar pontos válidos e usa um gerador aleatório
+uniforme para escolher coordenadas e testar. Se o teste falhar divide a região
+em duas sub-regiões na direção onde a imagem for maior (altura ou largura) e
+adiciona as regiões na pilha em ordem aleatória. Cada vez que coordenadas
+válidas são encontradas elas são adicionadas na lista de resposta. Se a lista
+possui o número solicitado de respostas o algoritmo termina, caso contrário
+continua.
+
+\begin{table}
+	\center
+	\caption{Exemplos de treinamento gerados para cada vídeo}
+	\renewcommand{\arraystretch}{1.6}
+	\begin{tabular}{c c c p{2.5cm} p{2.5cm}}
+		\Xhline{6\arrayrulewidth}
+		\textbf{Entrada} &
+			\textbf{Saída} &
+			\textbf{Tamanho} &
+			\textbf{Registros \newline Gerados} \\
+		\Xhline{2\arrayrulewidth}
+		video1.avi & video1.nn1.bin & 1,1 GiB  & 64.714  \\
+		video2.avi & video2.nn1.bin & 901 MiB  & 89.672  \\
+		\Xhline{6\arrayrulewidth}
+		TOTAL      &                & 2,07 GiB & 154.386 \\
+	\end{tabular}
+	\label{tbl:marc_videos}
+\end{table}
+
+Um script escrito em bash foi escrito partir um arquivo destes em arquivos
+menores, contendo 128 amostras cada. Isso gerou 630 arquivos a partir de
+\emph{video1.nn1.bin} e 240 arquivos a partir de \emph{video2.nn1.bin}.
+
+Finalmente, um diretório foi criado contendo links simbólicos para todos os 869
+arquivos. Este diretório é o resultado final da geração de exemplos, e contém
+todas as amostras coletadas de todos os vídeos.
+
 \subsection{Treinador}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_tela_treinador.png}
+	\caption{Página do \emph{TensorBoard} mostrando progresso do treinamento}
+	\label{fig:cap5_tela_treinador}
+	Esta é uma página \emph{web} que permite observar a evolução do
+	treinamento (próprio autor).
+\end{figure}
+
+O treinador é um módulo de software onde se configura uma topologia de rede
+neural convolucional, que é treinada usando os dados produzidos pelo gerador de
+dados de treinamento.
+
+Para realizar o treinamento tanto da rede neural um grafo apresentado na figura
+\ref{fig:cap5_grafo_treinamento} foi construído.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_grafo_treinamento.png}
+	\caption{Grafo usado para treinamento da rede neural convolucional}
+	\label{fig:cap5_grafo_treinamento}
+	Esta imagem mostra o grafo do \emph{TensorFlow} usado para treinar
+	a rede neural, que é o bloco \emph{NN1} (próprio autor).
+\end{figure}
+
+O bloco “FileRead” possui uma lista com todos os arquivos de treinamento
+gerados pelo gerador de exemplos de treinamento. Essa lista é embaralhada, e
+então cada um dos registros é lido em sequência. A imagem é representada por um
+tensor de inteiros de 8 bits com dimensões $40 \times 120 \times 3$, e o
+label da imagem é representado com um tensor unidimensional com dimensão $1$.
+
+Como a rede neural está sendo treinada usando apenas dois vídeos existe o risco
+da rede neural treinada fique muito sensível a fatores como a iluminação. Para
+impedir que isso aconteça as imagens são distorcidas durante o treinamento no
+bloco de distorções, que está ilustrado na figura \ref{fig:cap5_distorcao}.
+A imagem é convertida para ponto-flutuante com canais no intervalo $[0;1]$,
+conforme requerido pelos primitivos do próprio \emph{TensorFlow}.
+No final das distorções a imagem é convertida
+novamente para inteiro de 8 bits por canal. O motivo para isso é fazer com o
+que o bloco “NN1”, que implementa a rede neural seja o mais otimizado possível
+para classificar imagens, não tanto para treinamento.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_distorcao.png}
+	\caption{\emph{Pipeline} de distorção de imagens}
+	\label{fig:cap5_distorcao}
+	A imagem é convertida para ponto-flutuante com cada canal no intervalo
+	$[0;1]$, é adicionado ruído normal, a saturação, brilho e contraste são
+	alterados conforme uma distribuição normal. O número é então convertido
+	novamente para inteiro de 8 bits por canal (próprio autor).
+\end{figure}
+
+O bloco “Noise” adiciona ruído normal à imagem somando-a com um tensor com as
+mesmas dimensões onde o valor de cada canal é gerado por uma distribuição
+normal de média 0 e desvio padrão 0,06.
+
+O bloco “Saturation” altera a saturação entre 0,2 a 1,5, sendo que 1 representa
+manter a saturação inalterada. O bloco “Brightness” faz uma alteração no brilho
+aumentando ou diminuindo em até 40\%. O bloco “Contrast” faz uma alteração de
+contraste entre 0,6 e 1,4, sendo que 1 representa manter o brilho. As escolha
+do valor em todos os casos é aleatória de acordo com distribuição uniforme.
+
+O resultado das distorções, juntamente com o label da imagem são fornecidos
+para o bloco “shuffle\_batch”. Este bloco tem a função de embaralhar os
+dados e agrupar imagens em batches. Este bloco usa 8 threads para consumir
+os dados dos blocos anteriores, o que significa que leitura e shuffling vai
+ocorrer em paralelo. Quando 2560 imagens são lidas elas são embaralhadas
+elas são agrupadas em batches de 256 imagens, gerando tensores com
+dimensões $256 \times 40 \times 120 \times 3$. Como cada arquivo contém
+128 imagens, então as imagens
+sendo lidas contém, no pior caso um set aleatório de imagens de 20
+arquivos. Os arquivos em sí são lidos em ordem aleatória, o que gera uma
+amostragem razoavelmente diversa das informações de entrada.
+
+Quanto maior o tamanho do batch maior a precisão da estimativa de erro,
+portanto este número é o maior possível suportado pelo hardware onde o
+treinamento está sendo realizado.
+
+Se o treinamento for rodado por tempo suficiente, todas as imagens serão
+lidas. Se o treinador precisar de mais exemplos as mesmas imagens serão lidas
+novamente, em ordem diferente. Porém, graças ao sistema de distorção de
+imagens que é parte do pipeline de leitura, uma mesma imagem lida múltiplas
+vezes muito provavelmente não chegará idêntica na rede neural.
+
+Os tensores que saem do shuffler são fornecidos a rede neural, que está no
+bloco “NN1”, que está ilustrado na figura \ref{fig:cap5_cnn}.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_cnn.png}
+	\caption{Pipeline descrevendo a rede neural convolucionao profunda}
+	\label{fig:cap5_cnn}
+	(próprio autor)
+\end{figure}
+
+Pode-se ver pela espessura das linhas que conectam os blocos que a quantidade
+de informação reduz ligeiramente em cada etapa. Como a rede neural precisa
+de um tempo de propagação baixo algumas técnicas foram usadas para
+reduzir o número de computações.
+
+A primeira estratégia é a redução agressiva do tamanho dos tensores nas duas
+primeiras camadas, inspirado em \cite{szegedy2015going}. \emph{Stride} é usado
+para fazer um resampling da imagem. Este método usa mais CPU do que resampling
+por métodos como bilinear, porém permite acesso à textura da imagem original. A
+primeira camada usa um kernel de $2 \times 2$ ao invéz de $3 \times 3$,
+reduzindo o número de multiplicações de 9 para 4.
+
+Não está sendo usada nenhuma convolução maior que $3 \times 3$.
+\cite{szegedy2015going} defende que, pelo menos em alguns casos,
+convoluções $5 \times 5$ podem ser substituídas por duas convolução
+sucessivas $3 \times 3$ enquanto reduz o número de
+multiplicações de $25$ para $2 \cdot 9=18$.
+
+\begin{table}
+	\center
+	\caption{Camadas da Rede Neural Implementada}
+	\renewcommand{\arraystretch}{1.6}
+	\begin{tabular}{c c c c}
+		\Xhline{6\arrayrulewidth}
+		\textbf{Nome} &
+			\textbf{Tensor de Entrada} &
+			\textbf{Operação} &
+			\textbf{DOF} \\
+		\Xhline{2\arrayrulewidth}
+		M1 & $256 \times 40 \times 120 \times 3$ & 6 cv2x2 s2x2 relu  & 78   \\
+		M2 & $256 \times 20 \times 60 \times 6$  & 8 cv3x3 s2x2 relu  & 440  \\
+		M3 & $256 \times 10 \times 30 \times 8$  & 8 cv3x3 relu       & 584  \\
+		M4 & $256 \times 10 \times 30 \times 8$  & 8 cv3x3 relu       & 584  \\
+		M5 & $256 \times 10 \times 30 \times 8$  & 8 cv3x3 relu mp2x2 & 584  \\
+		M6 & $256 \times 5  \times 15 \times 8$  & 6 cv3x3 relu       & 438  \\
+		M7 & $256 \times 5  \times 15 \times 6$  & 3 cv3x3 relu mp2x2 & 165  \\
+		-  & $256 \times 3  \times 8 \times 3$   & flatten            & 0    \\
+		FC32 & $256 \times 72$                   & fc32 relu          & 2.336\\
+		FC1 & $256 \times 32$                    & fc1 linear         & 33   \\
+		SAÍDA & $256$                            &                    &      \\
+		\Xhline{6\arrayrulewidth}
+		TOTAL & & & 5.242 \\
+	\end{tabular}
+	\label{tbl:marc_videos}
+\end{table}
+
+Nas últimas camadas está sendo usado maxpool $2 \times 2$. Esta estratégia é
+computacionalmente mais cara que usar convolução com stride maior que 1, pois
+de cada 4 valores 3 deles são descartados. Como as imagens são menores no final
+da rede neural optou-se pela operação mais cara. O efeito em tempo de
+propagação é negligenciável, o efeito na qualidade da detecção não foi medido.
+
+Outro ponto importante é o controle do número de graus de liberdade. Os
+primeiros modelos tinham mais de 50.000 graus de liberdade, e este valor foi
+reduzido para 5.242. Menos parâmetros implica várias vantagens, como
+treinamento mais rápido, menos uso de memória, capacidade de usar
+\emph{batches} maiores e menor chance de \emph{overfitting}.
+
+O processo que mais ajudou a aprimorar sucessivamente os hiperparâmetros da
+rede neural foi procurar uma rede neural com menos parâmetros que tenha
+desempenho comparável. Quando esta estratégia foi adotada a produtividade no
+que diz respeito a otimização destes parâmetros teve um salto considerável.
+
+A saída da rede neural, denominado “A”, é um tensor contendo um valor para cada
+uma das imagens, portanto um com dimensão 256. Para o treinamento a saída da
+rede neural vai ser comparado com os labels que estavam nos dados de
+treinamento, representado pelo tensor “B”, e também forma um tensor
+monodimensional com dimensão 256. O erro entre as duas medidas é mapeado para
+um único escalar, denominado perda, ou loss, pela metade da normal L2 entre os
+dois tensores sem a raíz quadrada:
+
+\begin{equation}
+	loss=\frac{1}{2} \sum_{n=1}^N \left( A[n] - B[n] \right)^2
+\end{equation}
+
+Esta medida foi usado porque é calculada eficiente pelo \emph{TensorFlow}
+através da função \textbf{tf.nn.l2\_loss(t, name=None)}. O software de
+treinamento usa um otimizador
+Adam \cite{kingma2014adam} para atualizar os parâmetros treináveis da rede
+neural de forma a minimizar este valor.
+
+As figuras \ref{fig:cap5_train_histogram} e \ref{fig:cap5_erro_treinamento}
+mostram a evolução do treinamento durante uma sessão de 25
+horas treinadas em um notebook Core i5 usando GPU. Durante este tempo foram
+consumidos mais de 66 milhões de imagens, o que consumiu todos os 2 GiB de
+dados e seus 154.386 exemplos de imagens cerca de 428 vezes.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_train_histogram.png}
+	\caption{Histograma temporal do erro classificação}
+	\label{fig:cap5_train_histogram}
+	Pode-se observar os erros se concentrando cada vez mais próximo de 0 a
+	medida que o treinamento avança. A escala indicada são batches de 256
+	imagens, portanto este gráfico o resultado após mais de 66 milhões de
+	imagens (próprio autor).
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_erro_treinamento.png}
+	\caption{Gráfico do erro de treinamento}
+	\label{fig:cap5_erro_treinamento}
+	Evolução da função de perda que o otimizador está minimizando, amortecido
+	usando método média local. A abscissa é o número do batch, e cada batch
+	possui 256 imagens (próprio autor).
+\end{figure}
+
 \subsection{Player}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_tela_player.png}
+	\caption{Interface com o usuário do módulo \emph{Player}}
+	\label{fig:cap5_tela_player}
+	No momento que a tela foi capturada o software está exibindo um vídeo
+	enquanto destaca as placas que está localizando (próprio autor).
+\end{figure}
+
+O quarto módulo de software usa a rede neural treinada para reproduzir o
+conteúdo de um vídeo ou da câmera enquanto destaca as placas de carros
+localizadas. A figura \ref{fig:cap5_tela_player} mostra a interface do usuário
+no momento em que está exibindo um vídeo quando três veículos estão passando.
+As placas dos mesmos estão sendo destacadas.
+
+O software implementa o método de classificação proposto nesta monografia por
+completo. O método de binarização é um limiar simples em 0,75. Este valor
+permite que quando a placa está transitando de um segmento para outro ambas as
+placas serão iluminadas momentaneamente antes da placa que ficou para trás
+apagar.
+
+Não foi implementado nenhum método para usar a correlação temporal das
+informações coletadas.
+
+Para o \emph{video1.avi} a rede neural é executada 288 vezes para frame do
+vídeo, sendo que uma linha completa contendo 12 segmentos é fornecido para a
+rede neural por vez.
+
+O software é capaz de operar em qualquer vídeo que possa ser lido pelo
+\emph{opencv3} e pode usar a imagem da câmera do computador.
 
 \section{Experimentos e Desempenho}
