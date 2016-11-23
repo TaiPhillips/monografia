@@ -43,7 +43,7 @@ software principais. O relacionamento entre eles é mostrado na figura
 A implementação de cada um destes módulos mudou durante a história do projeto,
 porém as suas funções básicas permaneceram as mesmas.
 
-\section{Abordagens Antiores}
+\section{Abordagens Anteriores}
 Várias tentativas de foram feitas usando abordagens incorretas durante o
 desenvolvimento do projeto. O software chegou a ser implementado por completo
 três vezes, sendo que só produziu resultados satisfatórios na última.
@@ -703,3 +703,70 @@ O software é capaz de operar em qualquer vídeo que possa ser lido pelo
 \emph{opencv3} e pode usar a imagem da câmera do computador.
 
 \section{Experimentos e Desempenho}
+
+Para os testes de tempo de classificação foi usado o módulo “player”. Este
+módulo mostra uma janela com o vídeo sendo classificado enquanto envia para
+stdout uma série de informações de desempenho. Estes dados foram usados nas
+medições relacionadas a tempo de classificação.
+
+
+\begin{table}
+	\center
+	\caption{Taxa de Frames por Segundo}
+	\renewcommand{\arraystretch}{1.6}
+	\begin{tabular}{ccccc}
+		\Xhline{6\arrayrulewidth}
+		\textbf{Vídeo} &
+			\textbf{Resolução} &
+			\textbf{FPS (GPU)} &
+			\textbf{FPS (CPU)} &
+			\textbf{Melhoria} \\
+		\Xhline{2\arrayrulewidth}
+		camera     & $480  \times 640$  & 15,8 & 9.12 & 73\%  \\
+		video1.avi & $480  \times 768$  & 14,8 & 8,08 & 84\%  \\
+		video2.avi & $1080 \times 1920$ & 3,29 & 1,51 & 117\% \\
+		video3.avi & $1080 \times 1920$ & 3,34 & 1,51 & 121\%  \\
+		\Xhline{6\arrayrulewidth}
+	\end{tabular}
+	\label{tbl:player_fps}
+\end{table}
+
+Observa-se na tabela \ref{tbl:player_fps} que o “player” não consegue
+atingir a taxa de 25 frames por segundo
+de nenhum dos três vídeos, mesmo com uso de GPU. A taxa de frames
+aumenta consideravelmente quando a GPU é usada. Entre os casos
+testados o ganho é maior quando a resolução do vídeo aumenta. A figura
+\ref{fig:cap5_player_fps} mostra o resultado em forma de gráfico.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_player_fps.png}
+	\caption{Taxa de frames por segundo no módulo \emph{Player}}
+	\label{fig:cap5_player_fps}
+	Gráfico mostrando desempenho em frames por segundo para localizar placas na
+	câmera VGA do computador, e nos três vídeos. Maior é melhor (próprio
+	autor).
+\end{figure}
+
+O player envia para o stdout o tempo gasto em cada uma das tarefas durante o
+processamento da frame. Coletando-se estes dados e calculando-se as médias do
+tempo gasto em cada tarefa foi gerado o gráfico na figura X.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_frame_benchmark.png}
+	\caption{Tempo gasto em cada subtarefa no processamento de uma
+		\emph{frame}}
+	\label{fig:cap5_frame_benchmark}
+	Gráfico mostra que, ao processar um vídeo $1080 \times 1920$ a grande
+	maioria do tempo é gasto executando o grafo do \emph{TensorFlow}. Outras
+	tarefas executadas pelo código em \emph{Python} consomem um percentual
+	pequeno do tempo da frame.
+\end{figure}
+
+Pode-se ver claramente que a vasta maioria do tempo é gasta executando os
+grafos do \emph{TensorFlow}. Também foi possível confirmar que o ganho do
+desempenho no caso do uso do GPU foi consequência do \emph{TensorFlow}
+consumir menos tempo para executar. Observou-se que na implementação CPU
+o \emph{TensorFlow} tomou 94,9\% do tempo de processamento da frame, e no
+caso que usa GPU tomou 88,1\%.
