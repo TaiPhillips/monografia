@@ -37,7 +37,8 @@ suficiente no formato requerido pela rede neural. O treinamento e teste da rede
 neural requereu o desenvolvimento de outros dois outros softwares. O primeiro
 treina a rede neural, o segundo reproduz o vídeo enquanto aplica a rede neural
 treinada, mostrando as placas identificadas. Isso resulta em quatro módulos de
-software principais. O relacionamento entre eles é mostrado na imagem X.
+software principais. O relacionamento entre eles é mostrado na figura
+\ref{fig:cap5_arquit_global}.
 
 A implementação de cada um destes módulos mudou durante a história do projeto,
 porém as suas funções básicas permaneceram as mesmas.
@@ -260,17 +261,18 @@ vídeo. A maior parte das marcações foram feitas no \emph{video1}.
 \begin{table}
 	\center
 	\caption{Marcações feitas em cada vídeo}
-	\begin{tabular}{ccc}
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabular}{c c c}
 		\Xhline{6\arrayrulewidth}
 		\textbf{Vídeo} &
 			\textbf{Quadros Marcados} &
-			\textbf{Placas Marcadas} \\ [2mm]
+			\textbf{Placas Marcadas} \\
 		\Xhline{2\arrayrulewidth}
-		video1.avi & 191 & 233 \\ [2mm]
-		video2.avi & 71  & 71  \\ [2mm]
-		video3.avi & 0   & 0   \\ [2mm]
+		video1.avi & 191 & 233 \\
+		video2.avi & 71  & 71  \\
+		video3.avi & 0   & 0   \\
 		\Xhline{6\arrayrulewidth}
-		TOTAL      & 262 & 304 \\ [2mm]
+		TOTAL      & 262 & 304 \\
 	\end{tabular}
 	\label{tbl:marc_videos}
 \end{table}
