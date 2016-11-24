@@ -15,7 +15,7 @@ conforme ilustrado na figura \ref{fig:etapas_metodo_proposto}.
 
 O processo “extração” é responsável por obter as frames do vídeo. Uma frame é
 equivalente a uma imagem 2D, e pode ser representada por tensores de dimensões
-HWC (largura, altura e canais de cor). Todos os frames de um mesmo vídeo geram
+\sigla{HWC}{\emph{Height X Width X Channel}, algura X largura X canal} (largura, altura e canais de cor). Todos os frames de um mesmo vídeo geram
 tensores do mesmo tamanho.
 
 O processo “segmentação” toma como entrada uma frame do vídeo e gera múltiplas
@@ -99,7 +99,8 @@ que ser aplicado $N$ vezes, onde:
 	N = (F_1 - D_1 + 1) \cdot (F_2 - D_2 + 1)
 \end{equation}
 
-Para um detector com dimensões HW de $40 \times 120$ em uma imagem
+Para um detector com dimensões \sigla{HW}{\emph{Height X width}, algura X
+largura} de $40 \times 120$ em uma imagem
 $480 \times 768$ seriam gerados 286.209 segmentos, e cada um deles precisaria
 ser aplicado pelo detector, o que é proibitivo.
 
