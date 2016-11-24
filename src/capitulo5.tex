@@ -2,8 +2,9 @@
 
 \chapter{Implementação e Experimentos}
 
-Neste capítulo será apresentada uma implementação de um sistema de localização
-de imagens de veículos e os resultados das medições de desempenho do mesmo.
+Neste capítulo serão apresentada uma implementação do método descrito
+no capítulo \ref{ses:metodo}, bem como os resultados des medições de
+desempenho.
 
 Também será apresentado um breve histórico mostrando algumas abordagens que
 foram tentadas antes da implementação final ter sido obtida, mostrando por que
@@ -32,7 +33,7 @@ sucesso de uma implementação acesso a dados ou a capacidade de produzi-los.
 Em todas variações tentadas de implementação optou-se por gerar os dados de
 treinamento. Para tal, dois softwares foram desenvolvidos: um software de
 marcação manual de placas em vídeo e um software para geração desses dados.
-Usando os dois softwares é possível gerar exemplos etiquetados em quantidade
+Usando os dois softwares é possível gerar exemplos rotulados em quantidade
 suficiente no formato requerido pela rede neural. O treinamento e teste da rede
 neural requereu o desenvolvimento de outros dois outros softwares. O primeiro
 treina a rede neural, o segundo reproduz o vídeo enquanto aplica a rede neural
@@ -44,13 +45,14 @@ A implementação de cada um destes módulos mudou durante a história do projet
 porém as suas funções básicas permaneceram as mesmas.
 
 \section{Abordagens Anteriores}
-Várias tentativas de foram feitas usando abordagens incorretas durante o
-desenvolvimento do projeto. O software chegou a ser implementado por completo
-três vezes, sendo que só produziu resultados satisfatórios na última.
+Durante o desenvolvimento do projeto algumas tentativas mal-sucedidas foram
+feitas antes da versão final ter sido completada. O software chegou a ser
+implementado por completo três vezes, sendo que só produziu resultados
+satisfatórios na última.
 
 A idéia inicial para este projeto era o uso de redes neurais não-convolucionais
 aplicadas diretamente aos pixels das imagens. Para tal foi escolhida a
-biblioteca neuroph, devido a familiaridade e ao uso da linguagem java. A
+biblioteca neuroph, devido à familiaridade e ao uso da linguagem Java. A
 solução foi totalmente implementada conforme arquitetura ilustrada na figura
 \ref{fig:cap5_arquit_global}.
 
@@ -63,16 +65,17 @@ Esta biblioteca foi logo descartada porque o tempo de treinamento era muito
 longo, impedindo a busca eficiente de configuração das camadas ocultas que
 gerasse o resultado desejado. Testes com topologias mais complexas, com maior
 largura e profundidade nas camadas intermediárias, chegavam a passar de uma
-semana de execução. Não houve nenhuma configuração encontrada com desempenho de
-classificação remotamente aceitável.
+semana de execução quando rodadas em um notebook \emph{Core i7}. Não houve
+nenhuma configuração encontrada com desempenho de classificação aceitável.
 
 Acreditando que seria possível resolver o problema encontrando os
 hiperparâmetros corretos da rede neural, e sabendo que isso requeriria
-múltiplos experimentos com topologias diferentes, adotou-se a biblioteca encog,
+múltiplos experimentos com topologias diferentes, adotou-se a biblioteca
+\emph{encog},
 devido ao melhor desempenho de treinamento. Essa adaptação, requereu reescrever
 boa parte código. Apesar do treinamento rodar quase a uma taxa de imagens 10
 vezes maior que a biblioteca anterior, também não foi encontrada topologia
-com com desempenho remotamente aceitável. A figura
+com com desempenho aceitável. A figura
 \ref{fig:cap5_trein_redes_nao_conv} mostra a
 evolução do treinamento para algumas sessões. Entre as listadas a que teve
 melhor desempenho usava 3200 neurônios na camada de entrada, então 172, 137,
@@ -89,95 +92,95 @@ com uma saída.
 	em cada camada totalmente conectada (próprio autor).
 \end{figure}
 
-
 Quando o player era usado com as redes neurais resultantes desse treinamento o
-resultado era muito ruim, com quantidade muito grande de falsos positivos.
+resultado era muito ruim, com quantidade muito grande de falsos negativos.
+Eventualmente descobriu-se que a forma com que os exemplos de imagens que não
+continham placa estava sendo coletada possuía uma grande quantidade de imagens
+muito parecidas. Aparentemente a rede neural não estava conseguindo generalizar
+as características de uma placa veicular e, ao invéz disso, encontrou
+parâmetros para as camadas totalmente conectadas que identificavam corretamente
+alguns destes exemplos, o que acabava reduzindo o erro de treinamento até certo
+ponto. Este problema só foi resolvido depois das redes neurais
+totalmente conectadas terem sido abandonadas.
 
 O esquema de particionamento das imagens foi mudado de 100\% para 50\%, que é o
 valor usado agora. A função que a rede neural modela foi modificada
-várias vezes, mas
-o resultado final, conforme visto no player, continuava ruim.
+várias vezes, mas o resultado final, conforme visto no player, continuava ruim.
 
 Após alguns meses a abordagem foi abandonada. Foi feita uma pesquisa sobre o
 assunto descobriu-se a existência de redes neurais convolucionais. Infelizmente
 a biblioteca encog e a neuroph não suportam este tipo de topologia. Também não
-foram encontradas bibliotecas com grande base de usuários em java.
+foram encontradas bibliotecas com grande base de usuários em Java.
 
 Neste ponto foi escolhida a biblioteca recém-lançada tensorflow. Inicialmente a
-preparação dos dados de treinamento continuou sendo feita pelo código em java
+preparação dos dados de treinamento continuou sendo feita pelo código em Java
 que já havia sido escrito, enquanto o código de treinamento e execução foram
-reescritos em python, por que era a única linguagem suportada quando essa
+reescritos em Python, que era a única linguagem suportada quando essa
 migração foi realizada.
 
 O uso de duas linguagens de programação estava eliminando várias oportunidades
-de reuso de código. Eventualmente o software de marcação e preparação de dados
-de treinamento foi reescrito em python.
+de reuso de código. Eventualmente os softwares de marcação e preparação de
+dados de treinamento foi reescrito em Python.
 
 Desde os primeiros experimentos a abordagem usando redes neurais foi muito bem
 sucedida.
 
 \section{Escolha de Tecnologias}
-A versão final da DCNN usa o \emph{framework} \emph{TensorFlow} do Google.
-No \emph{TensorFlow} usa-se a linguagem python para descrever um ou mais
+A versão final da DCNN usa o \emph{framework} TensorFlow do Google.
+No TensorFlow usa-se a linguagem Python para descrever um ou mais
 grafos onde
 os nós são operações e as arestas são tensores. Uma vez que o grafo esteja
-totalmente definido pode-se fornecer dados e solicitar o cálculo de qualquer
-quantidade de nós. A execução em si ocorre em um runtime de alto desempenho
-escrito em C++ e \emph{CUDA}, que pode ser distribuído entre múltiplas
+totalmente definido podem-se fornecer dados e solicitar o cálculo de qualquer
+quantidade de nós. A execução em si ocorre em um \emph{runtime} de alto
+desempenho escrito em C++ e CUDA, que pode ser distribuído entre múltiplas
 máquinas e pode rodar em CPUs e GPUs.
 
 A tecnologia foi escolhida por ser \emph{open source}, e por ser a ferramenta
 utilizada pelo Google. Esta biblioteca é fácil de usar para pequenos projetos,
 como este, e poderosa para poder escalar para sistemas com múltiplos
-computadores usando GPUs de alto desempenho. Portanto adquirir conhecimento
-nesta tecnologia pode ser útil para projetos futuros.
+computadores usando GPUs de alto desempenho. O TensorFlow permite usar Python
+2 ou Python 3, sendo que a versão 3 foi escolhida para o projeto.
 
-O TensorFlow permite usar python 2 ou python 3. Eu optou-se por usar a versão 3
-por que é a versão mais nova da linguagem, e é a versão padrão do sistema
-operacional que uso para desenvolver os projetos.
-
-Será usado OpenCV 3 e seu wrapper python para leitura e exibição do vídeo, para
-algumas operações de manipulação de imagens e para gerar a interface com
-usuário. O OpenCV tem primitivos suficientes para exibir uma janela contendo
+A versão 3 do OpenCV, bem como seu \emph{wrapper} Python foram adotados para
+leitura e exibição do vídeo, e para algumas operações de manipulação de
+imagens e para a construção da interface com usuário. O OpenCV tem
+funcionalidades suficientes para exibir uma janela contendo
 uma imagem e capturar eventos de teclado e mouse. Isso é suficiente para toda a
 interface gráfica.
 
-Tanto o wrapper python do opencv quanto o TensorFlow representam dados
-numéricos, como tensores, usando uma biblioteca numérica para python chamada
-numpy. Ela será usada para várias operações, como extrair sub-imagens da
-\emph{frame} de vídeo que foi lida pelo opencv e fornecer estes dados para
-o \emph{TensorFlow}.
+Tanto o \emph{wrapper} Python do OpenCV quanto o TensorFlow representam dados
+numéricos, como tensores, usando uma biblioteca numérica para Python chamada
+\emph{numpy}. Ela será usada para várias operações, como extrair sub-imagens
+das \emph{frame} de vídeo, após terem sido lidas pelo OpenCV, e fornecer
+estes dados para o \emph{TensorFlow}.
 
 Para representar as marcações que o usuário faz nos vídeos, para identificar
-onde estão as placas, será usado o formato json. Este formato está se tornado o
-padrão de facto para representação de dados no mercado. Além disso existem boas
-bibliotecas em várias linguagens, inclusive python e java, que são minhas
-linguagens principais.
+onde estão as placas, foi usado o formato \sigla{JSON}{Javascript
+object notation}. Este formato está se tornado o padrão de facto para
+representação de dados no mercado. Além disso existem boas
+bibliotecas em várias linguagens, inclusive Python e Java, o que garante que os
+dados poderão ser lidos facilmente.
 
-O sistema operacional usado será Linux, particularmente a distribuição Arch
-Linux. Eu já uso este sistema operacional no meu computador pessoal e do
-escritório pelo seu sistema de atualização constante, que busca disponibilizar
-o mais rápido possível as últimas versões de todos os seus componentes, como
-kernel, compiladores, bibliotecas e softwares.
-Arch Linux não é oficialmente suportado pelo projeto TensorFlow, mas existem
-pacotes oferecidos pela comunidade tanto para versão estável quando para a
-última versão git do projeto.
-O servidor de código a ser usado é o git, por ser o padrão de facto do mercado.
+O Linux foi o único sistema operacional usado, por ser \emph{open source},
+gratuitamente acessível e poder ser usado em produtos comerciais, caso surja a
+demanda. A distribuição escolhida foi Arch Linux, apesar de não ser
+oficialmente suportado pelo projeto TensorFlow, por possuir a filosofia
+empregar sempre a versão mais atual de todos os componentes, como kernel. O
+suporte ao TensorFlow é oferecido pela comunidade \sigla{AUR}{\emph{Arch User
+Repository}} (Arch User Repository), que permite a instalação a partir do
+código-fonte do TensorFlow mesmo antes de uma versão oficial ser liberada.
 
-Esse repositório já é usado pelo próprio projeto do TensorFlow.
-Para edição de código será usado exclusivamente vim. Esse editor é sofisticado
-e produtivo quando usado com uma linguagem como python.
+O sistema de controle de versões usado foi o GIT.
+Esse \sigla{VCS}{\emph{Version control system}, sistema de controle de versão}
+já é usado no projeto TensorFlow.
 
+Para edição de código foi usado exclusivamente vim. Esse editor é sofisticado
+e produtivo quando usado com uma linguagem como Python.
 
 \section{Recursos de Hardware}
 
-O único recurso de hardware necessário é um computador. Como o treinamento de
-redes neurais com imagens consome horas, possivelmente dias para cada sessão,
-este computador idealmente seria um desktop de alto desempenho com pelo menos
-uma placa de vídeo com suporte a tecnologia \emph{CUDA}.
-
-Não foi possível ter acesso a computadores com a configuração recomendada.
-Os computadores disponíveis durante a execução do projeto foram:
+O único recurso de hardware que foi necessário para este projeto foi
+um computador, sendo que dois foram usados:
 
 \begin{itemize}
 \item Um notebook Core i7-3632QM com 4 cores (2 threads por core), 16 GiB
@@ -187,8 +190,17 @@ Os computadores disponíveis durante a execução do projeto foram:
 \end{itemize}
 
 O desenvolvimento do projeto foi quase todo feito usando o Core i7. Assim que
-o suporte a GPU foi incluída no código o notebook Core i5 começou a ser usado,
-e, a partir deste ponto, ambos os coputadores passarm a ser usados.
+o suporte a GPU foi incluída no código o notebook Core i5 começou a ser usado
+concomitantemente.
+
+A CPU do computador Core i7, quando usado para treinamento, rapidamente
+atinge \SI{85}{\degree} e o desempenho do treinamento reduz consideravelmente,
+como consequência da CPU estar atuando para limitar a potência dissipada. Após
+o computador rodar por alguns meses desta maneira o computador deixou de ser
+confiável, travando com frequência e muitas vezes se recusando a ligar com
+sintomas aleatórios. No caso de treinamento prolongado, como foi feito neste
+projeto, pode ser necessário conferir a temperatura na qual os componentes
+estão rodando, para evitar danos.
 
 \section{Implementação dos Módulos de Software}
 
@@ -204,7 +216,7 @@ Nesta seção está detalhada a implementação de cada módulo de software.
 	A tela está mostrando 3 veículos marcados (próprio autor).
 \end{figure}
 
-O software marcador foi construído como um script python que recebe o nome de
+O software marcador foi construído como um script Python que recebe o nome de
 um arquivo de vídeo como parâmetro. Ele permite:
 
 \begin{enumerate}
@@ -223,13 +235,13 @@ Como pode ser visto na figura \ref{fig:cap5_tela_marcador}, o software
 marcador permite marcar placas de
 carros e motos, e é possível identificar o número da placa. Isto tem como
 objetivo permitir que as mesmas marcações possam ser usadas futuramente para
-fazer OCR das placas. As marcações são salvas em um arquivo \emph{json}.
+fazer OCR das placas. As marcações são salvas em um arquivo JSON.
 
-Quando uma \emph{frame} possui pelo menos uma placa veicular marcada todo
+Quando uma \emph{frame} possui pelo menos uma placa veicular marcada, todo
 o resto da
 imagem vai ser considerado pelo software de treinamento como região sem placa.
-Por isso, se uma placa for marcada em uma \emph{frame}, deve-se marcar todas as
-placas.
+Por isso, se uma placa for marcada em uma \emph{frame}, devem-se marcar todas
+as placas.
 
 \begin{table}
 	\center
@@ -301,20 +313,20 @@ vídeo. A maior parte das marcações foram feitas no \emph{video1}.
 O software gerador de dados de treinamento também recebe como parâmetro o nome
 do arquivo de vídeo onde vai operar, e vai abrir este arquivo de vídeo e as
 marcações feitas nele. Este software roda de modo não-interativo,
-terminando sem intervenção do usuário quando a geração do set de
+terminando sem intervenção do usuário quando a geração do conjunto de
 treinamento está concluída. A interface gráfica está ilustrada na figura
 \ref{fig:cap5_tela_gerador}
 
-O set de treinamento é armazenado em formato binário contendo registros de
-tamanho fixo. Cada registro contém a imagem seguida de um \emph{label}. A
+O conjunto de treinamento é armazenado em formato binário contendo registros de
+tamanho fixo. Cada registro contém a imagem seguida de um rótulo. A
 imagem é codificada no formato HWC usando 1 byte por canal de cor,
-sendo a cor na ordem RGB. O \emph{label} representa o valor que a rede neural
-deve aprender (float de 0 à 1), mas é codificado como um inteiro de
-8 bits sem sinal.  Como a imagem é $40 \times 120 \times 3$ e o \emph{label}
+sendo a cor na ordem RGB. O rótulo representa o valor que a rede neural
+deve aprender (número ponto-flutuange de 0 à 1), mas é codificado como um
+inteiro de
+8 bits sem sinal.  Como a imagem é $40 \times 120 \times 3$ e o rótulo
 tem 1 byte, então cada registro possui 14401 bytes.
 
-Este software vai iniciar tomando a lista de \emph{frames} marcadas em
-uma ordem
+Este software lê a lista de \emph{frames} marcadas em uma ordem
 aleatória. Então vai coletar exemplos de placas veiculares centradas e fora
 de centro e exemplos de imagens que não contém placas, e vai salvá-las no
 arquivo de saída. A cada um dos exemplos de treinamento este software
@@ -324,9 +336,10 @@ produzir para esta placa, conforme equação \ref{eq:funcao_a_modelar}.
 Tomando uma placa nas coordenadas $y \times x$, o software primeiro gera um
 recorte centrado nessas coordenadas e com o tamanho $40 \times 120$. Este
 tamanho é definido em um arquivo de configuração. Todos os exemplos
-coletados desta forma recebem o \emph{label} 1 (codificado como 255).
+coletados desta forma recebem o rótulo 1 (codificado como 255).
 
-Para coletar os exemplos de placas não centralizadas coleta-se recortes de
+Para obter os exemplos de placas não centralizadas são coletados recortes
+com dimensões $40 \times 120$ de
 aproximadamente 4 em 4 \emph{pixels} dentro de uma região próxima da placa. O
 algoritmo avança precisamente na taxa de 4 \emph{pixels}, porém adiciona um
 número aleatório de -2 à 2 em cada um deles. Isso tem como objetivo evitar de
@@ -345,7 +358,7 @@ $40 \times 120$ centrada na placa do veículo, como ilustrado na figura
 	região são coletados. Partições centrados dentro da região delimitada são
 	coletados de 4 em 4 pixels, sendo que cada uma dessas regiões é deslocada 2
 	pixels para a direita ou para a esquerda. Em verde estão marcados três
-	pontos, a, b e c, que serão atribuídos respectivamente aos \emph{labels} 0,
+	pontos, a, b e c, que serão atribuídos respectivamente aos rótulos 0,
 	$^1/_2$ e 1 (próprio autor).
 \end{figure}
 
@@ -358,17 +371,17 @@ meio do caminho, possuindo o valor 0,5 (codificado como 128).
 
 Após coletar os exemplos de placas contidas na região acima indicada ocorre a
 coleta de imagens  fora da região, denominada coleta de “exemplos negativos”. A
-todos os exemplos coletados dessa maneira é atribuído o \emph{label} 0.
+todos os exemplos coletados dessa maneira é atribuído o rótulo 0.
 
 O algorítmo que coleta esses exemplos passou por vários aprimoramentos. A
 versão final, que vai ser descrita, melhorou consideravelmente o desempenho do
 treinamento comparado com as versões iniciais.
 
 A primeira, e mais importante otimização foi a eliminação de exemplos
-parecidos. Quando se coleta exemplos de regiões da imagem que não são placas de
-carro pode-se acabar obtendo um recorte que inclui apenas o asfalto. Se outro
-recorte for feito em outra \emph{frame} na mesma região pode acabar sendo
-um exemplo muito parecido, como ilustrado na figura
+parecidos. Quando são coletados exemplos de regiões da imagem que não são
+placas de carro pode-se acabar obtendo um recorte que inclui apenas o asfalto.
+Se outro recorte for feito em outra \emph{frame} na mesma região pode acabar
+sendo um exemplo muito parecido, como ilustrado na figura
 \ref{fig:cap5_coleta_negativa_igual}.
 
 \begin{figure}[!htb]
@@ -494,7 +507,7 @@ O bloco “FileRead” possui uma lista com todos os arquivos de treinamento
 gerados pelo gerador de exemplos de treinamento. Essa lista é embaralhada, e
 então cada um dos registros é lido em sequência. A imagem é representada por um
 tensor de inteiros de 8 bits com dimensões $40 \times 120 \times 3$, e o
-label da imagem é representado com um tensor unidimensional com dimensão $1$.
+rótulo da imagem é representado com um tensor unidimensional com dimensão $1$.
 
 Como a rede neural está sendo treinada usando apenas dois vídeos existe o risco
 da rede neural treinada fique muito sensível a fatores como a iluminação. Para
@@ -528,15 +541,15 @@ aumentando ou diminuindo em até 40\%. O bloco “Contrast” faz uma alteraçã
 contraste entre 0,6 e 1,4, sendo que 1 representa manter o brilho. As escolha
 do valor em todos os casos é aleatória de acordo com distribuição uniforme.
 
-O resultado das distorções, juntamente com o label da imagem são fornecidos
+O resultado das distorções, juntamente com o rótulo da imagem são fornecidos
 para o bloco “shuffle\_batch”. Este bloco tem a função de embaralhar os
 dados e agrupar imagens em batches. Este bloco usa 8 threads para consumir
 os dados dos blocos anteriores, o que significa que leitura e shuffling vai
 ocorrer em paralelo. Quando 2560 imagens são lidas elas são embaralhadas
 elas são agrupadas em batches de 256 imagens, gerando tensores com
 dimensões $256 \times 40 \times 120 \times 3$. Como cada arquivo contém
-128 imagens, então as imagens
-sendo lidas contém, no pior caso um set aleatório de imagens de 20
+128 registros, então as imagens
+sendo lidas contém, no pior caso, uma amostra aleatória proveniente de 20
 arquivos. Os arquivos em sí são lidos em ordem aleatória, o que gera uma
 amostragem razoavelmente diversa das informações de entrada.
 
@@ -626,7 +639,7 @@ que diz respeito a otimização destes parâmetros teve um salto considerável.
 
 A saída da rede neural, denominado “A”, é um tensor contendo um valor para cada
 uma das imagens, portanto um com dimensão 256. Para o treinamento a saída da
-rede neural vai ser comparado com os labels que estavam nos dados de
+rede neural vai ser comparado com os rótulos que estavam nos dados de
 treinamento, representado pelo tensor “B”, e também forma um tensor
 monodimensional com dimensão 256. O erro entre as duas medidas é mapeado para
 um único escalar, denominado perda, ou loss, pela metade da normal L2 entre os
@@ -700,7 +713,7 @@ vídeo, sendo que uma linha completa contendo 12 partições é fornecido para a
 rede neural por vez.
 
 O software é capaz de operar em qualquer vídeo que possa ser lido pelo
-\emph{opencv3} e pode usar a imagem da câmera do computador.
+\emph{OpenCV3} e pode usar a imagem da câmera do computador.
 
 \section{Experimentos e Desempenho}
 
@@ -760,7 +773,7 @@ tempo gasto em cada tarefa foi gerado o gráfico na figura X.
 	\label{fig:cap5_frame_benchmark}
 	Gráfico mostra que, ao processar um vídeo $1080 \times 1920$ a grande
 	maioria do tempo é gasto executando o grafo do \emph{TensorFlow}. Outras
-	tarefas executadas pelo código em \emph{Python} consomem um percentual
+	tarefas executadas pelo código em Python consomem um percentual
 	pequeno do tempo da frame (próprio autor).
 \end{figure}
 
