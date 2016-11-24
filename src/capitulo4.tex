@@ -13,17 +13,18 @@ conforme ilustrado na figura \ref{fig:etapas_metodo_proposto}.
 	(próprio autor).
 \end{figure}
 
-O processo “extração” é responsável por obter as frames do vídeo. Uma frame é
-equivalente a uma imagem 2D, e pode ser representada por tensores de dimensões
-\sigla{HWC}{\emph{Height X Width X Channel}, algura X largura X canal} (largura, altura e canais de cor). Todos os frames de um mesmo vídeo geram
-tensores do mesmo tamanho.
+O processo “particionamento” é responsável por obter as frames do vídeo. Uma
+frame é equivalente a uma imagem 2D, e pode ser representada por tensores de
+dimensões \sigla{HWC}{\emph{Height X Width X Channel}, algura X largura X
+canal} (largura, altura e canais de cor). Todos os frames de um mesmo vídeo
+geram tensores do mesmo tamanho.
 
 O processo “fatiamento” toma como entrada uma frame do vídeo e gera múltiplas
 sub-imagens aqui denominadas “partições”, geradas através de um recorte
 retangular de pixels contíguos. As partições têm dimensões compatíveis com a
 rede neural que será usada no passo seguinte.
 
-A etapa denominada “rede neural” é, mais especificamente, uma rede neural
+A etapa denominada “detecção” é, mais especificamente, uma rede neural
 artificial convolucional profunda treinada para modelar uma função escalar cujo
 valor, denominado “escore”, é determinado pela presença e posição, ou não
 presença, de uma placa veicular.
@@ -37,13 +38,13 @@ proposta. Elas dizem respeito:
 \begin{itemize}
 \item ao tamanho das partições de imagem a serem recortadas e, por
 	consequência, ao tamanho da entrada da rede neural;
-\item a escolha do stride das partições da rede neural
-\item a escolha da função que a rede neural está modelando
-\item a escolha da arquitetura e dos hiperparâmetros da rede neural;
+\item à escolha do stride das partições da rede neural;
+\item à escolha da função que a rede neural está modelando;
+\item à escolha da arquitetura e dos hiperparâmetros da rede neural.
 \end{itemize}
 
 \section{Tamanho das Partições}
-O tamanho das partições definem as dimensões do tensor da rede neural, portanto
+O tamanho das partições define as dimensões do tensor da rede neural, portanto
 o tamanho do seu “campo visual”.
 
 
@@ -59,7 +60,7 @@ o tamanho do seu “campo visual”.
 	neural aprenda o contraste entre placa e o fundo (próprio autor).
 \end{figure}
 
-Quanto maior o campo visual da rede neural mais dados ela vai ter para
+Quanto maior o campo visual da rede neural, mais dados ela vai ter para
 processar, porém menor será a precisão. Se o campo visual for muito pequeno,
 como na figura \ref{fig:ex_tres_segmentos}b a precisão seria maximizada,
 mas a área não é suficiente para a rede neural operar corretamente. Se
@@ -68,7 +69,7 @@ a rede neural terá mais características para usar, mas a precisão da
 localização será muito prejudicada.
 
 De forma geral, as dimensões das partições devem ser minimizadas, mas deve-se
-garantir que a placa caiba inteira caiba no seu interior, com um pouco de
+garantir que a placa caiba no seu interior, com um pouco de
 sobra. As figuras \ref{fig:ex_tres_segmentos}c e \ref{fig:ex_placa} mostram
 um bom tamanho. A região adicional fora da placa vai servir para a rede
 neural aprender que existe um contraste de features entre o
@@ -151,7 +152,7 @@ para $24 \cdot 12=288$.
 \section{Função a ser Modelada} \label{ses:funcao_a_modelar}
 
 A rede neural vai ser treinada para modelar o valor de uma função $P$ que
-leva um tensor que representa  uma partição da frame à um real no intervalo
+leva um tensor que representa  uma partição da frame a um real no intervalo
 $[0;1]$:
 
 \begin{equation}
@@ -195,9 +196,9 @@ quando uma placa é movida horizontalmente entre duas partições.
 \end{figure}
 
 A figura \ref{fig:func_a_modelar_2_seg} mostra o valor da função para
-duas partições vizinhas a medida que a placa é movida. Pode-se observar apenas
-um das partições possui valor 1 por vez, exceto no ponto cuja vizinhança é
-menor que 1. Também observa-se
+duas partições vizinhas à medida que a placa é movida. Pode-se observar que
+apenas um das partições possui valor 1 por vez, exceto no ponto cuja vizinhança
+é menor que 1. Também observa-se
 que quando a placa está centrada em uma partição, a função possui valor zero
 na outra partição.
 
@@ -287,7 +288,7 @@ direção o valor da função é 0.
 
 A arquitetura da rede neural, incluindo seus hiperparâmetros, deve ser
 escolhida de forma a balancear desempenho de classificação com tempo de
-propagação. Se a rede neural requerer muitas operações pode aumentar o
+propagação. Se a rede neural requerer muitas operações, pode aumentar o
 desempenho de classificação, mas o tempo de processamento vai aumentar.
 Idealmente a rede neural deve ser restrita a um tamanho que permita que todos
 as partições da imagem sejam classificadas de forma que o sistema como um todo
