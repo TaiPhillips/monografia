@@ -54,10 +54,10 @@ biblioteca neuroph, devido a familiaridade e ao uso da linguagem java. A
 solução foi totalmente implementada conforme arquitetura ilustrada na figura
 \ref{fig:cap5_arquit_global}.
 
-Essa implementação usava imagens em tons de cinza e segmentos com dimensões HW
+Essa implementação usava imagens em tons de cinza e partições com dimensões HW
 $32 \times 100$ aplicadas em uma rede neural totalmente conectada com 3200
-entradas e uma saída. A segmentação era feita  usando stride de 100\%, ou
-seja, dois segmentos vizinhos tinham o perímetro de um dos seus lados em comum.
+entradas e uma saída. O particionamento era feita  usando stride de 100\%, ou
+seja, duas partições vizinhas tinham o perímetro de um dos seus lados em comum.
 
 Esta biblioteca foi logo descartada porque o tempo de treinamento era muito
 longo, impedindo a busca eficiente de configuração das camadas ocultas que
@@ -93,7 +93,7 @@ com uma saída.
 Quando o player era usado com as redes neurais resultantes desse treinamento o
 resultado era muito ruim, com quantidade muito grande de falsos positivos.
 
-O esquema de segmentação das imagens foi mudado de 100\% para 50\%, que é o
+O esquema de particionamento das imagens foi mudado de 100\% para 50\%, que é o
 valor usado agora. A função que a rede neural modela foi modificada
 várias vezes, mas
 o resultado final, conforme visto no player, continuava ruim.
@@ -341,8 +341,8 @@ $40 \times 120$ centrada na placa do veículo, como ilustrado na figura
 	\includegraphics{cap5_regiao_coleta_amostras.png}
 	\caption{Região onde amostras são coletadas}
 	\label{fig:cap5_regiao_coleta_amostras}
-	Esta região delimita os centros dos Segmentos, então pixels fora dessa
-	região são coletados.  Segmentos centrados dentro da região delimitada são
+	Esta região delimita os centros das partições, então pixels fora dessa
+	região são coletados. Partições centrados dentro da região delimitada são
 	coletados de 4 em 4 pixels, sendo que cada uma dessas regiões é deslocada 2
 	pixels para a direita ou para a esquerda. Em verde estão marcados três
 	pontos, a, b e c, que serão atribuídos respectivamente aos \emph{labels} 0,
@@ -390,9 +390,9 @@ comparação é:
 	d_C=\frac{1}{N} \sum_{n=1}^N \sqrt{\left| R_C [n] -I_C [n] \right|}
 \end{equation}
 
-Onde $R_C[n]$ é o valor do canal de cor “C” do n-ésimo píxel do segmento de
-referência, e $I_C[n]$ é o mesmo canal do n-ésimo pixel do
-segmento que está sendo testado. Quando o valor da média dessa métrica
+Onde $R_C[n]$ é o valor do canal de cor “C” do n-ésimo píxel da partição de
+referência, e $I_C[n]$ é o mesmo canal do n-ésimo pixel da
+partição que está sendo testada. Quando o valor da média dessa métrica
 para os três canais é menor que $\sqrt{8}$ as imagens são consideradas
 semelhantes, e a amostra é recusada. Foram
 testadas métricas, como média do módulo da diferença, e média da diferença
@@ -688,15 +688,15 @@ As placas dos mesmos estão sendo destacadas.
 
 O software implementa o método de classificação proposto nesta monografia por
 completo. O método de binarização é um limiar simples em 0,75. Este valor
-permite que quando a placa está transitando de um segmento para outro ambas as
-placas serão iluminadas momentaneamente antes da placa que ficou para trás
+permite que quando a placa está transitando de uma partição para outra, ambas
+as placas serão iluminadas momentaneamente antes da placa que ficou para trás
 apagar.
 
 Não foi implementado nenhum método para usar a correlação temporal das
 informações coletadas.
 
 Para o \emph{video1.avi} a rede neural é executada 288 vezes para frame do
-vídeo, sendo que uma linha completa contendo 12 segmentos é fornecido para a
+vídeo, sendo que uma linha completa contendo 12 partições é fornecido para a
 rede neural por vez.
 
 O software é capaz de operar em qualquer vídeo que possa ser lido pelo

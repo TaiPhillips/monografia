@@ -18,9 +18,9 @@ equivalente a uma imagem 2D, e pode ser representada por tensores de dimensões
 \sigla{HWC}{\emph{Height X Width X Channel}, algura X largura X canal} (largura, altura e canais de cor). Todos os frames de um mesmo vídeo geram
 tensores do mesmo tamanho.
 
-O processo “segmentação” toma como entrada uma frame do vídeo e gera múltiplas
-sub-imagens aqui denominados “segmentos”, gerados através de um recorte
-retangular de pixels contíguos. Os segmentos têm dimensões compatíveis com a
+O processo “fatiamento” toma como entrada uma frame do vídeo e gera múltiplas
+sub-imagens aqui denominadas “partições”, geradas através de um recorte
+retangular de pixels contíguos. As partições têm dimensões compatíveis com a
 rede neural que será usada no passo seguinte.
 
 A etapa denominada “rede neural” é, mais especificamente, uma rede neural
@@ -28,32 +28,33 @@ artificial convolucional profunda treinada para modelar uma função escalar cuj
 valor, denominado “escore”, é determinado pela presença e posição, ou não
 presença, de uma placa veicular.
 
-A etapa “binarização” estima, a partir do resultado da rede neural, se um
-segmento possui uma placa de trânsito.
+A etapa “binarização” estima, a partir do resultado da rede neural, se uma
+partição possui uma placa de trânsito.
 
 Este processo envolve algumas decisões que são parte fundamental da atual
 proposta. Elas dizem respeito:
 
 \begin{itemize}
-\item ao tamanho dos segmentos de imagem a serem recortados e, por
+\item ao tamanho das partições de imagem a serem recortadas e, por
 	consequência, ao tamanho da entrada da rede neural;
-\item a escolha do stride dos segmentos da rede neural
+\item a escolha do stride das partições da rede neural
 \item a escolha da função que a rede neural está modelando
 \item a escolha da arquitetura e dos hiperparâmetros da rede neural;
 \end{itemize}
 
-\section{Tamanho dos Segmentos}
-O tamanho dos segmentos definem as dimensões do tensor da rede neural, portanto
+\section{Tamanho das Partições}
+O tamanho das partições definem as dimensões do tensor da rede neural, portanto
 o tamanho do seu “campo visual”.
+
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{ex_tres_segmentos.png}
-	\caption{Exemplo de três tamanhos de segmentos}
+	\caption{Exemplo de três tamanhos de partições}
 	\label{fig:ex_tres_segmentos}
-	Em (a) o segmento possui um grande campo visual, porém tem baixa precisão.
+	Em (a) a partição possui um grande campo visual, porém tem baixa precisão.
 	Em (b) há um campo visual muito pequeno para permitir que a rede neural
-	opere corretamente. O terceiro é apropriado, pois é relativamente pequeno e
+	opere corretamente. A terceira é apropriada, pois é relativamente pequena e
 	inclui a placa inteira e vários pixels adicionais, permitindo que a rede
 	neural aprenda o contraste entre placa e o fundo (próprio autor).
 \end{figure}
@@ -66,7 +67,7 @@ o campo visual for muito grande, como na figura \ref{fig:ex_tres_segmentos}a,
 a rede neural terá mais características para usar, mas a precisão da
 localização será muito prejudicada.
 
-De forma geral, as dimensões dos segmentos devem ser minimizados, mas deve-se
+De forma geral, as dimensões das partições devem ser minimizadas, mas deve-se
 garantir que a placa caiba inteira caiba no seu interior, com um pouco de
 sobra. As figuras \ref{fig:ex_tres_segmentos}c e \ref{fig:ex_placa} mostram
 um bom tamanho. A região adicional fora da placa vai servir para a rede
@@ -79,12 +80,12 @@ veículos.
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{ex_placa.png}
-	\caption{Exemplo de segmento com bom tamanho}
+	\caption{Exemplo de partição com bom tamanho}
 	\label{fig:ex_placa}
 	(próprio autor).
 \end{figure}
 
-\section{Strides dos Segmentos}
+\section{Strides das Partições}
 A abordagem que está sendo proposta envolve usar um detector para construir um
 localizador. Uma implementação ingênua desta abordagem seria treinar o detector
 para detectar placas de trânsito que estejam centradas na sua entrada e aplicar
@@ -101,30 +102,30 @@ que ser aplicado $N$ vezes, onde:
 
 Para um detector com dimensões \sigla{HW}{\emph{Height X width}, algura X
 largura} de $40 \times 120$ em uma imagem
-$480 \times 768$ seriam gerados 286.209 segmentos, e cada um deles precisaria
-ser aplicado pelo detector, o que é proibitivo.
+$480 \times 768$ seriam geradas 286.209 partições, e cada uma delas precisaria
+ser aplicada ao detector, o que é proibitivo.
 
 Para resolver este problema propõe-se o uso de um stride de
-$50\% \times 50\%$ do tamanho do segmento. Isso significa que duas amostras
+$50\% \times 50\%$ do tamanho da partição. Isso significa que duas amostras
 consecutivas em linha tem os seus centros a uma distância igual a sua
-largura sobre dois, gerando segmentos como os ilustrados na figura
+largura sobre dois, gerando partições como as ilustradas na figura
 \ref{fig:ex_3_segmentos}.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{ex_3_segmentos.png}
-	\caption{Ilustração de 3 segmentos sucessivos}
+	\caption{Ilustração de 3 partições sucessivas}
 	\label{fig:ex_3_segmentos}
-	Observar que o centro de um segmento está contido no perímetro dos
-	segmentos vizinhos (próprio autor).
+	Observar que o centro de uma partição está contido no perímetro das
+	partições vizinhas (próprio autor).
 \end{figure}
 
-Uma propriedade dessa escolha é que o centro de um segmento de imagem está
-contido no perímetro de todos os segmentos vizinhos. Esta propriedade é
+Uma propriedade dessa escolha é que o centro de uma partição de imagem está
+contido no perímetro de todas as partições vizinhas. Esta propriedade é
 justamente o objetivo do stride de 50\%, conforme será descrito na sessão
 \ref{ses:funcao_a_modelar}.
 
-O número de segmentos na direção da altura será $T_H$, e na largura será
+O número de particões na direção da altura será $T_H$, e na largura será
 $T_W$, sendo:
 
 \begin{equation}
@@ -135,7 +136,7 @@ $T_W$, sendo:
 	T_W=\left\lfloor \frac{2F_2}{D_2-1} \right\rfloor \\
 \end{equation}
 
-E o  número de segmentos a serem classificados será:
+E o  número de partições a serem classificadas será:
 
 \begin{equation}
 	N=\left\lfloor \frac{2F_1}{D_1-1} \right\rfloor \cdot
@@ -144,13 +145,13 @@ E o  número de segmentos a serem classificados será:
 
 Tomando o mesmo caso calculado anteriormente (detector $40 \times 120$ em
 frames $480 \times 768$ sem extensão de borda) com a estratégia proposta
-de segmentação o número de segmentos a serem classificados cai de 286.209
+de particionamento o número de particões a serem classificadas cai de 286.209
 para $24 \cdot 12=288$.
 
 \section{Função a ser Modelada} \label{ses:funcao_a_modelar}
 
 A rede neural vai ser treinada para modelar o valor de uma função $P$ que
-leva um tensor que representa  um segmento da frame à um real no intervalo
+leva um tensor que representa  uma partição da frame à um real no intervalo
 $[0;1]$:
 
 \begin{equation}
@@ -158,54 +159,56 @@ $[0;1]$:
 \end{equation}
 
 O valor dessa função é resultante da presença de uma placa veicular. Devido ao
-fato de que a segmentação será feita com stride maior que 1 não há garantia de
-que a placa estará centralizada, e ainda assim a função precisa identificar que
-ela está presente.
+fato de que o particionamento será feito com \emph{stride} maior que 1 não há
+garantia de que a placa estará centralizada, e ainda assim a função precisa
+identificar que ela está presente.
 
-A função proposta foi construída baseado na forma com que a placa veicular
-passa de um segmento para o segmento vizinho. A função deve possuir as
+A função proposta foi construída baseada na forma com que a placa veicular
+passa de uma partição para a partição vizinha. A função deve possuir as
 seguintes características:
 
 \begin{itemize}
 \item a função é contínua quando uma placa é movida de forma contínua na
 	entrada por qualquer caminho;
-\item quando a placa veicular está no centro de um segmento a função de
-	saída deve ser 1, e quando está no centro do segmento vizinho deve ser 0;
-\item um, e apenas um segmento deve possuir valor 1 como consequência da
-	presença da placa.
+\item quando a placa veicular está no centro de uma partição a função de
+	saída deve ser 1, e quando está no centro da partição vizinha deve ser 0;
+\item um, e apenas uma partição deve possuir valor 1 como consequência da
+	presença da placa, exceto nos pontos críticos, na vizinhança dos quais a
+	função é menor que 1.
 \end{itemize}
 
 A figura \ref{fig:placa_movida_entre_segmentos} ilustra os pontos principais
-quando uma placa é movida horizontalmente entre dois segmentos.
+quando uma placa é movida horizontalmente entre duas partições.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{placa_movida_entre_segmentos.png}
-	\caption{Placa veicular sendo movida entre dois segmentos}
+	\caption{Placa veicular sendo movida entre duas partições}
 	\label{fig:placa_movida_entre_segmentos}
 	Ilustração dos pontos críticos para a definição da função a ser modelada
-	pela rede neural, mostrando dois segmentos vizinhos, um pintado de verde e
-	o outro amarelo com borda pontilhada. Em (a) a placa está centrada no
-	segmento da esquerda e no perímetro do segmento da direita.
-	Em (b) o centro da placa está no meio caminho entre os centros dos dois
-	segmentos. Em (c) o centro da placa está no centro do segmento da direita e
-	perímetro do segmento da esquerda (próprio autor).
+	pela rede neural, mostrando duas partições vizinhas, uma pintada de verde e
+	o outro amarelo com borda pontilhada. Em (a) a placa está centrada na
+	partição da esquerda e no perímetro da partição da direita.
+	Em (b) o centro da placa está no meio caminho entre os centros dos duas
+	partições. Em (c) o centro da placa está no centro da partição da direita e
+	perímetro da partição da esquerda (próprio autor).
 \end{figure}
 
 A figura \ref{fig:func_a_modelar_2_seg} mostra o valor da função para
-dois segmentos vizinhos a medida que a placa é movida. Pode-se observar apenas
-um dos segmentos possui valor 1 por vez, exceto em um ponto. Também observa-se
-que quando a placa está centrada em um segmento a função possui valor zero
-no outro segmento.
+duas partições vizinhas a medida que a placa é movida. Pode-se observar apenas
+um das partições possui valor 1 por vez, exceto no ponto cuja vizinhança é
+menor que 1. Também observa-se
+que quando a placa está centrada em uma partição, a função possui valor zero
+na outra partição.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{func_a_modelar_2_seg.png}
-	\caption{Valor da função em dois segmentos a medida que a placa se move
-	entre eles}
+	\caption{Valor da função em duas partições a medida que a placa se move
+	entre elas}
 	\label{fig:func_a_modelar_2_seg}
-	Observa-se que valor da saída da função para dois segmentos a medida que a
-	placa é movida do centro do segmento 1 (o da esquerda) para o segmento 2 (o
+	Observa-se que valor da saída da função para duas partições a medida que a
+	placa é movida do centro da partição 1 (o da esquerda) para a partição 2 (a
 	da direita) (próprio autor).
 \end{figure}
 
@@ -217,14 +220,14 @@ no outro segmento.
 	Observa-se que o valor da variável dependente a em medida que a placa
 	é deslocada desde $-\infty$ até $+\infty$ da esquerda para a direita,
 	enquanto a mesma está centrada na altura. A abscissa é a distância
-	normalizada entre os centros do segmento e da placa (próprio autor).
+	normalizada entre os centros da partição e da placa (próprio autor).
 \end{figure}
 
 Na figura \ref{fig:func_a_modelar_1_seg} observa-se o valor de uma função
 quando a placa está alinhada na altura e é deslocada horizontalmente. Como
 a abscissa é a distância normalizada entre os centros obtém-se o valor 0,5
-quando o centro da placa está a uma distância igual a metade do tamanho do
-segmento para a direita, como ilustrado na figura
+quando o centro da placa está a uma distância igual a metade do tamanho da
+partição para a direita, como ilustrado na figura
 \ref{fig:placa_movida_entre_segmentos}c.
 
 No caso de uma placa alinhada na direção $y$ (distância em $y$ é 0), e sendo
@@ -275,7 +278,7 @@ direção o valor da função é 0.
 	\caption{Gráfico 3D da função à modelar}
 	\label{fig:func_a_modelar_3d}
 	Plot da função que a rede neural deve modelar. As abscissas representam a
-	distância normalizada entre o centro do segmento e da placa em cada direção
+	distância normalizada entre o centro da partição e da placa em cada direção
 	(próprio autor).
 \end{figure}
 
@@ -287,7 +290,7 @@ escolhida de forma a balancear desempenho de classificação com tempo de
 propagação. Se a rede neural requerer muitas operações pode aumentar o
 desempenho de classificação, mas o tempo de processamento vai aumentar.
 Idealmente a rede neural deve ser restrita a um tamanho que permita que todos
-os segmentos da imagem sejam classificados de forma que o sistema como um todo
+as partições da imagem sejam classificadas de forma que o sistema como um todo
 entregue a taxa de frames desejada para a resolução do vídeo necessária e
 hardware disponíveis onde a solução vai ser implantada.
 
