@@ -717,6 +717,61 @@ O software é capaz de operar em qualquer vídeo que possa ser lido pelo
 
 \section{Experimentos e Desempenho}
 
+\subsection{Função}
+
+Como o método proposto envolve fazer a regressão de uma função, as primeiras
+medições aqui apresentadas estão mostrando o resultado desse modelamento. As
+figuras \ref{fig:cap5_res_func_1} e \ref{fig:cap5_res_func_2} mostram 3 carros,
+uma moto e um ônibus, sendo que o classificador foi aplicado pixel-a-pixel na
+região próxima da placa, e o seu valor representado em um gráfico 3D. Este
+gráfico pode ser comparado com o gráfico mostrado na figura
+\ref{fig:func_a_modelar_3d}, que mostra o gráfico ideal.
+
+Estes dados foram todos levantados usando o vídeo3.avi, que não usado para
+treinamento. As cinco frames foram escolhidos ao acaso, garantindo-se apenas
+que as cinco imagens sejam suficientemente diferentes umas das outras.
+
+A capacidade de produzir estes gráficos foi incluído no software "player", e
+pode ser invocada para qualquer frame de qualquer vídeo.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_res_func_1.png}
+	\caption{Gráfico 3D da função aplicada a carros}
+	\label{fig:cap5_res_func_1}
+	São destacados três carros, um com boa textura, placa razoavelmente
+	visível, outra com imagem com perda resultante de compactação, e um
+	terceiro em posição, e cores diferentes, inclusive usando letras mais
+	claras que o frame da placa. O gráfico mostra o resultado do classificador
+	quando ele está centrada em cada um dos pixels próximo à placa.
+	As abiscissas referem-se as coordenadas do canto superior-esquerdo da
+	partição, não ao seu centro (próprio autor).
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_res_func_2.png}
+	\caption{Gráfico 3D da função aplicada a moto e ônibus}
+	\label{fig:cap5_res_func_2}
+	Observa-se uma moto e um veículo e o gráfico resultante de aplicar o
+	classificador em torno das placas. As abiscissas referem-se as coordenadas
+	do canto superior-esquerdo da partição, não ao seu centro (próprio autor).
+\end{figure}
+
+A figura \ref{fig:cap5_res_func_frame} mostra a rede neural sendo aplicada
+na frame 11.197 do video1. Esta frame não faz parte do conjunto de treinamento.
+Pode-se verificar claramente onde estão as duas placas veiculares.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics{cap5_res_func_frame.png}
+	\caption{Gráfico 3D mostrando a função aplicada à uma frame inteira}
+	\label{fig:cap5_res_func_frame}
+	Pode-se ver claramente onde as placas dos dois veículos se encontram.
+	(próprio autor).
+\end{figure}
+
+\subsection{Tempo de Classificação}
 Para os testes de tempo de classificação foi usado o módulo “player”. Este
 módulo mostra uma janela com o vídeo sendo classificado enquanto envia para
 stdout uma série de informações de desempenho. Estes dados foram usados nas
@@ -757,13 +812,15 @@ testados o ganho é maior quando a resolução do vídeo aumenta. A figura
 	\caption{Taxa de frames por segundo no módulo \emph{Player}}
 	\label{fig:cap5_player_fps}
 	Gráfico mostrando desempenho em frames por segundo para localizar placas na
-	câmera VGA do computador, e nos três vídeos. Maior é melhor (próprio
+	câmera VGA do computador, e nos três vídeos. Computador é um Core i5 com
+	placa de vídeo GTX 750M. Maior é melhor (próprio
 	autor).
 \end{figure}
 
 O player envia para o stdout o tempo gasto em cada uma das tarefas durante o
 processamento da frame. Coletando-se estes dados e calculando-se as médias do
-tempo gasto em cada tarefa foi gerado o gráfico na figura X.
+tempo gasto em cada tarefa foi gerado o gráfico na figura
+\ref{fig:cap5_frame_benchmark}.
 
 \begin{figure}[!htb]
 	\centering
@@ -774,7 +831,8 @@ tempo gasto em cada tarefa foi gerado o gráfico na figura X.
 	Gráfico mostra que, ao processar um vídeo $1080 \times 1920$ a grande
 	maioria do tempo é gasto executando o grafo do \emph{TensorFlow}. Outras
 	tarefas executadas pelo código em Python consomem um percentual
-	pequeno do tempo da frame (próprio autor).
+	pequeno do tempo da frame. Computador é um Core i5 com
+	placa de vídeo GTX 750M (próprio autor).
 \end{figure}
 
 Pode-se ver claramente que a vasta maioria do tempo é gasta executando os
