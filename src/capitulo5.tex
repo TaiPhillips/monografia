@@ -92,7 +92,8 @@ com uma saída.
 	em cada camada totalmente conectada (próprio autor).
 \end{figure}
 
-Quando o player era usado com as redes neurais resultantes desse treinamento o
+Quando o \emph{player} era usado com as redes neurais resultantes
+desse treinamento o
 resultado era muito ruim, com quantidade muito grande de falsos negativos.
 Eventualmente descobriu-se que a forma com que os exemplos de imagens que não
 continham placa estava sendo coletada possuía uma grande quantidade de imagens
@@ -105,14 +106,16 @@ totalmente conectadas terem sido abandonadas.
 
 O esquema de particionamento das imagens foi mudado de 100\% para 50\%, que é o
 valor usado agora. A função que a rede neural modela foi modificada
-várias vezes, mas o resultado final, conforme visto no player, continuava ruim.
+várias vezes, mas o resultado final, conforme visto no \emph{player},
+continuava ruim.
 
 Após alguns meses a abordagem foi abandonada. Foi feita uma pesquisa sobre o
 assunto descobriu-se a existência de redes neurais convolucionais. Infelizmente
 a biblioteca encog e a neuroph não suportam este tipo de topologia. Também não
 foram encontradas bibliotecas com grande base de usuários em Java.
 
-Neste ponto foi escolhida a biblioteca recém-lançada tensorflow. Inicialmente a
+Neste ponto foi escolhida a biblioteca recém-lançada \emph{TensorFlow}.
+Inicialmente a
 preparação dos dados de treinamento continuou sendo feita pelo código em Java
 que já havia sido escrito, enquanto o código de treinamento e execução foram
 reescritos em Python, que era a única linguagem suportada quando essa
@@ -126,8 +129,8 @@ Desde os primeiros experimentos a abordagem usando redes neurais foi muito bem
 sucedida.
 
 \section{Escolha de Tecnologias}
-A versão final da DCNN usa o \emph{framework} TensorFlow do Google.
-No TensorFlow usa-se a linguagem Python para descrever um ou mais
+A versão final da DCNN usa o \emph{framework} \emph{TensorFlow} do Google.
+No \emph{TensorFlow} usa-se a linguagem Python para descrever um ou mais
 grafos onde
 os nós são operações e as arestas são tensores. Uma vez que o grafo esteja
 totalmente definido podem-se fornecer dados e solicitar o cálculo de qualquer
@@ -138,8 +141,8 @@ máquinas e pode rodar em CPUs e GPUs.
 A tecnologia foi escolhida por ser \emph{open source}, e por ser a ferramenta
 utilizada pelo Google. Esta biblioteca é fácil de usar para pequenos projetos,
 como este, e poderosa para poder escalar para sistemas com múltiplos
-computadores usando GPUs de alto desempenho. O TensorFlow permite usar Python
-2 ou Python 3, sendo que a versão 3 foi escolhida para o projeto.
+computadores usando GPUs de alto desempenho. O \emph{TensorFlow} permite usar
+Python 2 ou Python 3, sendo que a versão 3 foi escolhida para o projeto.
 
 A versão 3 do OpenCV, bem como seu \emph{wrapper} Python foram adotados para
 leitura e exibição do vídeo, e para algumas operações de manipulação de
@@ -148,31 +151,33 @@ funcionalidades suficientes para exibir uma janela contendo
 uma imagem e capturar eventos de teclado e mouse. Isso é suficiente para toda a
 interface gráfica.
 
-Tanto o \emph{wrapper} Python do OpenCV quanto o TensorFlow representam dados
-numéricos, como tensores, usando uma biblioteca numérica para Python chamada
-\emph{numpy}. Ela foi usada para várias operações, como extrair sub-imagens
+Tanto o \emph{wrapper} Python do OpenCV quanto o \emph{TensorFlow} representam
+dados numéricos, como tensores, usando uma biblioteca numérica para
+Python chamada \emph{numpy}. Ela foi usada para várias operações, como
+extrair sub-imagens
 das \emph{frame} de vídeo, após terem sido lidas pelo OpenCV, e fornecer
 estes dados para o \emph{TensorFlow}.
 
 Para representar as marcações que o usuário faz nos vídeos, para identificar
-onde estão as placas, foi usado o formato \sigla{JSON}{Javascript
-object notation}. Este formato está se tornado o padrão de facto para
-representação de dados no mercado. Além disso existem boas
+onde estão as placas, foi usado o formato \sigla{JSON}{\emph{JavaScript
+object notation}, notação de objetos do \emph{JavaScript}}.
+Existem boas
 bibliotecas em várias linguagens, inclusive Python e Java, o que garante que os
 dados poderão ser lidos facilmente.
 
 O Linux foi o único sistema operacional usado, por ser \emph{open source},
 gratuitamente acessível e poder ser usado em produtos comerciais, caso surja a
 demanda. A distribuição escolhida foi Arch Linux, apesar de não ser
-oficialmente suportado pelo projeto TensorFlow, por possuir a filosofia
+oficialmente suportado pelo projeto \emph{TensorFlow}, por possuir a filosofia
 empregar sempre a versão mais atual de todos os componentes, como kernel. O
-suporte ao TensorFlow é oferecido pela comunidade \sigla{AUR}{\emph{Arch User
+suporte ao \emph{TensorFlow} é oferecido pela comunidade
+\sigla{AUR}{\emph{Arch User
 Repository}} (Arch User Repository), que permite a instalação a partir do
-código-fonte do TensorFlow mesmo antes de uma versão oficial ser liberada.
+código-fonte do \emph{TensorFlow} mesmo antes de uma versão oficial ser liberada.
 
 O sistema de controle de versões usado foi o GIT.
 Esse \sigla{VCS}{\emph{Version control system}, sistema de controle de versão}
-já é usado no projeto TensorFlow.
+já é usado no projeto \emph{TensorFlow}.
 
 Para edição de código foi usado exclusivamente vim. Esse editor é sofisticado
 e produtivo quando usado com uma linguagem como Python.
@@ -186,14 +191,16 @@ um computador, sendo que dois foram usados:
 \item Um notebook Core i7-3632QM com 4 cores (2 threads por core), 16 GiB
 	de RAM;
 \item Um notebook Core i5-4210U com 2 cores (2 threads por core), 8 GiB de RAM,
-	placa de video NVidia GT-750M com 2 GiB de RAM compatível com TensorFlow.
+	placa de video NVidia GT-750M com 2 GiB de RAM compatível com
+	\emph{TensorFlow}.
 \end{itemize}
 
 O desenvolvimento do projeto foi quase todo feito usando o Core i7. Assim que
 o suporte a GPU foi incluída no código o notebook Core i5 começou a ser usado
 concomitantemente.
 
-A CPU do computador Core i7, quando usado para treinamento, rapidamente
+A \sigla{CPU}{\emph{Central processing unit}, central unificada de
+processamento} do computador Core i7, quando usado para treinamento, rapidamente
 atinge \SI{85}{\degree} e o desempenho do treinamento reduz consideravelmente,
 como consequência da CPU estar atuando para limitar a potência dissipada. Após
 o computador rodar por alguns meses desta maneira o computador deixou de ser
@@ -657,7 +664,8 @@ neural de forma a minimizar este valor.
 
 As figuras \ref{fig:cap5_train_histogram} e \ref{fig:cap5_erro_treinamento}
 mostram a evolução do treinamento durante uma sessão de 25
-horas treinadas em um notebook Core i5 usando GPU. Durante este tempo foram
+horas treinadas em um notebook Core i5 usando \sigla{GPU}{\emph{Graphical
+processing unit}, unidade gráfica de processamento}. Durante este tempo foram
 consumidos mais de 66 milhões de imagens, o que consumiu todos os 2 GiB de
 dados e seus 154.386 exemplos de imagens cerca de 428 vezes.
 
@@ -731,8 +739,8 @@ Estes dados foram todos levantados usando o vídeo3.avi, que não usado para
 treinamento. As cinco frames foram escolhidos ao acaso, garantindo-se apenas
 que as cinco imagens sejam suficientemente diferentes umas das outras.
 
-A capacidade de produzir estes gráficos foi incluído no software "player", e
-pode ser invocada para qualquer frame de qualquer vídeo.
+A capacidade de produzir estes gráficos foi incluído no software
+``\emph{player}'', e pode ser invocada para qualquer frame de qualquer vídeo.
 
 \begin{figure}[!htb]
 	\centering
@@ -772,10 +780,10 @@ Pode-se verificar claramente onde estão as duas placas veiculares.
 \end{figure}
 
 \subsection{Tempo de Classificação}
-Para os testes de tempo de classificação foi usado o módulo “player”. Este
+Para os testes de tempo de classificação foi usado o módulo \emph{player}. Este
 módulo mostra uma janela com o vídeo sendo classificado enquanto envia para
-stdout uma série de informações de desempenho. Estes dados foram usados nas
-medições relacionadas a tempo de classificação.
+\emph{stdout} uma série de informações de desempenho. Estes dados foram
+usados nas medições relacionadas a tempo de classificação.
 
 
 \begin{table}
@@ -799,7 +807,7 @@ medições relacionadas a tempo de classificação.
 	\label{tbl:player_fps}
 \end{table}
 
-Observa-se na tabela \ref{tbl:player_fps} que o “player” não consegue
+Observa-se na tabela \ref{tbl:player_fps} que o \emph{player} não consegue
 atingir a taxa de 25 frames por segundo
 de nenhum dos três vídeos, mesmo com uso de GPU. A taxa de frames
 aumenta consideravelmente quando a GPU é usada. Entre os casos
@@ -817,10 +825,10 @@ testados o ganho é maior quando a resolução do vídeo aumenta. A figura
 	autor).
 \end{figure}
 
-O player envia para o stdout o tempo gasto em cada uma das tarefas durante o
-processamento da frame. Coletando-se estes dados e calculando-se as médias do
-tempo gasto em cada tarefa foi gerado o gráfico na figura
-\ref{fig:cap5_frame_benchmark}.
+O \emph{player} envia para o \emph{stdout} o tempo gasto em cada uma das
+tarefas durante o processamento da frame. Coletando-se estes dados e
+calculando-se as médias do tempo gasto em cada tarefa foi gerado o
+gráfico na figura \ref{fig:cap5_frame_benchmark}.
 
 \begin{figure}[!htb]
 	\centering

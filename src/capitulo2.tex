@@ -120,7 +120,7 @@ excessivo a rede neural perde a capacidade de generalizar e ocorre
 
 De acordo com \cite{hawkins2004problem}, \emph{overfitting} ocorre quando um
 modelo é mais flexível do que precisa ser. Quando um modelo destes é treinado,
-especialmente com poucos exemplos, o modelo pode acabar "memorizando" os
+especialmente com poucos exemplos, o modelo pode acabar ``memorizando'' os
 exemplos, ao invéz de generazar o comportamento geral dos dados, fazendo
 com que o resultado da classificação seja bom, mas haja erro excessivo
 quando o mesmo modelo é aplicado em dados novos.
@@ -152,10 +152,10 @@ realizada pelo método visual.
 	\includegraphics{cap2_ex_corr_cruz_1d.png}
 	\caption{Exemplo de correlação cruzada 1D}
 	\label{fig:cap2_ex_corr_cruz_1d}
-	Na imagem está sendo calculada a correlação cruzada entre [3,6,4,2] e
-	[1,2,3]. O primeiro set de dados fica fixo enquanto o segundo vai sendo
+	Na imagem está sendo calculada a correlação cruzada entre $[3,6,4,2]$ e
+	$[1,2,3]$. O primeiro set de dados fica fixo enquanto o segundo vai sendo
 	deslocado, e em cada vez se calcula a soma do produto, conforme ilustrado.
-	O resultando é [9,24,23,20,8,2].
+	O resultando é $[9,24,23,20,8,2]$.
 \end{figure}
 
 A correlação cruzada também é definida para dimensões maiores que 1.
@@ -175,7 +175,8 @@ da generalização desta equação.
 A aplicação do operador de correlação cruzado é próximo ao conceito de filtro
 linear, bastante usado em processamento digital de imagens
 \cite{gonzalezwoods200708}. Os conceitos não
-são idênticos por que filtro digital trata uma das entradas como sendo "sinal",
+são idênticos por que filtro digital trata uma das entradas como sendo
+``sinal'',
 e a outra como sendo o filtro, ou \emph{kernel}, e convoluções e correlações
 cruzadas tratam as duas entradas de forma idêntica, e produzem um resultado
 diferente nos extremos. Como observa-se na figura
@@ -192,7 +193,7 @@ neural que use qualquer uma das operações é denominada “convolucional”,
 pois neste contexto as operações são intercambiáveis. Como $g$ vai
 representar os parâmetros treináveis. Ao se trocar convolução por correlação
 cruzada os mesmos parâmetros serão aprendidos em uma ordem diferente.
-Por este motivo os termos "convolução" e "convolucional" são usados de forma
+Por este motivo os termos ``convolução'' e ``convolucional'' são usados de forma
 relaxada no contexto de redes neurais. Conforme será visto adiante, existe
 mais um motivo para isso.
 
@@ -289,8 +290,8 @@ A opção de extensão de borda é um hiperparâmetro.
 Ao se aplicar o filtro de convolução no tensor de entrada pode-se movê-lo de
 posição a posição, até cobrir todos os locais válidos em cada direção, como
 ilustrado na figura \ref{fig:ex_conv_2d}, ou pode-se desejar aplicar a cada
-"$n_0$" pixels em uma direção, “$n_1$” pixels em outra direção, e assim por diante.
-Esta opção é denominada \emph{stride}.
+``$n_0$'' pixels em uma direção, ``$n_1$'' pixels em outra direção, e assim
+por diante.  Esta opção é denominada \emph{stride}.
 
 Quando uma camada convolucional possui como entrada um tensor de dimensões
 $d1\times d2 \times ... \times dj \times C$, o stride é definido como sendo
@@ -336,7 +337,7 @@ esperados. É conveniente fornecer vários exemplos rotulados, não apenas um, e
 usar a média do erro para alimentar o otimizador. A ideia é que o valor passado
 seja o mais representativo possível.
 
-O número de imagens fornecidas é denominado "tamanho do lote". Se uma rede
+O número de imagens fornecidas é denominado ``tamanho do lote''. Se uma rede
 neural trabalha com dados de dimensões $d0 \times d1 \times ... \times C$
 podem-se agrupar “B” exemplos em
 um único tensor, com dimensões $B \times d0 \times d1 \times ... \times C$.
@@ -481,11 +482,15 @@ de descritores. Esta foi a abordagem dominante até pouco tempo atrás.
 
 Os descritores são operações que tomam uma imagem como entrada e resumem as sua
 características em um set menor de informações. Exemplos de descritores muito
-usados são \sigla{LBP}{Local binary patterns} \cite{wang1990texture},
-\sigla{ORB}{Oriented FAST and rotated BRIEF} \cite{rublee2011orb},
-\sigla{HOG}{Histogram of oriented gradients} \cite{dalal2005histograms},
+usados são
+\sigla{LBP}{\emph{Local binary patterns}, padrões binários locais}
+	\cite{wang1990texture},
+\sigla{ORB}{\emph{Oriented FAST and rotated BRIEF}} \cite{rublee2011orb},
+\sigla{HOG}{\emph{Histogram of oriented gradients}, histograma de gradientes
+	orientados} \cite{dalal2005histograms},
 Haar-Wavelets \cite{nabout2008object},
-filtros de Gabor \cite{riaz2012invariant}. O treinamento é realizado sobre
+filtros de Gabor \cite{riaz2012invariant}.
+O treinamento é realizado sobre
 as features extraídas pelo descritor escolhido usando um classificador como
 redes neurais ou \sigla{SVM}{\emph{Support vector machine}}.
 
@@ -616,7 +621,7 @@ usando a equação:
 \end{equation}
 
 Para identificar a presença ou não do objeto que está sendo procurado, duas
-classes seriam definidas: "presente" e "não-presente", resultando em uma rede
+classes seriam definidas: ``presente'' e ``não-presente'', resultando em uma rede
 neural como mostrada na figura \ref{fig:ex_classif_logist}.
 
 \begin{figure}[!htb]
@@ -680,7 +685,7 @@ coordenadas do objeto.
 Um sistema de localização pode ser construído a partir de um sistema de
 detecção. A abordagem mais simples para isso envolve construir um sistema capaz
 de detectar o objeto de interesse e aplicar este
-detector à imagem várias vezes a imagem usando "janelas deslizantes".
+detector à imagem várias vezes a imagem usando ``janelas deslizantes''.
 Se o detector for construído para produzir “1” quando detectar o objeto e
 “0” então os pontos de máxima são candidatos a centros dos objetos.
 
