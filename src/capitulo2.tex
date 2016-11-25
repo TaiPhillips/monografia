@@ -659,22 +659,30 @@ uma função. A forma mais óbvia de implementação é a regressão L2. Neste t
 função o otimizador vai minimizar o erro quadrático:
 
 \begin{equation}
-	E=\left( y - \widehat{y} \right)^2
+	E=sum \left( \left( y - \widehat{y} \right)^2 \right)
 \end{equation}
 
+Sendo que $sum$ é uma função que representa a soma de todos os valores do
+tensor que recebe como parâmetro.
 A rede neural pode ser usada para modelar a função $P$, definida por:
 
 \begin{equation}
-	P(img) = \begin{cases}
+	y = P(img) = \begin{cases}
 		1 \text{, se img contém o objeto procurado} \\
+		t(img) \text{, se objeto está parcialmente visível} \\
 		0 \text{, se img não contém}
 	\end{cases}
 \end{equation}
 
-Exatamente essa definição não seria ideal, pois não considera placas visíveis
-parcialmente. Em uma implementação real de classificador baseado neste método
-precisa definir uma função que seja contínua em resposta ao objeto é movido do
-centro da imagem para fora por qualquer caminho.
+Detectores podem encontrar o objeto que estão procurando parcialmente presentes 
+no seu campo de visão, e esta função precisa tratar desta possibilidade. No
+caso a condição de transição, representada por $t(img)$, não está sendo
+aqui definida, pois implementação deve escolher esta função cuidadosamente
+para integração com o \emph{software} que vem depois da rede neural.
+Uma coisa que não pode ocorrer é descontinuidade entre duas imagens próximas,
+especialmente no caso de translação, pois o otimizador teria que encontrar
+pesos que modelassem a descontinuidade, e mesmo uma pequena imprecisão nestes
+pesos vai gerar um erro muito grande.
 
 \subsection{Localização de Objetos} \label{sec:localiz_objetos}
 Até agora foi mostrado como usar redes neurais convolucionais para detectar um
