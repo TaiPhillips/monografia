@@ -725,6 +725,88 @@ O software é capaz de operar em qualquer vídeo que possa ser lido pelo
 
 \section{Experimentos e Desempenho}
 
+Nesta sessão serão apresentados os experimentos realizados com a implementação
+do software e os seus resultados.
+
+\subsection{Desempenho de Localização}
+
+Como o método de localização proposto é aproximado, a abordagem para teste de
+desempenho será baseado na contagem de placas corretamente ou
+incorretamente localizadas. Serão contados o número de
+verdadeiros positivos, falsos positivos e falsos negativos.
+
+\begin{itemize}
+
+\item Quando o software identificar uma placa em um ponto do \emph{frame} e
+	houver uma placa entre as manualmente marcadas, tal que a distância entre
+	os centros  das duas seja inferior ao erro, será contabilizado um
+	\emph{verdadeiro positivo}, ou \emph{tp} (figura \ref{fig:cap5_tp-fn-fp},
+	placa ``a'').
+	A placa é removida da lista de placas manualmente marcadas para não
+	ser usada novamente, pois já foi localizada (figura
+	\ref{fig:cap5_tp-fn-fp}, placa ``b'').;
+
+\item Se no caso anterior não houver placa manualmente marcada tal que o erro
+	seja inferior ao máximo será contabilizado um falso positivo, ou \emph{fp}
+	(figura \ref{fig:cap5_tp-fn-fp}, placa ``c'');
+
+\item as placas que foram manualmente marcadas e não forem localizadas são
+	contabilizadas como falso negativos, ou \emph{fn} (figura
+	\ref{fig:cap5_tp-fn-fp}, placa ``A'').
+
+\end{itemize}
+
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.7]{cap5_tp-fn-fp.png}
+	\caption{Contagem de acertos e erros de localização}
+	\label{fig:cap5_tp-fn-fp}
+	Cada círculo representa o centro de uma placa. Constam 1 \emph{verdadeiro
+	positivo} (B/a), 2 falsos positivos (b, c), e um \emph{falso negativo} (A).
+	Próximo a placa ``B'' foram localizadas duas placas, mas
+	só há uma, então uma delas é contada como \emph{falso positivo}
+	(próprio autor).
+\end{figure}
+
+Para isso, um conjunto de \emph{frames} de um vídeo teve as posições das placas
+manualmente marcadas. Somente serão escolhidas frames que não tenham sido
+usadas para treinamento. Os dados obtidos estão apresentados na tabela
+\ref{tbl:vp-fp-fn}. Também foram calculadas as métricas \emph{precision}
+(equação \ref{eq:precision}) e \emph{recall} (equação \ref{eq:recall}).
+
+\noindent\begin{minipage}{.5\linewidth}
+	\begin{equation} \label{eq:precision}
+		\text{Precision} = \frac{vp}{vp + fp}
+	\end{equation}
+\end{minipage}
+\begin{minipage}{.5\linewidth}
+	\begin{equation} \label{eq:recall}
+		\text{Recall} = \frac{vp}{vp + fn}
+	\end{equation}
+\end{minipage}
+
+\begin{table}
+	\center
+	\caption{Erros e acertos de localização}
+	\renewcommand{\arraystretch}{1.6}
+	\begin{tabular}{cccccc}
+		\Xhline{6\arrayrulewidth}
+		\textbf{Vídeo} &
+			\textbf{VP} &
+			\textbf{FP} &
+			\textbf{FN} &
+			\textbf{Precision} &
+			\textbf{Recall} \\
+		\Xhline{2\arrayrulewidth}
+		video1.avi & 0 & 0 & 0 & 0\% & 0\% \\
+		video2.avi & 0 & 0 & 0 & 0\% & 0\% \\
+		video3.avi & 0 & 0 & 0 & 0\% & 0\% \\
+		\Xhline{6\arrayrulewidth}
+	\end{tabular}
+	\label{tbl:vp-fp-fn}
+\end{table}
+
 \subsection{Função}
 
 Como o método proposto envolve fazer a regressão de uma função, as primeiras

@@ -1,3 +1,4 @@
+# para detectar duplicados: "multiply"
 FILE=tcc
 
 all: $(FILE).pdf cleanlogs
