@@ -283,7 +283,11 @@ cada vídeo está mostrada na figura \ref{fig:cap5_3_videos}.
 \end{figure}
 
 A tabela \ref{tbl:marc_videos} mostra a quantidade de marcações feitas em cada
-vídeo. A maior parte das marcações foram feitas no \emph{video1}.
+vídeo. A maior parte das marcações foram feitas no \emph{video1}. Observar que
+existe dois sets de marcações neste vídeo. Uma delas, denominada
+\emph{testes}, não foi usada para treinamento, pois está reservada para
+testar o desempenho do modelo. Os dados de treinamento estão todos antes do
+\emph{frame} número 8000, e todos os dados de teste vêm depois.
 
 \begin{table}
 	\center
@@ -296,7 +300,8 @@ vídeo. A maior parte das marcações foram feitas no \emph{video1}.
 			\textbf{Placas Marcadas} \\
 		\Xhline{2\arrayrulewidth}
 		video1.avi & 191 & 233 \\
-		video2.avi & 71  & 71  \\
+		video1.avi (testes) & 90 & 92 \\
+		video2.avi & 71  & 96  \\
 		video3.avi & 0   & 0   \\
 		\Xhline{6\arrayrulewidth}
 		TOTAL      & 262 & 304 \\
@@ -731,9 +736,30 @@ do software e os seus resultados.
 \subsection{Desempenho de Localização}
 
 Como o método de localização proposto é aproximado, a abordagem para teste de
-desempenho será baseado na contagem de placas corretamente ou
-incorretamente localizadas. Serão contados o número de
-verdadeiros positivos, falsos positivos e falsos negativos.
+desempenho é baseada na contagem de placas corretamente ou
+incorretamente localizadas. Para que uma placa seja considerada corretamente
+localizada basta que ela esteja a menos de 60 pixels de distância na largura e
+menos de 20 pixels na altura. Estes limites foram escolhidos por serem metade
+do tamanho das partições, que representa a distância na qual a função que está
+sendo modelada pela rede neural deve ir à zero.
+	
+Para a medição de desempenho serão usadas as métricas \emph{precision}
+(equação \ref{eq:precision}) e \emph{recall} (equação \ref{eq:recall}).
+
+\noindent\begin{minipage}{.5\linewidth}
+	\begin{equation} \label{eq:precision}
+		\text{Precision} = \frac{vp}{vp + fp}
+	\end{equation}
+\end{minipage}
+\begin{minipage}{.5\linewidth}
+	\begin{equation} \label{eq:recall}
+		\text{Recall} = \frac{vp}{vp + fn}
+	\end{equation}
+\end{minipage}
+
+Onde $vp$ é o número de verdadeiros positivos, $fp$ é o número de falsos
+positivos e $fn$ é o número de falsos negativos. Estes dados serão obtidos da
+seguinte maneira:
 
 \begin{itemize}
 
@@ -756,7 +782,6 @@ verdadeiros positivos, falsos positivos e falsos negativos.
 
 \end{itemize}
 
-
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.7]{cap5_tp-fn-fp.png}
@@ -769,11 +794,15 @@ verdadeiros positivos, falsos positivos e falsos negativos.
 	(próprio autor).
 \end{figure}
 
-Para isso, um conjunto de \emph{frames} de um vídeo teve as posições das placas
-manualmente marcadas. Somente serão escolhidas frames que não tenham sido
-usadas para treinamento. Os dados obtidos estão apresentados na tabela
-\ref{tbl:vp-fp-fn}. Também foram calculadas as métricas \emph{precision}
-(equação \ref{eq:precision}) e \emph{recall} (equação \ref{eq:recall}).
+Para usar usar corretamente o método proposto é preciso escolher um limiar de
+classificação. Se o escore de uma partição for maior que este limiar
+considera-se que a partição possui uma placa veicular. Como este escore afeta
+as métricas \emph{precision} e \emph{recall}, foi feito um levantamento da
+\emph{curva precision-recall} para determinar o valor mais apropriado de limiar
+a ser usado. A tabela \ref{tbl:curva-pr} e o gráfico na figura
+\ref{fig:cap5_res_curva-pr} esta curva para os dados de teste. Apenas para
+referência, o gráfico também foi calculado para o set de treinamentos, por ser
+maior, gerando o gráfico da figura \ref{fig:cap5_res_curva-pr-train}.
 
 \noindent\begin{minipage}{.5\linewidth}
 	\begin{equation} \label{eq:precision}
@@ -790,7 +819,59 @@ usadas para treinamento. Os dados obtidos estão apresentados na tabela
 	\center
 	\caption{Erros e acertos de localização}
 	\renewcommand{\arraystretch}{1.6}
-	\begin{tabular}{cccccc}
+	\begin{tabular}{ccc}
+		\Xhline{6\arrayrulewidth}
+		\textbf{Limiar} &
+			\textbf{Recall} &
+			\textbf{Precision} \\
+		\Xhline{2\arrayrulewidth}
+			0    & 100,0\%  &  3,44\% \\
+			0,1  & 100,0\%  &  53,8\% \\
+			0,14 & 100,0\%  &  57,9\% \\
+			0,2  & 100,0\%  &  67,2\% \\
+			0,3  & 100,0\%  &  78,0\% \\
+			0,5  & 100,0\%  &  94.8\% \\
+			0,7  & 100,0\%  &  94,8\% \\
+			\textbf{0,8}  &  \textbf{96,7\%}  &  \textbf{98,9\%} \\
+			0,9  &  94,6\%  &  98,9\% \\
+			0,93 &  91,3\%  &  98,8\% \\
+			0,97 &  80,4\%  &  98,7\% \\
+			0,99 &  65,2\%  &  98,4\% \\
+			1,01 &  19,6\%  & 100,0\% \\
+		\Xhline{6\arrayrulewidth}
+	\end{tabular}
+	\label{tbl:curva-pr}
+\end{table}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{cap5_res_curva-pr-train.png}
+	\caption{Gráfico da curva Precision-Recall para amostras de treinamento}
+	\label{fig:cap5_res_curva-pr-train}
+	Oserva-se uma curva semelhante a curva PR para o set de testes. Como este
+	set é maior a forma é mais suave (próprio autor).
+\end{figure}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=1]{cap5_res_curva-pr.png}
+	\caption{Gráfico da curva Precision-Recall}
+	\label{fig:cap5_res_curva-pr}
+	Pode-se observar como o limiar de classificação afeta \emph{precision} e
+	\emph{recall} (próprio autor).
+\end{figure}
+
+Tendo sido escolhido o limiar 0.8 para aceitar uma placa, as métricas
+\emph{precision} e \emph{recall} foram calculados para todos os conjuntos
+de dados marcados disponíveis, tanto de teste quanto de treinamento.
+Os resultados obtidos estão apresentados na tabela
+\ref{tbl:vp-fp-fn}.
+
+\begin{table}
+	\center
+	\caption{Erros e acertos de localização}
+	\renewcommand{\arraystretch}{1.6}
+	\begin{tabular}{p{4.5cm} c c c c c}
 		\Xhline{6\arrayrulewidth}
 		\textbf{Vídeo} &
 			\textbf{VP} &
@@ -799,9 +880,14 @@ usadas para treinamento. Os dados obtidos estão apresentados na tabela
 			\textbf{Precision} &
 			\textbf{Recall} \\
 		\Xhline{2\arrayrulewidth}
-		video1.avi & 0 & 0 & 0 & 0\% & 0\% \\
-		video2.avi & 0 & 0 & 0 & 0\% & 0\% \\
-		video3.avi & 0 & 0 & 0 & 0\% & 0\% \\
+		\textbf{video1.avi (teste)} &
+			\textbf{89} &
+			\textbf{1} &
+			\textbf{3} &
+			\textbf{98,9\%} &
+			\textbf{96,7\%} \\
+		video1.avi (treinamento) & 217 & 11 & 16 & 95,2\% & 93,1\% \\
+		video2.avi (treinamento) &  92 & 64 &  4 & 59,0\% & 95,8\% \\
 		\Xhline{6\arrayrulewidth}
 	\end{tabular}
 	\label{tbl:vp-fp-fn}
