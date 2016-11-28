@@ -16,23 +16,25 @@ categorias. O set de dados está disponível publicamente, e existe um
 \emph{workshop} anual relativa a competição do ano. As imagens publicadas são
 separados em um set para treinamento, que estão rotulados, e outro set, de
 teste, cujos rótulos não são publicados, e são usados durante a competição
-\cite{ILSVRC15}.
+\sigla{ILSVRC}{\emph{ImageNet Large Scale Visual Recognition Challenge},
+desafio de reconhecimento de imagens em larga escala ImageNet} \cite{ILSVRC15}.
 
-O campeão de 2010 foi \cite{lin2010imagenet}, usando extrator de
+O campeão de 2010 foi \citeonline{lin2010imagenet}, usando extrator de
 \emph{features} HOG e LBP e classificador SVM com 71,8\% de taxa de
 acerto (\emph{top 5}), com taxa de classificação de 52,9\%.
 
 O campeão de 2011 na categoria de classificação foi
-\cite{perronnin2010large}, empregando vetores
+\citeonline{perronnin2010large}, empregando vetores
 \emph{Fisher} comprimidos e classificador SVM. Na categoria de localização foi
-\cite{van2011segmentation}, usando busca seletiva baseada em agrupamento
-hierárquico e detecção usando SIFT, RGB-SIFT e SVM como classificador.
+\citeonline{van2011segmentation}, usando busca seletiva baseada em agrupamento
+hierárquico e detecção usando \sigla{SIFT}{\emph{Scale-invariant feature
+transform}, traformada invariante à escala}, RGB-SIFT e SVM como classificador.
 
 Em 2012 houve a primeira vitória de uma submissão baseada em redes neurais
 convolucionais. Nas categorias de classificação e localização de imagens o
-melhor resultado foi
-de \cite{krizhevsky2012imagenet}, usando uma rede neural convolucional contendo
-60 milhões de parâmetros e 65.000 neurônios, usando cinco camadas
+melhor resultado foi de \citeonline{krizhevsky2012imagenet}, usando uma
+rede neural convolucional contendo 60 milhões de parâmetros e 65.000
+neurônios, usando cinco camadas
 convolucionais seguidas por camadas \emph{maxpool} e três camadas totalmente
 conectadas. Apenas uma terceira categoria, criada naquele ano, denominada
 \emph{classificação fina} foi vencida por uma implementação que não envolvia
@@ -43,21 +45,21 @@ Em 2013 o vencedor na categoria de detecção usou uma detector de
 customizado baseado em SIFT. Os detalhes não foram divulgados. Na categoria de
 classificação o mesmo time que venceu com uma submissão baseada em CNNs, usando
 76 milhões de parâmetros. A terceira categoria do ano foi classificação +
-localização, vencida por \cite{sermanet2013overfeat} usando CNNs e janelas
-deslizantes de escala múltipla.
+localização, vencida por \citeonline{sermanet2013overfeat} usando CNNs e
+janelas deslizantes de escala múltipla.
 
 Em 2014 os organizadores decidiram separar os resultados de acordo com
 múltiplos critérios. Um dos resultados vencedores foi
-\cite{szegedy2015going}, que é baseada em CNNs, e define uma arquitetura
+\citeonline{szegedy2015going}, que é baseada em CNNs, e define uma arquitetura
 denominada \emph{inception}, no qual várias técnicas são usadas para reduzir o
 número de parâmetros e aumentar o desempenho de classificação, como usar
 duas camadas convolucionais $3 \times 3$ ao invés de uma camada $1 \times 1$. A
 rede neural final possui 22 camadas com parâmetros, ou cerca de 100 camadas no
 total, usando 1/12 do número de parâmetros usados por
-\cite{krizhevsky2012imagenet}.
+\citeonline{krizhevsky2012imagenet}.
 
-Em 2015 um dos vencedores foi \cite{he2015deep}, que empregou uma rede neural
-com profundidade 152. Segundo o \emph{paper}, redes neurais com essa
+Em 2015 um dos vencedores foi \citeonline{he2015deep}, que empregou uma rede
+neural com profundidade 152. Segundo o \emph{paper}, redes neurais com essa
 profundidade,
 quando treinadas da maneira convencional, produzem resultados piores que redes
 neurais muito mais rasas. Um método foi proposto para fazer o treinamento, que
@@ -78,18 +80,18 @@ frequentemente aplicam técnicas de aprendizado de máquinas.
 Alguns sistemas precisam identificar a placa veicular. Para tal, técnicas de
 \sigla{OCR}{\emph{Optical Character Recognition}, reconhecimento ótico de
 caracteres} precisam ser empregadas. Muitos sistemas, como
-\cite{qadri2009automatic} e \cite{kranthi2011automatic} usam uma sequência que
+\citeonline{qadri2009automatic} e \citeonline{kranthi2011automatic} usam uma
+sequência que
 envolve pré-processamento, localização da placa, segmentação das letras (ou
 números) e reconhecimento dos caracteres. Por mais que os primeiros passos não
 usem necessariamente aprendizado de máquinas diretamente, elas incluem OCR,
-que normalmente normalmente é implementado usando alguma técnica que envolve
-treinamento.
+que normalmente é implementado usando alguma técnica que envolve treinamento.
 No primeiro caso citado o uso é indireto, através de um módulo de software
 pré treinada que o autor usou. No segundo caso o treinamento do sistema de
 \emph{machine learning} foi feito pelo próprio autor.
 
 A solução apresentada em
-\cite{kim2000learning} também usa a mesma sequência de
+\citeonline{kim2000learning} também usa a mesma sequência de
 passos para fazer a leitura da placa, porém usa redes neurais para 
 fazer a segmentação e SVM para fazer reconhecimento de caracteres. Para a
 segmentação o autor usou duas
@@ -103,7 +105,8 @@ resultado das duas redes neurais para obter as regiões envolventes dos
 segmentos que contém os dígitos da placa.
 
 Outra área onde estratégias de aprendizado de máquinas pode ser usado é
-predição de tráfego. Em \cite{guo2012short} foi proposto um método para fazer
+predição de tráfego. Em \citeonline{guo2012short} foi proposto um método para
+fazer
 predição em curto prazo para condições normais e anormais de tráfego. A técnica
 proposta envolve o uso de \sigla{kNN}{\emph{k-Nearest Neighbour}, k vizinhos
 próximos} (\emph{k-Nearest Neighbour}) aplicado aos dados de um
@@ -113,4 +116,64 @@ deles serem fornecidos para o kNN, que faz a predição do tráfego.
 
 \section{Detecção de placas de veículos}
 
+Em \citeonline{luvizonvideo} foi proposto um método para estimar velocidade de
+veículos pela detecção e rastreamento de placas veiculares. A etapa de detecção
+de placas usa \emph{SnooperText} \cite{minetto.10.icip} configurado
+especificamente para esta tarefa. \emph{SnooperText} é um detector de texto
+que opera segmentando o texto usando \emph{toggle mapping}, depois filtrando
+caracteres usando regras de forma, três descritores e quatro classificadores
+SVM, depois agrupados com regras de forma e distância e finalmente
+filtrados usando T-HOG e mais um classificador SVM. A detecção de placas ocorre
+usando detector de movimentos
+
+\citeonline{anagnostopoulos2008license} faz um \emph{survey} em 2008 de
+várias técnicas de reconhecimento de placas de trânsito. Neste artigo
+captura em ``tempo real'' é considerado um sistema que processa cada
+\emph{frame} em 50ms. Este \emph{survey} encontrou sistemas 
+que tipicamente fazem pré processamento, alguns usando imagens binárias,
+alguns usando tons de cinza e outros usando cores.
+
+Entre as abordagens que usam imagens binárias encontram-se sistemas baseados em
+detecção de bordas que, apesar de muito rápidos, geram
+muitos falsos positivos. Um sistema usa \emph{Connected Component Analysis},
+que analisa componentes conectados quanto a sua geometria (dimensões e
+área) para determinar se cada componente é uma placa de trânsito. O uso
+do operador \emph{Snobel} é bastante comum entre os artigos pesquisados para
+produzir resultado final dentro do limite de 50ms.
+
+A categoria de abordagens que encontram mais soluções é a que aplica tons de
+cinza. Várias abordagens usam
+contagem do número de variações abruptas de contraste em um eixo,
+tipicamente o horizontal, para localizar placas. Este tipo de algorítimo
+pode operar em uma a cada $N$ linhas da imagens, sendo muito econômico em
+tempo de CPU, porém é simplista demais para operar em vários cenários.
+Processamento estatístico de bordas pode ser usada focando nas letras
+para operar bem quando o contorna da placa não é clara. O uso de
+\emph{quadtrees} hierárquicos foi proposto, no qual cada quadrante é novamente
+dividido se tiver bastante variação de contraste. Segmentos contíguos são
+agrupados se o brilho deles for muito diferente ou muito próximo. Cada
+segmento pelo seu tamanho e pelo escore dos blocos que o compõe, que
+também é baseado em tamanhos. O melhor (ou melhores) \emph{strips} são
+selecionados. Este algoritmo é bastante robusto a condições de iluminação e
+tem boa taxa de acertos. Uso de janela deslisante, nas quais a média e o
+desvio padrão são calculados e usados diretamente contra um limiar
+também foram usados com sucesso. \emph{Wavelet transform} foi aplicado para
+localizar placas, mas o método se mostrou muito sensível a variações de
+distâncias e das características das lentes.
+
+Tentativas de uso das informações de cor utilizadas nos diversos
+países foram realizadas, porém não se mostravam estáveis em condições
+naturais de iluminação, pelo fato de que a impressão das cores varia de
+acordo com a luminosidade. As tentativas envolvem desde classificação
+pixel a pixel das cores até uso de lógica \emph{fuzzy}, redes neurais com taxas
+variadas de acerto, de 75\% a 98\%.
+
+O uso de câmeras e iluminação infravermelha foram demonstradas
+como sendo capazes de produzir sistemas com taxa de acerto de 99.3\%.
+Baixo número de pixels foi demonstrado como tendo efeito negativo em
+todos os sistemas testados.
+
+Em \citeonline{jain2015automatic} um método de reconhecimento de placas usando
+redes neurais é proposto, porém a etapa de localização usa filtro \emph{Sobel}
+para detectar bordas e \emph{connected component analysis}.
 
