@@ -3,7 +3,7 @@
 \chapter{Implementação e Experimentos}
 
 Neste capítulo serão apresentada uma implementação do método descrito
-no capítulo \ref{ses:metodo}, bem como os resultados des medições de
+no capítulo \ref{ses:metodo}, bem como os resultados das medições de
 desempenho.
 
 Também será apresentado um breve histórico mostrando algumas abordagens que
@@ -17,7 +17,7 @@ construir um localizador e a lista de módulos de software. Estas
 características são as listadas nessa seção.
 
 Redes neurais em geral requerem grande quantidade de exemplos de treinamento
-para evitar overfitting \cite{hawkins2004problem}. É crucial para o
+para evitar \emph{overfitting} \cite{hawkins2004problem}. É crucial para o
 sucesso de uma implementação acesso a dados ou a capacidade de produzi-los.
 
 \begin{figure}[!htb]
@@ -45,21 +45,22 @@ A implementação de cada um destes módulos mudou durante a história do projet
 porém as suas funções básicas permaneceram as mesmas.
 
 \section{Abordagens Anteriores}
-Durante o desenvolvimento do projeto algumas tentativas mal-sucedidas foram
+Durante o desenvolvimento do projeto algumas tentativas mal sucedidas foram
 feitas antes da versão final ter sido completada. O software chegou a ser
 implementado por completo três vezes, sendo que só produziu resultados
 satisfatórios na última.
 
-A idéia inicial para este projeto era o uso de redes neurais não-convolucionais
+A ideia inicial para este projeto era o uso de redes neurais não-convolucionais
 aplicadas diretamente aos pixels das imagens. Para tal foi escolhida a
-biblioteca neuroph, devido à familiaridade e ao uso da linguagem Java. A
+biblioteca \emph{neuroph}, devido à familiaridade e ao uso da linguagem Java. A
 solução foi totalmente implementada conforme arquitetura ilustrada na figura
 \ref{fig:cap5_arquit_global}.
 
 Essa implementação usava imagens em tons de cinza e partições com dimensões HW
 $32 \times 100$ aplicadas em uma rede neural totalmente conectada com 3200
-entradas e uma saída. O particionamento era feito usando stride de 100\%, ou
-seja, duas partições vizinhas tinham o perímetro de um dos seus lados em comum.
+entradas e uma saída. O particionamento era feito usando \emph{stride} de
+100\%, ou seja, duas partições vizinhas tinham o perímetro de um dos seus
+lados em comum.
 
 Esta biblioteca foi logo descartada porque o tempo de treinamento era muito
 longo, impedindo a busca eficiente de configuração das camadas ocultas que
@@ -88,8 +89,8 @@ com uma saída.
 	\caption{Erro de treinamento de redes neurais não-convolucionais}
 	\label{fig:cap5_trein_redes_nao_conv}
 	A ordenada refere-se ao erro L2 calculado sem a raiz quadrada e suavizado
-	usando exponential smoothing. A legenda refere-se ao número de neurônios
-	em cada camada totalmente conectada (próprio autor).
+	usando \emph{exponential smoothing}. A legenda refere-se ao número de
+	neurônios em cada camada totalmente conectada (próprio autor).
 \end{figure}
 
 Quando o \emph{player} era usado com as redes neurais resultantes
@@ -98,7 +99,7 @@ resultado era muito ruim, com quantidade muito grande de falsos negativos.
 Eventualmente descobriu-se que a forma com que os exemplos de imagens que não
 continham placa estava sendo coletada possuía uma grande quantidade de imagens
 muito parecidas. Aparentemente a rede neural não estava conseguindo generalizar
-as características de uma placa veicular e, ao invéz disso, encontrou
+as características de uma placa veicular e, ao invés disso, encontrou
 parâmetros para as camadas totalmente conectadas que identificavam corretamente
 alguns destes exemplos, o que acabava reduzindo o erro de treinamento até certo
 ponto. Este problema só foi resolvido depois das redes neurais
@@ -111,8 +112,9 @@ continuava ruim.
 
 Após alguns meses a abordagem foi abandonada. Foi feita uma pesquisa sobre o
 assunto descobriu-se a existência de redes neurais convolucionais. Infelizmente
-a biblioteca encog e a neuroph não suportam este tipo de topologia. Também não
-foram encontradas bibliotecas com grande base de usuários em Java.
+a biblioteca \emph{encog} e a \emph{neuroph} não suportam este tipo de
+topologia. Também não foram encontradas bibliotecas com grande base de
+usuários em Java.
 
 Neste ponto foi escolhida a biblioteca recém-lançada \emph{TensorFlow}.
 Inicialmente a
@@ -154,7 +156,7 @@ interface gráfica.
 Tanto o \emph{wrapper} Python do OpenCV quanto o \emph{TensorFlow} representam
 dados numéricos, como tensores, usando uma biblioteca numérica para
 Python chamada \emph{numpy}. Ela foi usada para várias operações, como
-extrair sub-imagens
+extrair sub imagens
 das \emph{frame} de vídeo, após terem sido lidas pelo OpenCV, e fornecer
 estes dados para o \emph{TensorFlow}.
 

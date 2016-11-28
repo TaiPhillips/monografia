@@ -9,23 +9,23 @@ imagem podem ser realizadas se um conjunto de dados comum e suficientemente
 grande for usado. A competição \emph{ILSVRC, ImageNet Large Scale Visual
 Recognition Challenge} é uma competição que ocorre anualmente desde 2010, e é
 voltada a este fim. Esta competição permite comparar soluções 
-para diferentes probleas, como classificação de imagens e localização de
+para diferentes problemas, como classificação de imagens e localização de
 objetos em um conjunto de
 de dados contendo milhões de imagens manualmente rotuladas entre centenas de
 categorias. O set de dados está disponível publicamente, e existe um
 \emph{workshop} anual relativa a competição do ano. As imagens publicadas são
 separados em um set para treinamento, que estão rotulados, e outro set, de
-teste, cojutos rótulos não são publicados, e são usados durante a competição
+teste, cujos rótulos não são publicados, e são usados durante a competição
 \cite{ILSVRC15}.
 
-O campeão de 2010 foi \cite{lin2010imagenet}, usando extrator de features
-HOG e LBP e classificador SVM com 71,8\% de taxa de acerto (\emph{top 5}),
-com taxa de classificação de 52,9\%.
+O campeão de 2010 foi \cite{lin2010imagenet}, usando extrator de
+\emph{features} HOG e LBP e classificador SVM com 71,8\% de taxa de
+acerto (\emph{top 5}), com taxa de classificação de 52,9\%.
 
 O campeão de 2011 na categoria de classificação foi
 \cite{perronnin2010large}, empregando vetores
 \emph{Fisher} comprimidos e classificador SVM. Na categoria de localização foi
-\cite{van2011segmentation}, usando busca selectiva baseada em agrupamento
+\cite{van2011segmentation}, usando busca seletiva baseada em agrupamento
 hierárquico e detecção usando SIFT, RGB-SIFT e SVM como classificador.
 
 Em 2012 houve a primeira vitória de uma submissão baseada em redes neurais
@@ -38,7 +38,8 @@ conectadas. Apenas uma terceira categoria, criada naquele ano, denominada
 \emph{classificação fina} foi vencida por uma implementação que não envolvia
 CNNs.
 
-Em 2013 o vencedor na categoria de detecção usou uma detector de features
+Em 2013 o vencedor na categoria de detecção usou uma detector de
+\emph{features}
 customizado baseado em SIFT. Os detalhes não foram divulgados. Na categoria de
 classificação o mesmo time que venceu com uma submissão baseada em CNNs, usando
 76 milhões de parâmetros. A terceira categoria do ano foi classificação +
@@ -50,16 +51,17 @@ múltiplos critérios. Um dos resultados vencedores foi
 \cite{szegedy2015going}, que é baseada em CNNs, e define uma arquitetura
 denominada \emph{inception}, no qual várias técnicas são usadas para reduzir o
 número de parâmetros e aumentar o desempenho de classificação, como usar
-duas camadas convolucionais $3 \times 3$ ao invéz de uma camada $1 \times 1$. A
+duas camadas convolucionais $3 \times 3$ ao invés de uma camada $1 \times 1$. A
 rede neural final possui 22 camadas com parâmetros, ou cerca de 100 camadas no
 total, usando 1/12 do número de parâmetros usados por
 \cite{krizhevsky2012imagenet}.
 
 Em 2015 um dos vencedores foi \cite{he2015deep}, que empregou uma rede neural
-com profundidade 152. Segundo o paper, redes neurais com essa profundidade,
+com profundidade 152. Segundo o \emph{paper}, redes neurais com essa
+profundidade,
 quando treinadas da maneira convencional, produzem resultados piores que redes
-neurais muito mais razas. Um método foi proposto para fazer o treinamento, que
-envolve treinar um subset da rede neural e progressivamente aumentar o tamanho
+neurais muito mais rasas. Um método foi proposto para fazer o treinamento, que
+envolve treinar uma sessão da rede neural e progressivamente aumentar o tamanho
 da rede neural adicionando camadas antes e depois do trecho treinado, sendo que
 essas camadas adicionadas estão configuradas para realizarem o equivalente a
 uma função identidade, não afetando o resultado do treinamento que já foi
@@ -82,9 +84,9 @@ números) e reconhecimento dos caracteres. Por mais que os primeiros passos não
 usem necessariamente aprendizado de máquinas diretamente, elas incluem OCR,
 que normalmente normalmente é implementado usando alguma técnica que envolve
 treinamento.
-No primeiro caso citado o uso é indireto, atravéz de um módulo de software
-pré-treinada que o autor usou. No segundo caso o treinamento do sistema de
-machine learning foi feito pelo próprio autor.
+No primeiro caso citado o uso é indireto, através de um módulo de software
+pré treinada que o autor usou. No segundo caso o treinamento do sistema de
+\emph{machine learning} foi feito pelo próprio autor.
 
 A solução apresentada em
 \cite{kim2000learning} também usa a mesma sequência de
@@ -96,18 +98,18 @@ tempo}s, que é uma rede neural não convolucional que
 fornece para a primeira camada oculta não apenas o valor atual da entrada, mas
 também o valor da entrada no processamento em $t-1$, $t-2$, ..., $t-n$. O autor
 aplica a rede neural linha por linha nos pixels da rede neural, e outra rede
-neural coluna por coluna, processando com um algorítmo escrito manualmente o
+neural coluna por coluna, processando com um algoritmo escrito manualmente o
 resultado das duas redes neurais para obter as regiões envolventes dos
 segmentos que contém os dígitos da placa.
 
-Outra área onde estratégias de aprendisado de máquinas pode ser usado é
+Outra área onde estratégias de aprendizado de máquinas pode ser usado é
 predição de tráfego. Em \cite{guo2012short} foi proposto um método para fazer
 predição em curto prazo para condições normais e anormais de tráfego. A técnica
 proposta envolve o uso de \sigla{kNN}{\emph{k-Nearest Neighbour}, k vizinhos
 próximos} (\emph{k-Nearest Neighbour}) aplicado aos dados de um
-\sigla{SSA}{\emph{Singular Spectrum Analysis}, análise de espéctro singular}
-(\emph{Singular Spectrum Analysis}). O SSA é usado para suavisar os dados antes
-deles serem fornecidos para o kNN, que faz a precição.
+\sigla{SSA}{\emph{Singular Spectrum Analysis}, análise de espectro singular}
+(\emph{Singular Spectrum Analysis}). O SSA é usado para suavizar os dados antes
+deles serem fornecidos para o kNN, que faz a predição do tráfego.
 
 \section{Detecção de placas de veículos}
 

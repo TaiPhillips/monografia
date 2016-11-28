@@ -12,16 +12,16 @@ conforme ilustrado na figura \ref{fig:etapas_metodo_proposto}.
 	(próprio autor).
 \end{figure}
 
-O processo “particionamento” é responsável por obter as frames do vídeo. Uma
-frame é equivalente a uma imagem 2D, e pode ser representada por tensores de
-dimensões \sigla{HWC}{\emph{Height X Width X Channel}, algura X largura X
-canal} (largura, altura e canais de cor). Todos os frames de um mesmo vídeo
-geram tensores do mesmo tamanho.
+O processo “particionamento” é responsável por obter as \emph{frames} do vídeo.
+Uma \emph{frame} é equivalente a uma imagem 2D, e pode ser representada por
+tensores de dimensões \sigla{HWC}{Height X Width X Channel}, altura X largura X
+canal} (largura, altura e canais de cor). Todos os \emph{frames} de um mesmo
+vídeo geram tensores do mesmo tamanho.
 
-O processo “fatiamento” toma como entrada uma frame do vídeo e gera múltiplas
-sub-imagens aqui denominadas “partições”, geradas através de um recorte
-retangular de pixels contíguos. As partições têm dimensões compatíveis com a
-rede neural que será usada no passo seguinte.
+O processo “fatiamento” toma como entrada uma \emph{frame} do vídeo e gera
+múltiplas sub imagens aqui denominadas “partições”, geradas através de um
+recorte retangular de pixels contíguos. As partições têm dimensões
+compatíveis com a rede neural que será usada no passo seguinte.
 
 A etapa denominada “detecção” é, mais especificamente, uma rede neural
 artificial convolucional profunda treinada para modelar uma função escalar cujo
@@ -37,7 +37,7 @@ proposta. Elas dizem respeito:
 \begin{itemize}
 \item ao tamanho das partições de imagem a serem recortadas e, por
 	consequência, ao tamanho da entrada da rede neural;
-\item à escolha do stride das partições da rede neural;
+\item à escolha do \emph{stride} das partições da rede neural;
 \item à escolha da função que a rede neural está modelando;
 \item à escolha da arquitetura e dos hiperparâmetros da rede neural.
 \end{itemize}
@@ -71,11 +71,11 @@ De forma geral, as dimensões das partições devem ser minimizadas, mas deve-se
 garantir que a placa caiba no seu interior, com um pouco de
 sobra. As figuras \ref{fig:ex_tres_segmentos}c e \ref{fig:ex_placa} mostram
 um bom tamanho. A região adicional fora da placa vai servir para a rede
-neural aprender que existe um contraste de features entre o
+neural aprender que existe um contraste de \emph{features} entre o
 interior e o exterior da placa. Este contraste vai ser usado não só para
 identificar quando existe uma placa, mas também para excluir muitos casos de
-falsos positivos, como banners e outros textos que podem ser encontrados em
-veículos.
+falsos positivos, como \emph{banners} e outros textos que podem ser
+encontrados em veículos.
 
 \begin{figure}[!htb]
 	\centering
@@ -85,27 +85,27 @@ veículos.
 	(próprio autor).
 \end{figure}
 
-\section{Strides das Partições}
+\section{\emph{Strides} das Partições}
 A abordagem que está sendo proposta envolve usar um detector para construir um
 localizador. Uma implementação ingênua desta abordagem seria treinar o detector
 para detectar placas de trânsito que estejam centradas na sua entrada e aplicar
 este detector como descrito na sessão \ref{sec:localiz_objetos}, usando
-stride $1 \times 1$.  Isso iria requerer aplicar a rede neural centrada em
-cada pixel da imagem. Se for feita a aplicação de um detector com campo
-visual $D_1 \times D_2$ em uma frame com dimensões $F_1 \times F_2$ com stride
-$1 \times 1$ sem estender as bordas pode-se demonstrar que o detector terá
-que ser aplicado $N$ vezes, onde:
+\emph{stride} $1 \times 1$.  Isso iria requerer aplicar a rede neural centrada
+em cada pixel da imagem. Se for feita a aplicação de um detector com campo
+visual $D_1 \times D_2$ em uma \emph{frame} com dimensões $F_1 \times F_2$
+com \emph{stride} $1 \times 1$ sem estender as bordas pode-se demonstrar que
+o detector terá que ser aplicado $N$ vezes, onde:
 
 \begin{equation}
 	N = (F_1 - D_1 + 1) \cdot (F_2 - D_2 + 1)
 \end{equation}
 
-Para um detector com dimensões \sigla{HW}{\emph{Height X width}, algura X
+Para um detector com dimensões \sigla{HW}{\emph{Height X width}, altura X
 largura} de $40 \times 120$ em uma imagem
 $480 \times 768$ seriam geradas 286.209 partições, e cada uma delas precisaria
 ser aplicada ao detector, o que é proibitivo.
 
-Para resolver este problema propõe-se o uso de um stride de
+Para resolver este problema propõe-se o uso de um \emph{stride} de
 $50\% \times 50\%$ do tamanho da partição. Isso significa que duas amostras
 consecutivas em linha tem os seus centros a uma distância igual a sua
 largura sobre dois, gerando partições como as ilustradas na figura
@@ -122,10 +122,10 @@ largura sobre dois, gerando partições como as ilustradas na figura
 
 Uma propriedade dessa escolha é que o centro de uma partição de imagem está
 contido no perímetro de todas as partições vizinhas. Esta propriedade é
-justamente o objetivo do stride de 50\%, conforme será descrito na sessão
-\ref{ses:funcao_a_modelar}.
+justamente o objetivo do \emph{stride} de 50\%, conforme será descrito na
+sessão \ref{ses:funcao_a_modelar}.
 
-O número de particões na direção da altura será $T_H$, e na largura será
+O número de partições na direção da altura será $T_H$, e na largura será
 $T_W$, sendo:
 
 \begin{equation}
@@ -144,15 +144,15 @@ E o número de partições a serem classificadas será:
 \end{equation}
 
 Tomando o mesmo caso calculado anteriormente (detector $40 \times 120$ em
-frames $480 \times 768$ sem extensão de borda) com a estratégia proposta
-de particionamento o número de particões a serem classificadas cai de 286.209
+\emph{frames} $480 \times 768$ sem extensão de borda) com a estratégia proposta
+de particionamento o número de partições a serem classificadas cai de 286.209
 para $24 \cdot 12=288$.
 
 \section{Função a ser Modelada} \label{ses:funcao_a_modelar}
 
 A rede neural vai ser treinada para modelar o valor de uma função $P$ que
-leva um tensor que representa uma partição da frame a um real no intervalo
-$[0;1]$:
+leva um tensor que representa uma partição da \emph{frame} a um real no
+intervalo $[0;1]$:
 
 \begin{equation}
 	P:S \to [0;1] \in \mathbb{R} 
@@ -277,9 +277,9 @@ direção o valor da função é 0.
 	\includegraphics{func_a_modelar_3d.png}
 	\caption{Gráfico 3D da função à modelar}
 	\label{fig:func_a_modelar_3d}
-	Plot da função que a rede neural deve modelar. As abscissas representam a
-	distância normalizada entre o centro da partição e da placa em cada direção
-	(próprio autor).
+	Gráfico da função que a rede neural deve modelar. As abscissas representam
+	a distância normalizada entre o centro da partição e da placa em cada
+	direção (próprio autor).
 \end{figure}
 
 
@@ -291,15 +291,15 @@ propagação. Se a rede neural requerer muitas operações, pode aumentar o
 desempenho de classificação, mas o tempo de processamento vai aumentar.
 Idealmente a rede neural deve ser restrita a um tamanho que permita que todos
 as partições da imagem sejam classificadas de forma que o sistema como um todo
-entregue a taxa de frames desejada para a resolução do vídeo necessária e
-hardware disponíveis onde a solução vai ser implantada.
+entregue a taxa de \emph{frames} desejada para a resolução do vídeo necessária
+e hardware disponíveis onde a solução vai ser implantada.
 
 Na implementação da rede neural convolucional existem otimizações que podem ser
 feitas para reduzir o número de operações enquanto mantendo ou reduzindo pouco
 a capacidade da rede neural de executar a operação para a qual vai ser
 treinada. Estas otimizações são um campo ativo de pesquisa, sendo relevantes os
-papers produzidos como resultado da competição \emph{ImageNet Large Scale
-Visual Recognition Competition (ILSVRC)}. Os \emph{papers}
+\emph{papers} produzidos como resultado da competição \emph{ImageNet Large
+Scale Visual Recognition Competition (ILSVRC)}. Os \emph{papers}
 \cite{szegedy2015going} e \cite{szegedy2015rethinking},
 por exemplo, detalham várias substituições que podem ser feitas para este fim.
 

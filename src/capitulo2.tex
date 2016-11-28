@@ -29,7 +29,8 @@ neurônios.
 As redes neurais artificiais são tipicamente organizadas em “camadas”, e a
 escolha dos tipos de neurônio, juntamente com a forma com que os neurônios são
 conectados, é denominada “topologia”. As redes são classificadas como
-feedforward quando as conexões não formam ciclos ou recurrent quando formam. Se
+\emph{feedforward} quando as conexões não formam ciclos ou \emph{recurrent}
+quando formam. Se
 uma camada está conectada a todos os neurônios da camada anterior diz-se que a
 camada é totalmente conectada.
 A definição da função de transferência do neurônio é uma parte importante da
@@ -121,7 +122,7 @@ excessivo a rede neural perde a capacidade de generalizar e ocorre
 De acordo com \cite{hawkins2004problem}, \emph{overfitting} ocorre quando um
 modelo é mais flexível do que precisa ser. Quando um modelo destes é treinado,
 especialmente com poucos exemplos, o modelo pode acabar ``memorizando'' os
-exemplos, ao invéz de generazar o comportamento geral dos dados, fazendo
+exemplos, ao invés de generalizar o comportamento geral dos dados, fazendo
 com que o resultado da classificação seja bom, mas haja erro excessivo
 quando o mesmo modelo é aplicado em dados novos.
 
@@ -272,7 +273,7 @@ de um filtro linear \cite{gonzalezwoods200708}, e assim como no caso dos
 filtros lineares, existem algumas opções para tratamento de bordas dos dados.
 
 Na figura \ref{fig:ex_conv_2d} o tamanho do tensor de saída foi reduzido
-de 6 para 4. Neste caso a opção foi por não extender as bordas. Por
+de 6 para 4. Neste caso a opção foi por não estender as bordas. Por
 este motivo, o resultado tem que ser reduzida para impedir que o filtro
 possua termos despareados.
 
@@ -294,15 +295,15 @@ ilustrado na figura \ref{fig:ex_conv_2d}, ou pode-se desejar aplicar a cada
 por diante.  Esta opção é denominada \emph{stride}.
 
 Quando uma camada convolucional possui como entrada um tensor de dimensões
-$d1\times d2 \times ... \times dj \times C$, o stride é definido como sendo
-um tensor unidimensional de tamanho j.
-O stride $[1,2,1]$, por exemplo, indica que na primeira dimensão o
+$d1\times d2 \times ... \times dj \times C$, o \emph{stride} é definido como
+sendo um tensor unidimensional de tamanho j.
+O \emph{stride} $[1,2,1]$, por exemplo, indica que na primeira dimensão o
 filtro será aplicado em todas as posições válidas, na segunda dimensão será
 aplicado a cada 2 pixels e na terceira será aplicada novamente em todas as
-posições válidas. Stride maior que 1 causa redução no tamanho do tensor de
-saída.
+posições válidas. \emph{Stride} maior que 1 causa redução no tamanho do
+tensor de saída.
 
-Se um stride $2 \times 2$ fosse aplicado na convolução da figura
+Se um \emph{stride} $2 \times 2$ fosse aplicado na convolução da figura
 \ref{fig:ex_conv_2d} a imagem de saída seria $2 \times 2$.
 
 \subsection{Profundidade do Filtro}
@@ -341,8 +342,8 @@ O número de imagens fornecidas é denominado ``tamanho do lote''. Se uma rede
 neural trabalha com dados de dimensões $d0 \times d1 \times ... \times C$
 podem-se agrupar “B” exemplos em
 um único tensor, com dimensões $B \times d0 \times d1 \times ... \times C$.
-As camadas convolucionais tratam cada
-uma das imagens separadamente, conforme já foi descrito, e emite na sua saída um
+As camadas convolucionais tratam cada uma das imagens separadamente,
+conforme já foi descrito, e emite na sua saída um
 único tensor que também usa uma dimensão adicional para agrupar as diferentes
 imagens.
 
@@ -351,29 +352,32 @@ O valor de B não é um hiperparâmetro, mas sim um parâmetro de treinamento.
 \subsection{Pooling}
 Após a aplicação de uma camada convolucional pode-se aplicar uma camada de
 \emph{pooling}, que é uma forma de subamostragem. A figura
-\ref{fig:ex_maxpool} ilustra uma operação de maxpool, que é um tipo de
-pooling.
+\ref{fig:ex_maxpool} ilustra uma operação de \emph{maxpool}, que é um tipo de
+\emph{pooling}.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{ex_maxpool.png}
 	\caption{Exemplo de \emph{maxpool} $2 \times 2$}
 	\label{fig:ex_maxpool}
-	Ilustração de uma operação maxpool $2 \times 2$ aplicado usando stride
-	$2 \times 2$. O filtro move de dois em dois pixels e possui
+	Ilustração de uma operação \emph{maxpool} $2 \times 2$ aplicado usando
+	\emph{stride} $2 \times 2$. O filtro move de dois em dois pixels e possui
 	tamanho 2 em cada dimensão (próprio autor).
 \end{figure}
 
-Esta operação possui como parâmetros o tamanho do filtro, o stride e a opção de
+Esta operação possui como parâmetros o tamanho do filtro, o \emph{stride} e
+a opção de
 borda. A operação a ser aplicada no filtro pode ser $max$ ou $avg$ (média),
 que definem respectivamente os filtros \emph{maxpool} e \emph{avgpool}.
 
-Como as operações de pooling são normalmente feitas com stride maior que 1 elas
+Como as operações de \emph{pooling} são normalmente feitas com \emph{stride}
+maior que 1 elas
 acabam reduzindo consideravelmente o tamanho do tensor de saída. No caso de um
-maxpool $2 \times 2$, por exemplo, o tensor resultante vai ter 25\% do
+\emph{maxpool} $2 \times 2$, por exemplo, o tensor resultante vai ter 25\% do
 número de valores do tensor de entrada.
 
-Uma camada convolucional com pooling pode ser contada como uma única camada ou
+Uma camada convolucional com \emph{pooling} pode ser contada como uma única
+camada ou
 como duas, dependendo do caso. Em algumas arquiteturas mais complexas, como em
 \cite{szegedy2015going}, onde define-se camadas do tipo \emph{inception},
 pode não ser possível associar uma operação de \emph{pooling} a uma única
@@ -382,7 +386,7 @@ convolução, requerendo contagem separada.
 \subsection{ReLu}
 Assim como em redes neurais totalmente conectadas, pode-se aplicar uma função
 de ativação para tornar a camada não-linear. As funções tangente
-hiperbólica, sigmóide ou outras tipicamente usadas em redes neurais
+hiperbólica, sigmoide ou outras tipicamente usadas em redes neurais
 não-convolucionais podem ser aplicadas. No entanto a função
 \sigla{ReLu}{\emph{Rectified linear unit}, unidade linear retificada}, ou
 linear retificada, resulta em treinamento substancialmente mais rápido enquanto
@@ -395,10 +399,11 @@ ReLu é definida por:
 \end{equation}
 
 Quando uma camada de uma rede neural inclui apenas elementos lineares,
-ela é dita linear. O operador de convolução em sí é linear, então
-isso vai ocorrer quando a camanda não inclui uma função de ativação, como
+ela é dita linear. O operador de convolução em si é linear, então
+isso vai ocorrer quando a camada não inclui uma função de ativação, como
 a ReLu e não possui outros elementos não-lineares, como \emph{maxpool},
-caso o pooling esteja sendo considerado como parte da camada convolucional.
+caso o \emph{pooling} esteja sendo considerado como parte da camada
+convolucional.
 
 \subsection{Últimas Camadas}
 Após as camadas convolucionais terem sido aplicadas é necessário usar um
@@ -410,8 +415,8 @@ ReLu e a última camada é linear.
 
 \subsection{Rede Neural Convolucional Completa}
 Para alguns casos simples, pode-se construir uma rede neural convolucional
-conectando-se uma camada convolucional a uma maxpool e uma ReLu. Este conjunto
-pode ser repetido algumas vezes até que o número de saídas da camada
+conectando-se uma camada convolucional a uma \emph{maxpool} e uma ReLu. Este
+conjunto pode ser repetido algumas vezes até que o número de saídas da camada
 convolucional seja baixo o suficiente para que seja passado por duas camadas
 totalmente conectadas. Se houver interesse em não reduzir o tamanho total do
 tensor pode-se omitir a camada \emph{maxpool}. Um exemplo dessa topologia é a
@@ -491,8 +496,8 @@ usados são
 Haar-Wavelets \cite{nabout2008object},
 filtros de Gabor \cite{riaz2012invariant}.
 O treinamento é realizado sobre
-as features extraídas pelo descritor escolhido usando um classificador como
-redes neurais ou \sigla{SVM}{\emph{Support vector machine}}.
+as \emph{features} extraídas pelo descritor escolhido usando um
+classificador como redes neurais ou \sigla{SVM}{\emph{Support vector machine}}.
 
 Para usar esta abordagem um descritor precisa ser escolhido e configurado,
 muitas vezes manualmente. O desempenho do sistema como um todo vai depender
@@ -506,10 +511,10 @@ sendo necessário escolher um descritor, e não possuem os problemas que as
 redes não-convolucionais possuem. As camadas convolucionais se comportam como
 descritores, porém os parâmetros são aprendidos como parte do processo de
 treinamento, portanto são otimizados para responderem precisamente para os
-exmeplos que forem fornecidos. Apenas alguns hiperparâmetros, como tamanho
+exemplos que forem fornecidos. Apenas alguns hiperparâmetros, como tamanho
 da convolução, número de filtros e de camadas precisam ser escolhidos mediante
-decisões de meta de precisão e recall, tempo para classificação e complexidade
-dos conceitos a serem aprendidos.
+decisões de meta de precisão e \emph{recall}, tempo para classificação e
+complexidade dos conceitos a serem aprendidos.
 
 As redes neurais convolucionais resolvem todos esses problemas simultaneamente.
 O primeiro ponto é a preservação da geometria da imagem. Se uma imagem de 50
@@ -546,9 +551,9 @@ Para finalizar a camada convolucional adiciona-se um bias. Para isso usa-se um
 escalar para cada uma das 64 imagens resultantes. O tensor que define os bias é
 um tensor unidimensional com tamanho 64.
 
-Camadas maxpool e ReLu podem ser adicionadas para reduzir as dimensões da imagem
-ou aumentar a sua não-linearidade. A figura \ref{fig:ex_full_cnn_img}
-ilustra o uso das três camadas em sequência.
+Camadas \emph{maxpool} e ReLu podem ser adicionadas para reduzir as
+dimensões da imagem ou aumentar a sua não-linearidade. A figura
+\ref{fig:ex_full_cnn_img} ilustra o uso das três camadas em sequência.
 
 \begin{figure}[!htb]
 	\centering
@@ -557,13 +562,14 @@ ilustra o uso das três camadas em sequência.
 	RGB}
 	\label{fig:ex_full_cnn_img}
 	Exemplo de uma sequência de operações feitas usando uma rede neural
-	convolucional incluindo 64 convoluções $3 \times 3$, maxpool e ReLu
-	aplicadas em uma
+	convolucional incluindo 64 convoluções $3 \times 3$, \emph{maxpool} e
+	ReLu aplicadas em uma
 	lote de 32 imagens $40 \times 120 \times 3$. Os parâmetros treináveis
 	estão destacados (próprio autor).
 \end{figure}
 
-A imagem é tratada por camadas sucessivas de convolução, maxpool e ReLu até que
+A imagem é tratada por camadas sucessivas de convolução, \emph{maxpool} e
+ReLu até que
 o tamanho total do tensor seja pequeno o suficiente para poder ser processado
 por duas camadas totalmente conectadas. 
 
@@ -606,7 +612,8 @@ das opções envolvem configurar a neural como classificador e como sistema de
 regressão.
 
 Para usar a rede como classificador pode-se incluir na última camada da rede
-neural um sistema softmax, também conhecido como exponencial normalizada. Isso
+neural um sistema \emph{softmax}, também conhecido como exponencial
+normalizada. Isso
 permite que a rede neural seja treinada e, após o treinamento, estime a
 probabilidade da sua entrada pertencer a cada uma de N classes. A rede neural é
 implementada usando $N$ saídas, de forma que cada saída é treinada para
@@ -698,5 +705,5 @@ Se o detector for construído para produzir “1” quando detectar o objeto e
 “0” então os pontos de máxima são candidatos a centros dos objetos.
 
 Como cada pixel da imagem é candidato a centro do objeto que está sendo
-localizado, deve-se aplicar o filtro uma vêz para cada pixel. Se não houver
+localizado, deve-se aplicar o filtro uma vez para cada pixel. Se não houver
 extensão de bordas, o filtro não pode ser aplicado em parte dos pixels.
