@@ -1,9 +1,0 @@
-\select@language {brazil}
-\contentsline {table}{\numberline {1}{\ignorespaces Arquivos de v\IeC {\'\i }deo usados durante o desenvolvimento\relax }}{47}
-\contentsline {table}{\numberline {2}{\ignorespaces Marca\IeC {\c c}\IeC {\~o}es feitas em cada v\IeC {\'\i }deo\relax }}{48}
-\contentsline {table}{\numberline {3}{\ignorespaces Exemplos de treinamento gerados para cada v\IeC {\'\i }deo\relax }}{52}
-\contentsline {table}{\numberline {4}{\ignorespaces Camadas da Rede Neural Implementada\relax }}{56}
-\contentsline {table}{\numberline {5}{\ignorespaces Erros e acertos de localiza\IeC {\c c}\IeC {\~a}o\relax }}{61}
-\contentsline {table}{\numberline {6}{\ignorespaces Erros e acertos de localiza\IeC {\c c}\IeC {\~a}o\relax }}{63}
-\contentsline {table}{\numberline {7}{\ignorespaces Taxa de Frames por Segundo\relax }}{66}
-\contentsline {table}{\numberline {8}{\ignorespaces Tabela com \emph {Bias} aprendidos durante o treinamento\relax }}{72}
