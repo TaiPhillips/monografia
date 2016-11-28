@@ -591,7 +591,6 @@
 % Define o comando que monta a lista de siglas
 \newcommand{\listadesiglas}
 {
-	Isto eh um teste
 	\pretextualchapter{LISTA DE SIGLAS}
 	\begin{espacosimples}  %cesar230511
 	\@starttoc{lsg}

@@ -1,3 +1,12 @@
 %Exemplo de resumo
 
-Maré sobe, maré desce. Você não consegue explicar isso!
+Esta é uma proposta de método de localização aproximada de placas veiculares
+em vídeo desenvolvida usando redes neurais convolucionais aplicadas diretamente
+aos valores RGB dos pixels. O treinamento é feito aplicando distorções às
+imagens, como
+ruído e variação aleatória de brilho, contraste e saturação, para produzir um
+modelo robusto, mesmo sem uso de filtros ou normalização. A proposta inclui um
+método eficiente de particionar a imagem de forma a reduzir consideravelmente o
+número de vezes que a rede neural vai aplicada. Os indicadores \emph{precision}
+e \emph{recall} obtidos foram, respectivamente, 98,9\% e 96,7\% para localizar
+a placa com erro inferior à $60\text{px} \times 20\text{px}$.
