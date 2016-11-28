@@ -58,7 +58,7 @@ solução foi totalmente implementada conforme arquitetura ilustrada na figura
 
 Essa implementação usava imagens em tons de cinza e partições com dimensões HW
 $32 \times 100$ aplicadas em uma rede neural totalmente conectada com 3200
-entradas e uma saída. O particionamento era feita  usando stride de 100\%, ou
+entradas e uma saída. O particionamento era feito usando stride de 100\%, ou
 seja, duas partições vizinhas tinham o perímetro de um dos seus lados em comum.
 
 Esta biblioteca foi logo descartada porque o tempo de treinamento era muito
@@ -382,7 +382,7 @@ começa a decair de 1 para 0 (que são codificados como 255 e 0). O ponto (a)
 meio do caminho, possuindo o valor 0,5 (codificado como 128).
 
 Após coletar os exemplos de placas contidas na região acima indicada ocorre a
-coleta de imagens  fora da região, denominada coleta de “exemplos negativos”. A
+coleta de imagens fora da região, denominada coleta de “exemplos negativos”. A
 todos os exemplos coletados dessa maneira é atribuído o rótulo 0.
 
 O algorítmo que coleta esses exemplos passou por vários aprimoramentos. A
