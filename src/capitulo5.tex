@@ -22,7 +22,7 @@ sucesso de uma implementação acesso a dados ou a capacidade de produzi-los.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{cap5_arquit_global.png}
+	\includegraphics[scale=1]{cap5_arquit_global.png}
 	\caption{Arquitetura Global da Implementação}
 	\label{fig:cap5_arquit_global}
 	Diagrama ilustrando os quatro componentes de software em verde, os vídeos
@@ -85,7 +85,7 @@ com uma saída.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{cap5_trein_redes_nao_conv.png}
+	\includegraphics[scale=0.75]{cap5_trein_redes_nao_conv.png}
 	\caption{Erro de treinamento de redes neurais não-convolucionais}
 	\label{fig:cap5_trein_redes_nao_conv}
 	A ordenada refere-se ao erro L2 calculado sem a raiz quadrada e suavizado
@@ -219,7 +219,7 @@ Nesta seção está detalhada a implementação de cada módulo de software.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{cap5_tela_marcador.png}
+	\includegraphics[scale=0.75]{cap5_tela_marcador.png}
 	\caption{Interface com usuário do \emph{Marcador}}
 	\label{fig:cap5_tela_marcador}
 	A tela está mostrando 3 veículos marcados (próprio autor).
@@ -510,7 +510,7 @@ Para realizar o treinamento tanto da rede neural um grafo apresentado na figura
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{cap5_grafo_treinamento.png}
+	\includegraphics[scale=0.7]{cap5_grafo_treinamento.png}
 	\caption{Grafo usado para treinamento da rede neural convolucional}
 	\label{fig:cap5_grafo_treinamento}
 	Esta imagem mostra o grafo do \emph{TensorFlow} usado para treinar
@@ -678,7 +678,7 @@ dados e seus 154.386 exemplos de imagens cerca de 428 vezes.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{cap5_train_histogram.png}
+	\includegraphics[scale=0.75]{cap5_train_histogram.png}
 	\caption{Histograma temporal do erro classificação}
 	\label{fig:cap5_train_histogram}
 	Pode-se observar os erros se concentrando cada vez mais próximo de 0 a
@@ -689,7 +689,7 @@ dados e seus 154.386 exemplos de imagens cerca de 428 vezes.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{cap5_erro_treinamento.png}
+	\includegraphics[scale=1]{cap5_erro_treinamento.png}
 	\caption{Gráfico do erro de treinamento}
 	\label{fig:cap5_erro_treinamento}
 	Evolução da função de perda que o otimizador está minimizando, amortecido
@@ -847,8 +847,8 @@ maior, gerando o gráfico da figura \ref{fig:cap5_res_curva-pr-train}.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=1]{cap5_res_curva-pr-train.png}
-	\caption{Gráfico da curva Precision-Recall para amostras de treinamento}
+	\includegraphics[scale=0.75]{cap5_res_curva-pr-train.png}
+	\caption{Gráfico da curva Precision-Recall (amostras de treinamento)}
 	\label{fig:cap5_res_curva-pr-train}
 	Oserva-se uma curva semelhante a curva PR para o set de testes. Como este
 	set é maior a forma é mais suave (próprio autor).
@@ -856,8 +856,8 @@ maior, gerando o gráfico da figura \ref{fig:cap5_res_curva-pr-train}.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=1]{cap5_res_curva-pr.png}
-	\caption{Gráfico da curva Precision-Recall}
+	\includegraphics[scale=0.75]{cap5_res_curva-pr.png}
+	\caption{Gráfico da curva Precision-Recall (amostras de teste)}
 	\label{fig:cap5_res_curva-pr}
 	Pode-se observar como o limiar de classificação afeta \emph{precision} e
 	\emph{recall} (próprio autor).
@@ -878,7 +878,7 @@ O resultado do \emph{precision}
 no video2 foi apenas 59,0\%, causado pela quantidade excessiva de falso
 positivos. Observou-se que uma única das sessões da imagem que pertence ao
 asfalto, foi marcada em aproximadamente 50\% das frames como placa, gerando
-falso positivos. Atribui-se este problema a resolução deste vídeo, que é $1090
+falso positivos. Atribui-se este problema a resolução deste vídeo, que é $1080
 \times 1920$, e portanto requer uma grande quantidade de marcações para que
 seja coletada uma quantidade suficiente de amostras de ``não-placa'' para
 eliminar este problema, já que o software de coleta de exemplos de treinamento
@@ -930,7 +930,7 @@ A capacidade de produzir estes gráficos foi incluído no software
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{cap5_res_func_1.png}
+	\includegraphics[scale=0.75]{cap5_res_func_1.png}
 	\caption{Gráfico 3D da função aplicada a carros}
 	\label{fig:cap5_res_func_1}
 	São destacados três carros, um com boa textura, placa razoavelmente
@@ -944,7 +944,7 @@ A capacidade de produzir estes gráficos foi incluído no software
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{cap5_res_func_2.png}
+	\includegraphics[scale=0.75]{cap5_res_func_2.png}
 	\caption{Gráfico 3D da função aplicada a moto e ônibus}
 	\label{fig:cap5_res_func_2}
 	Observa-se uma moto e um veículo e o gráfico resultante de aplicar o

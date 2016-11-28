@@ -6,7 +6,7 @@ conforme ilustrado na figura \ref{fig:etapas_metodo_proposto}.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{etapas_metodo_proposto.png}
+	\includegraphics[scale=0.75]{etapas_metodo_proposto.png}
 	\caption{Etapas do método proposto para localização de placas veiculares}
 	\label{fig:etapas_metodo_proposto}
 	(próprio autor).
@@ -14,7 +14,8 @@ conforme ilustrado na figura \ref{fig:etapas_metodo_proposto}.
 
 O processo “particionamento” é responsável por obter as \emph{frames} do vídeo.
 Uma \emph{frame} é equivalente a uma imagem 2D, e pode ser representada por
-tensores de dimensões \sigla{HWC}{Height X Width X Channel}, altura X largura X
+tensores de dimensões \sigla{HWC}{\emph{Height X Width X Channel}, altura X
+largura X
 canal} (largura, altura e canais de cor). Todos os \emph{frames} de um mesmo
 vídeo geram tensores do mesmo tamanho.
 
@@ -113,7 +114,7 @@ largura sobre dois, gerando partições como as ilustradas na figura
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{ex_3_segmentos.png}
+	\includegraphics[scale=0.8]{ex_3_segmentos.png}
 	\caption{Ilustração de 3 partições sucessivas}
 	\label{fig:ex_3_segmentos}
 	Observar que o centro de uma partição está contido no perímetro das
@@ -182,7 +183,7 @@ quando uma placa é movida horizontalmente entre duas partições.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{placa_movida_entre_segmentos.png}
+	\includegraphics[scale=0.6]{placa_movida_entre_segmentos.png}
 	\caption{Placa veicular sendo movida entre duas partições}
 	\label{fig:placa_movida_entre_segmentos}
 	Ilustração dos pontos críticos para a definição da função a ser modelada
@@ -203,7 +204,7 @@ na outra partição.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{func_a_modelar_2_seg.png}
+	\includegraphics[scale=0.75]{func_a_modelar_2_seg.png}
 	\caption{Valor da função em duas partições a medida que a placa se move
 	entre elas}
 	\label{fig:func_a_modelar_2_seg}
@@ -214,7 +215,7 @@ na outra partição.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{func_a_modelar_1_seg.png}
+	\includegraphics[scale=0.75]{func_a_modelar_1_seg.png}
 	\caption{Valor da função a modelar, de $\infty$ a $+\infty$}
 	\label{fig:func_a_modelar_1_seg}
 	Observa-se que o valor da variável dependente a em medida que a placa
@@ -274,7 +275,7 @@ direção o valor da função é 0.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{func_a_modelar_3d.png}
+	\includegraphics[scale=0.75]{func_a_modelar_3d.png}
 	\caption{Gráfico 3D da função à modelar}
 	\label{fig:func_a_modelar_3d}
 	Gráfico da função que a rede neural deve modelar. As abscissas representam
