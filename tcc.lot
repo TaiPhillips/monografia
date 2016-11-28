@@ -4,5 +4,6 @@
 \contentsline {table}{\numberline {16}{\ignorespaces Exemplos de treinamento gerados para cada v\IeC {\'\i }deo\relax }}{52}
 \contentsline {table}{\numberline {17}{\ignorespaces Camadas da Rede Neural Implementada\relax }}{56}
 \contentsline {table}{\numberline {18}{\ignorespaces Erros e acertos de localiza\IeC {\c c}\IeC {\~a}o\relax }}{61}
-\contentsline {table}{\numberline {19}{\ignorespaces Erros e acertos de localiza\IeC {\c c}\IeC {\~a}o\relax }}{61}
-\contentsline {table}{\numberline {20}{\ignorespaces Taxa de Frames por Segundo\relax }}{63}
+\contentsline {table}{\numberline {19}{\ignorespaces Erros e acertos de localiza\IeC {\c c}\IeC {\~a}o\relax }}{63}
+\contentsline {table}{\numberline {20}{\ignorespaces Taxa de Frames por Segundo\relax }}{66}
+\contentsline {table}{\numberline {24}{\ignorespaces Tabela com \emph {Bias} aprendidos durante o treinamento\relax }}{72}

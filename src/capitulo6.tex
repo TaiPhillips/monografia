@@ -2,4 +2,34 @@
 
 \chapter{Conclusões}
 
+Os resultados obtidos mostram que o método proposto é capaz de localizar placas
+veiculares com excelentes valores de \emph{precision} e \emph{recall}.  
+A rede neural reproduz corretamente o valor da função
+que está modelando, estimando a posição da placa veicular na sua
+entrada, apesar de ter sido treinada com substancial adição de ruído e outras
+distorções, demonstrando a validade do método.
 
+O método de particionamento usado para determinar onde a rede neural é
+aplicada, não foi suficiente para permitir atingir taxa de frames
+nominal de
+nenhum dos vídeos usados no computador testado. O aumento da taxa de frames
+pode ser conseguido de várias formas, incluindo o uso de uma GPU mais rápida,
+otimização da topologia da rede neural, melhor agendamento de lotes e melhor
+distribuição de tarefas para CPU e GPU.
+
+Uma consequência negativa do método de particionamento usado
+é a imprecisão na
+posição da placa. O algorítimo usado para converter os escores para coordenadas
+usou ``máxima local'', e por isso, quando uma placa é localizada, a posição real
+dela pode estar $\pm 20 \times \pm 60$ pixel, o que pode ser excessivo para
+certas aplicações. No entanto é possível reduzir pela metade com um método mais
+sofisticado de conversão dos escores em coordenadas usando os quatro maiores
+valores. Se houver \emph{budget} computacional é possível também
+aproximar mais as partições, reduzindo arbitrariamente estes valores.
+
+Para futuros trabalhos sugere-se adicionar ao modelo aqui proposto a
+capacidade de fazer segmentação e OCR, de forma a produzir um sistema completo
+de identificação de placas veiculares. Entre os aspectos práticos, e de
+implementação, sugere-se continuar o trabalho de otimização da rede
+neural para reduzir a quantidade de computações sem gerar muito impacto nos
+resultados de classificação.

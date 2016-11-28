@@ -865,7 +865,23 @@ Tendo sido escolhido o limiar 0.8 para aceitar uma placa, as métricas
 \emph{precision} e \emph{recall} foram calculados para todos os conjuntos
 de dados marcados disponíveis, tanto de teste quanto de treinamento.
 Os resultados obtidos estão apresentados na tabela
-\ref{tbl:vp-fp-fn}.
+\ref{tbl:vp-fp-fn}. Os indicadores de desempenho foram melhores no
+conjunto de dados de teste do que no conjunto de treinamento. Isso
+se deve ao fato de que a implementação, como foi feita, não detecta
+placas que estejam próximos a borda direita e
+inferior da imagem. O set de testes foi preparado tomando cuidado para não usar
+frames onde veículos se encontrem nesta região.
+
+O resultado do \emph{precision}
+no video2 foi apenas 59,0\%, causado pela quantidade excessiva de falso
+positivos. Observou-se que uma única das sessões da imagem que pertence ao
+asfalto, foi marcada em aproximadamente 50\% das frames como placa, gerando
+falso positivos. Atribui-se este problema a resolução deste vídeo, que é $1090
+\times 1920$, e portanto requer uma grande quantidade de marcações para que
+seja coletada uma quantidade suficiente de amostras de ``não-placa'' para
+eliminar este problema, já que o software de coleta de exemplos de treinamento
+tenta balancear a quantidade de exemplos positivos e negativos.
+
 
 \begin{table}
 	\center
