@@ -2,20 +2,16 @@
 
 \chapter{Implementação e Experimentos}
 
-Neste capítulo serão apresentada uma implementação do método descrito
-no capítulo \ref{ses:metodo}, bem como os resultados das medições de
-desempenho.
+Neste capítulo será apresentada uma implementação do método descrito
+no capítulo \ref{ses:metodo}. Esta implementação será usada para medir o
+desempenho do método proposto segundo métricas padronizadas, além de métricas
+adicionais.
 
 Também será apresentado um breve histórico mostrando algumas abordagens que
 foram tentadas antes da implementação final ter sido obtida, mostrando por que
 elas falharam.
 
 \section{Arquitetura Global}
-Desde as primeiras tentativas de implementação algumas características do
-software permaneceram sem alterações. Isso inclui o uso de um detector para
-construir um localizador e a lista de módulos de software. Estas
-características são as listadas nessa seção.
-
 Redes neurais em geral requerem grande quantidade de exemplos de treinamento
 para evitar \emph{overfitting} \cite{hawkins2004problem}. É crucial para o
 sucesso de uma implementação acesso a dados ou a capacidade de produzi-los.
@@ -25,20 +21,24 @@ sucesso de uma implementação acesso a dados ou a capacidade de produzi-los.
 	\includegraphics[scale=1]{cap5_arquit_global.png}
 	\caption{Arquitetura Global da Implementação}
 	\label{fig:cap5_arquit_global}
-	Diagrama ilustrando os quatro componentes de software em verde, os vídeos
+	Diagrama ilustrando os quatro componentes de \emph{software} em verde, os
+	vídeos
 	de entrada em azul, as informações intermediárias em vermelho e a saída do
 	sistema em amarelo (próprio autor).
 \end{figure}
 
-Em todas variações tentadas de implementação optou-se por gerar os dados de
-treinamento. Para tal, dois softwares foram desenvolvidos: um software de
-marcação manual de placas em vídeo e um software para geração desses dados.
-Usando os dois softwares é possível gerar exemplos rotulados em quantidade
-suficiente no formato requerido pela rede neural. O treinamento e teste da rede
-neural requereu o desenvolvimento de outros dois outros softwares. O primeiro
+Durante a faze conceitual optou-se por dar um grande enfoque no
+treinamento da rede neural. Como não existe nenhuma fonte pública de imagens
+etiquetadas de placas de carro com as características necessárias optou-se por
+gerar estes dados a partir de imagens de vídeo.
+Para tal, dois módulos foram desenvolvidos: um de
+marcação manual de placas em vídeo e um para geração desses dados.
+Usando os dois é possível gerar exemplos rotulados em quantidade
+suficiente no formato requerido pela rede neural. O treinamento e os testes
+requereram o desenvolvimento de outros dois outros módulos: o primeiro
 treina a rede neural, o segundo reproduz o vídeo enquanto aplica a rede neural
 treinada, mostrando as placas identificadas. Isso resulta em quatro módulos de
-software principais. O relacionamento entre eles é mostrado na figura
+\emph{software} principais. O relacionamento entre eles é mostrado na figura
 \ref{fig:cap5_arquit_global}.
 
 A implementação de cada um destes módulos mudou durante a história do projeto,
@@ -46,8 +46,8 @@ porém as suas funções básicas permaneceram as mesmas.
 
 \section{Abordagens Anteriores}
 Durante o desenvolvimento do projeto algumas tentativas mal sucedidas foram
-feitas antes da versão final ter sido completada. O software chegou a ser
-implementado por completo três vezes, sendo que só produziu resultados
+feitas antes da versão final ter sido completada. O \emph{software} chegou a
+ser implementado por completo três vezes, sendo que só produziu resultados
 satisfatórios na última.
 
 A ideia inicial para este projeto era o uso de redes neurais não-convolucionais
@@ -74,9 +74,9 @@ hiperparâmetros corretos da rede neural, e sabendo que isso requeriria
 múltiplos experimentos com topologias diferentes, adotou-se a biblioteca
 \emph{encog},
 devido ao melhor desempenho de treinamento. Essa adaptação, requereu reescrever
-boa parte código. Apesar do treinamento rodar quase a uma taxa de imagens 10
+boa parte código. Apesar do treinamento rodar a uma taxa de imagens 10
 vezes maior que a biblioteca anterior, também não foi encontrada topologia
-com com desempenho aceitável. A figura
+com desempenho aceitável. A figura
 \ref{fig:cap5_trein_redes_nao_conv} mostra a
 evolução do treinamento para algumas sessões. Entre as listadas a que teve
 melhor desempenho usava 3200 neurônios na camada de entrada, então 172, 137,
@@ -102,8 +102,9 @@ muito parecidas. Aparentemente a rede neural não estava conseguindo generalizar
 as características de uma placa veicular e, ao invés disso, encontrou
 parâmetros para as camadas totalmente conectadas que identificavam corretamente
 alguns destes exemplos, o que acabava reduzindo o erro de treinamento até certo
-ponto. Este problema só foi resolvido depois das redes neurais
-totalmente conectadas terem sido abandonadas.
+ponto. A redução das imagens parecidas no set de treinamento de entrada só
+foi feito depois das redes neurais totalmente conectadas terem sido
+abandonadas.
 
 O esquema de particionamento das imagens foi mudado de 100\% para 50\%, que é o
 valor usado agora. A função que a rede neural modela foi modificada
@@ -124,11 +125,15 @@ reescritos em Python, que era a única linguagem suportada quando essa
 migração foi realizada.
 
 O uso de duas linguagens de programação estava eliminando várias oportunidades
-de reuso de código. Eventualmente os softwares de marcação e preparação de
-dados de treinamento foi reescrito em Python.
+de reuso de código. Eventualmente os \emph{softwares} de marcação e preparação
+de dados de treinamento foi reescrito em Python.
 
 Desde os primeiros experimentos a abordagem usando redes neurais foi muito bem
-sucedida.
+sucedida. A primeira abordagem foi usando regressão logística. No entanto os
+exemplos de treinamento foram etiquetados de usando apenas valores 0 e 1. Por
+não saber exatamente como mapear uma placa parcialmente visível para
+probabilidades, foi feita a migração para um modelo de regressão, onde uma
+função suave pode ser definida para ser imitada pela rede neural.
 
 \section{Escolha de Tecnologias}
 A versão final da DCNN usa o \emph{framework} \emph{TensorFlow} do Google.
@@ -211,9 +216,9 @@ sintomas aleatórios. No caso de treinamento prolongado, como foi feito neste
 projeto, pode ser necessário conferir a temperatura na qual os componentes
 estão rodando, para evitar danos.
 
-\section{Implementação dos Módulos de Software}
+\section{Implementação dos Módulos de \emph{Software}}
 
-Nesta seção está detalhada a implementação de cada módulo de software.
+Nesta seção está detalhada a implementação de cada módulo de \emph{software}.
 
 \subsection{Marcador}
 
@@ -225,8 +230,8 @@ Nesta seção está detalhada a implementação de cada módulo de software.
 	A tela está mostrando 3 veículos marcados (próprio autor).
 \end{figure}
 
-O software marcador foi construído como um script Python que recebe o nome de
-um arquivo de vídeo como parâmetro. Ele permite:
+O \emph{software} marcador foi construído como um script Python que recebe o
+nome de um arquivo de vídeo como parâmetro. Ele permite:
 
 \begin{enumerate}
 \item Reproduzir o vídeo;
@@ -240,7 +245,7 @@ um arquivo de vídeo como parâmetro. Ele permite:
 \item Digitar o número da placa veicular
 \end{enumerate}
 
-Como pode ser visto na figura \ref{fig:cap5_tela_marcador}, o software
+Como pode ser visto na figura \ref{fig:cap5_tela_marcador}, o \emph{software}
 marcador permite marcar placas de
 carros e motos, e é possível identificar o número da placa. Isto tem como
 objetivo permitir que as mesmas marcações possam ser usadas futuramente para
@@ -248,9 +253,9 @@ fazer OCR das placas. As marcações são salvas em um arquivo JSON.
 
 Quando uma \emph{frame} possui pelo menos uma placa veicular marcada, todo
 o resto da
-imagem vai ser considerado pelo software de treinamento como região sem placa.
-Por isso, se uma placa for marcada em uma \emph{frame}, devem-se marcar todas
-as placas.
+imagem vai ser considerado pelo \emph{software} de treinamento como região
+sem placa.  Por isso, se uma placa for marcada em uma \emph{frame}, devem-se
+marcar todas as placas.
 
 \begin{table}
 	\center
@@ -306,7 +311,7 @@ testar o desempenho do modelo. Os dados de treinamento estão todos antes do
 		video2.avi & 71  & 96  \\
 		video3.avi & 0   & 0   \\
 		\Xhline{6\arrayrulewidth}
-		TOTAL      & 262 & 304 \\
+		TOTAL      & 352 & 421 \\
 	\end{tabular}
 	\label{tbl:marc_videos}
 \end{table}
@@ -324,9 +329,9 @@ testar o desempenho do modelo. Os dados de treinamento estão todos antes do
 	o arquivo (próprio autor).
 \end{figure}
 
-O software gerador de dados de treinamento também recebe como parâmetro o nome
-do arquivo de vídeo onde vai operar, e vai abrir este arquivo de vídeo e as
-marcações feitas nele. Este software roda de modo não-interativo,
+O \emph{software} gerador de dados de treinamento também recebe como parâmetro
+o nome do arquivo de vídeo onde vai operar, e vai abrir este arquivo de vídeo
+e as marcações feitas nele. Este \emph{software} roda de modo não-interativo,
 terminando sem intervenção do usuário quando a geração do conjunto de
 treinamento está concluída. A interface gráfica está ilustrada na figura
 \ref{fig:cap5_tela_gerador}
@@ -340,15 +345,15 @@ inteiro de
 8 bits sem sinal.  Como a imagem é $40 \times 120 \times 3$ e o rótulo
 tem 1 byte, então cada registro possui 14401 bytes.
 
-Este software lê a lista de \emph{frames} marcadas em uma ordem
+Este \emph{software} lê a lista de \emph{frames} marcadas em uma ordem
 aleatória. Então vai coletar exemplos de placas veiculares centradas e fora
 de centro e exemplos de imagens que não contém placas, e vai salvá-las no
-arquivo de saída. A cada um dos exemplos de treinamento este software
+arquivo de saída. A cada um dos exemplos de treinamento este \emph{software}
 também salva um número que é o valor da função que a rede neural deve
 produzir para esta placa, conforme equação \ref{eq:funcao_a_modelar}.
 
-Tomando uma placa nas coordenadas $y \times x$, o software primeiro gera um
-recorte centrado nessas coordenadas e com o tamanho $40 \times 120$. Este
+Tomando uma placa nas coordenadas $y \times x$, o \emph{software} primeiro gera
+um recorte centrado nessas coordenadas e com o tamanho $40 \times 120$. Este
 tamanho é definido em um arquivo de configuração. Todos os exemplos
 coletados desta forma recebem o rótulo 1 (codificado como 255).
 
@@ -407,7 +412,7 @@ sendo um exemplo muito parecido, como ilustrado na figura
 	da imagem (próprio autor).
 \end{figure}
 
-Por este motivo o software mantém as últimas 100 \emph{frames} processadas.
+Por este motivo o \emph{software} mantém as últimas 100 \emph{frames} processadas.
 Quando um “exemplo negativo” vai ser coletado em uma região a imagem é
 comparada com os \emph{pixels} da mesma região nestas \emph{frames} que foram
 armazenadas. O critério de comparação é:
@@ -478,7 +483,7 @@ continua.
 		\Xhline{6\arrayrulewidth}
 		TOTAL      &                & 2,07 GiB & 154.386 \\
 	\end{tabular}
-	\label{tbl:marc_videos}
+	\label{tbl:ex_marc_videos}
 \end{table}
 
 Um script escrito em bash foi escrito partir um arquivo destes em arquivos
@@ -500,7 +505,7 @@ todas as amostras coletadas de todos os vídeos.
 	treinamento (próprio autor).
 \end{figure}
 
-O treinador é um módulo de software onde se configura uma topologia de rede
+O treinador é um módulo de \emph{software} onde se configura uma topologia de rede
 neural convolucional, que é treinada usando os dados produzidos pelo gerador de
 dados de treinamento.
 
@@ -630,7 +635,7 @@ multiplicações de $25$ para $2 \cdot 9=18$.
 		\Xhline{6\arrayrulewidth}
 		TOTAL & & & 5.242 \\
 	\end{tabular}
-	\label{tbl:marc_videos}
+	\label{tbl:camadas_cnn}
 \end{table}
 
 Nas últimas camadas está sendo usado maxpool $2 \times 2$. Esta estratégia é
@@ -663,7 +668,7 @@ dois tensores sem a raíz quadrada:
 \end{equation}
 
 Esta medida foi usado porque é calculada eficiente pelo \emph{TensorFlow}
-através da função \textbf{tf.nn.l2\_loss(t, name=None)}. O software de
+através da função \textbf{tf.nn.l2\_loss(t, name=None)}. O \emph{software} de
 treinamento usa um otimizador
 Adam \cite{kingma2014adam} para atualizar os parâmetros treináveis da rede
 neural de forma a minimizar este valor.
@@ -703,17 +708,18 @@ dados e seus 154.386 exemplos de imagens cerca de 428 vezes.
 	\includegraphics{cap5_tela_player.png}
 	\caption{Interface com o usuário do módulo \emph{Player}}
 	\label{fig:cap5_tela_player}
-	No momento que a tela foi capturada o software está exibindo um vídeo
-	enquanto destaca as placas que está localizando (próprio autor).
+	No momento que a tela foi capturada o \emph{software} está exibindo um
+	vídeo enquanto destaca as placas que está localizando (próprio autor).
 \end{figure}
 
-O quarto módulo de software usa a rede neural treinada para reproduzir o
+O quarto módulo de \emph{software} usa a rede neural treinada para reproduzir o
 conteúdo de um vídeo ou da câmera enquanto destaca as placas de carros
 localizadas. A figura \ref{fig:cap5_tela_player} mostra a interface do usuário
 no momento em que está exibindo um vídeo quando três veículos estão passando.
 As placas dos mesmos estão sendo destacadas.
 
-O software implementa o método de classificação proposto nesta monografia por
+O \emph{software} implementa o método de classificação proposto nesta
+monografia por
 completo. O método de binarização é um limiar simples em 0,75. Este valor
 permite que quando a placa está transitando de uma partição para outra, ambas
 as placas serão iluminadas momentaneamente antes da placa que ficou para trás
@@ -726,13 +732,13 @@ Para o \emph{video1.avi} a rede neural é executada 288 vezes para frame do
 vídeo, sendo que uma linha completa contendo 12 partições é fornecido para a
 rede neural por vez.
 
-O software é capaz de operar em qualquer vídeo que possa ser lido pelo
+O \emph{software} é capaz de operar em qualquer vídeo que possa ser lido pelo
 \emph{OpenCV3} e pode usar a imagem da câmera do computador.
 
 \section{Experimentos e Desempenho}
 
 Nesta sessão serão apresentados os experimentos realizados com a implementação
-do software e os seus resultados.
+do \emph{software} e os seus resultados.
 
 \subsection{Desempenho de Localização}
 
@@ -764,7 +770,7 @@ seguinte maneira:
 
 \begin{itemize}
 
-\item Quando o software identificar uma placa em um ponto do \emph{frame} e
+\item Quando o \emph{software} identificar uma placa em um ponto do \emph{frame} e
 	houver uma placa entre as manualmente marcadas, tal que a distância entre
 	os centros  das duas seja inferior ao erro, será contabilizado um
 	\emph{verdadeiro positivo}, ou \emph{tp} (figura \ref{fig:cap5_tp-fn-fp},
@@ -880,7 +886,7 @@ asfalto, foi marcada em aproximadamente 50\% das frames como placa, gerando
 falso positivos. Atribui-se este problema a resolução deste vídeo, que é $1080
 \times 1920$, e portanto requer uma grande quantidade de marcações para que
 seja coletada uma quantidade suficiente de amostras de ``não-placa'' para
-eliminar este problema, já que o software de coleta de exemplos de treinamento
+eliminar este problema, já que o \emph{software} de coleta de exemplos de treinamento
 tenta balancear a quantidade de exemplos positivos e negativos.
 
 
@@ -925,7 +931,7 @@ Estes dados foram todos levantados usando o vídeo3.avi, que não usado para
 treinamento. As cinco frames foram escolhidos ao acaso, garantindo-se apenas
 que as cinco imagens sejam suficientemente diferentes umas das outras.
 
-A capacidade de produzir estes gráficos foi incluído no software
+A capacidade de produzir estes gráficos foi incluído no \emph{software}
 ``\emph{player}'', e pode ser invocada para qualquer frame de qualquer vídeo.
 
 \begin{figure}[!htb]

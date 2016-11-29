@@ -41,11 +41,12 @@ topologia das redes neurais. Um tipo muito comum de neurônio é definido por:
 \end{equation}
 
 Onde $v$ é o valor do neurônio, $i_n$ é n-ésima entrada do neurônio,
-$w$ é um vetor de escalares denominado peso, e $b$ é um escalar arbitrário,
-denominado bias. A é uma
+$w_n$ é um escalar associado a esta entrada, denominado peso, e $b$ é um
+escalar arbitrário, denominado \emph{bias}. Este último valor permite que um
+neurônio produza valores não-nulos mesmo que a entrada seja nula. $A$ é uma
 função denominada função de ativação do neurônio. Essa função pode ser usada
 para tornar o neurônio não-linear, como no caso da tangente hiperbólica. Os
-pesos determinam a influência de cada entrada do neurônio.
+pesos $w_n$ determinam a influência de cada entrada do neurônio.
 
 A descrição de redes neurais com este tipo de neurônio e com topologia
 totalmente conectada é especialmente conveniente. As três camadas
@@ -94,15 +95,15 @@ realizado usando:
 
 \begin{equation}
 	L1_{5 \times 1}=A_V \left( W1_{5 \times 4} \times L0_{4 \times 1}
-		+ B1_{5 \times 1} \right)
+		+ B1_{5 \cdot 1} \right)
 \end{equation}
 
 Onde $A_V$ é uma versão vetorial da função de ativação resultante
 da aplicação da função $A$ em cada um dos elementos do vetor.
 Os pesos dos cinco neurônios, denominados $w_n$ na equação
 \ref{eq:non-conv-layer} são aqui representados por uma única matriz
-$W1_{5 \times 4}$, e os bias dos cinco neurônios, $b$, são representados por
-uma única matriz $B1_5$. Da mesma forma, a camada de saída
+$W1_{5 \times 4}$, e os \emph{bias} dos cinco neurônios, $b$, são representados
+por uma única matriz $B1_{5 \times 1}$. Da mesma forma, a camada de saída
 pode ser calculada com:
 
 \begin{equation}
@@ -114,8 +115,8 @@ As matrizes $W$ e $B$ são os parâmetros que precisam ser aprendidos durante o
 treinamento, e são denominados parâmetros treináveis. O número de parâmetros
 de uma uma
 rede neural é igual ao número de valores contidos em todas as matrizes de pesos
-e bias. Quanto maior o número de parâmetros, mais flexibilidade a rede neural
-possui, porém mais lento é o treinamento. Se o número de parâmetros for
+e \emph{bias}. Quanto maior o número de parâmetros, mais flexibilidade a rede
+neural possui, porém mais lento é o treinamento. Se o número de parâmetros for
 excessivo a rede neural perde a capacidade de generalizar e ocorre
 \emph{overfitting}.
 
@@ -123,15 +124,16 @@ De acordo com \cite{hawkins2004problem}, \emph{overfitting} ocorre quando um
 modelo é mais flexível do que precisa ser. Quando um modelo destes é treinado,
 especialmente com poucos exemplos, o modelo pode acabar ``memorizando'' os
 exemplos, ao invés de generalizar o comportamento geral dos dados, fazendo
-com que o resultado da classificação seja bom, mas haja erro excessivo
+com que o resultado do treinamento seja bom, mas haja erro excessivo
 quando o mesmo modelo é aplicado em dados novos.
 
-Como as dimensões da matriz de pesos são iguais ao número de entradas em uma
-direção pelo número de saídas na outra direção, o número de parâmetros nessa
-matriz é igual ao produto dos dois. Se uma camada totalmente conectada tem 1000
-entradas e 1000 saídas a matriz de pesos vai possuir 1.000.000 de parâmetros
-e a matriz de \emph{bias} mais 1.000, resultando em um total de 1.001.000
-parâmetros.
+Como as dimensões da matriz de pesos de uma camada totalmente conectada são
+$d_{en} \times d_{sai}$, onde $d_{en}$ é o número de neurônios na camada de
+entrada, e $d_{sai}$ é o número de neurônios da própria camada, então o número
+de parâmetros nessa matriz é igual ao produto dos dois. Se esta camada
+tiver 1000 entradas e 1000 saídas a matriz de pesos vai possuir 1.000.000 de
+parâmetros e a matriz de \emph{bias} mais 1.000, resultando em um total de
+1.001.000.
 
 \section{Redes Neurais Convolucionais}
 Redes neurais convolucionais são um tipo de rede neural que inclui operações
@@ -155,8 +157,8 @@ realizada pelo método visual.
 	\label{fig:cap2_ex_corr_cruz_1d}
 	Na imagem está sendo calculada a correlação cruzada entre $[3,6,4,2]$ e
 	$[1,2,3]$. O primeiro set de dados fica fixo enquanto o segundo vai sendo
-	deslocado, e em cada vez se calcula a soma do produto, conforme ilustrado.
-	O resultando é $[9,24,23,20,8,2]$.
+	deslocado, e após cada passo se calcula a soma do produto, conforme
+	ilustrado. O resultando é $[9,24,23,20,8,2]$.
 \end{figure}
 
 A correlação cruzada também é definida para dimensões maiores que 1.
@@ -183,16 +185,16 @@ cruzadas tratam as duas entradas de forma idêntica, e produzem um resultado
 diferente nos extremos. Como observa-se na figura
 \ref{fig:cap2_ex_corr_cruz_1d}, a saída é um vetor de dimensão 6, e um filtro
 digital geraria saída de tamanho 4 (se houvesse extensão de borda).
-No entanto, os resultados são idênticos para as saídas onde todos os membros
-das duas entradas possuem um par na outra entrada. Mais detalhes sobre isso
+No entanto, os números obtidos pelo filtro linear são iguais aos obtidos pela
+correlação cruzada nas posições centrais. Mais detalhes sobre isso
 serão cobertos na sessão \ref{ses:bordas}.
 
 A correlação cruzada entre $f[n]$ e $g[n]$
 é igual a convolução entre $f[n]$ e $g[-n]$, e relações semelhantes existem
 para qualquer dimensionalidade. Uma camada de uma rede
 neural que use qualquer uma das operações é denominada “convolucional”,
-pois neste contexto as operações são intercambiáveis. Como $g$ vai
-representar os parâmetros treináveis. Ao se trocar convolução por correlação
+pois neste contexto as operações são intercambiáveis. Ao se trocar convolução
+por correlação
 cruzada os mesmos parâmetros serão aprendidos em uma ordem diferente.
 Por este motivo os termos ``convolução'' e ``convolucional'' são usados de forma
 relaxada no contexto de redes neurais. Conforme será visto adiante, existe
@@ -200,14 +202,16 @@ mais um motivo para isso.
 
 O uso de convoluções em redes neurais, especialmente para dimensões superiores
 a 1, requerem que os dados nos quais este operador vai ser executado sejam
-representados de forma a preservar o posicionamento dos valores.
+representados de forma a preservar a geometria original. Se os dados forem uma
+imagem bidimensional, por exemplo, essa característica precisa ser preservada,
+e a rede neural precisa conhecer a forma dos dados.
 
 Uma das formas de estruturar os dados é usando tensores, que são uma
 extensão de
 vetores que admite um número arbitrário de dimensões. O motivo para isso é
 permitir preservar a geometria da informação que está sendo processada.
 
-Se a rede neural convolucional for ser aplicada em uma
+Se a rede neural convolucional for aplicada em uma
 imagem bidimensional com dimensões $H$ e $W$ com C canais de cor, ela pode ser
 representada por um tensor de dimensões $H \times W \times C$. Uma imagem
 tridimensional com profundidade $D$ é representada por um tensor
@@ -216,9 +220,13 @@ diante. Isso permite preservar o posicionamento relativo das informações
 e viabiliza aplicar o operador de correlação cruzada.
 
 A ordem das dimensões dos tensores não precisa ser necessariamente a que está
-descrita aqui. Nas implementações concretas de softwares de redes neurais os
+descrita aqui. É possível, por exemplo, representar uma imagem usando $C \times
+H \times W$.
+Nas implementações concretas de softwares de redes neurais os
 desenvolvedores podem escolher, até certo ponto, a ordem que irão usar baseado
-em fatores diversos, como arquitetura das GPUs onde o software vai rodar. Aqui
+em fatores diversos, como arquitetura das GPUs onde o software vai rodar.
+Isso vale tanto para os tensores de entrada e saída, quanto para os outros
+tensores que serão descritos adiante, como tensores de pesos. Aqui
 está sendo adotada a ordem padrão do \emph{TensorFlow}.
 
 Caso a rede neural esteja operando sobre um tipo de informação que não possui o
@@ -235,7 +243,7 @@ a entrada dessa camada usando o operador convolução. Como já foi mencionado,
 o uso do termo convolução
 é bastante relaxado neste caso por que, além de normalmente referir-se a
 uma correlação cruzada, é aplicado de forma idêntica à aplicação de um filtro
-digital, gerando as diferenças já discutidas no resultado.
+digital, gerando as diferenças já discutidas no resultado desta operação.
 
 O filtro da camada convolucional é um tensor que contém parâmetros treináveis.
 Se a entrada da camada convolucional tem dimensões
@@ -252,7 +260,7 @@ figura \ref{fig:ex_conv_2d}.
 	\includegraphics{ex_conv_2d.png}
 	\caption{Exemplo de convolução 2D}
 	\label{fig:ex_conv_2d}
-	Exemplo da aplicação de uma única convolução sendo aplicada a uma imagem de
+	Exemplo da aplicação de uma única convolução a uma imagem de
 	entrada $6 \times 6 \times 2$. O tamanho da última dimensão do filtro e
 	da entrada precisam ser iguais, no caso 2. As dimensões $3 \times 3$ do
 	filtro foram escolhidas arbitrariamente. O símbolo do círculo na imagem
@@ -262,14 +270,21 @@ figura \ref{fig:ex_conv_2d}.
 	resultante é menor que a de entrada (próprio autor).
 \end{figure}
 
-Camadas convolucionais também usam o conceito de bias. Para isso o tensor
+--Camadas convolucionais também usam o conceito de \emph{bias}. Para isso o tensor
 resultante da convolução é somado a um escalar. Este escalar é treinável e
 permite, entre outras coisas, que a rede neural gere valores não-nulos mesmo que
 a entrada seja nula.
 
+Camadas convolucionais também usam \emph{bias}, porém em uma quantidade muito
+menor que as redes neurais totalmente conectadas. Se uma camada totalmente
+conectada possui neurônio ela vai ter 100 bias. No caso de uma camada
+convolucional, porém usa-se um único \emph{bias} por convolução. Na figura
+\ref{fig:ex_conv_2d} todos os valores da saída seriam somadas com um único
+escalar.
+
 \subsection{Bordas} \label{ses:bordas}
-Como já foi mencionado, a convolução é aplicado de forma idêntica a aplicação
-de um filtro linear \cite{gonzalezwoods200708}, e assim como no caso dos
+Como já foi mencionado, a convolução é aplicada de forma idêntica
+um filtro linear \cite{gonzalezwoods200708}, e assim como no caso dos
 filtros lineares, existem algumas opções para tratamento de bordas dos dados.
 
 Na figura \ref{fig:ex_conv_2d} o tamanho do tensor de saída foi reduzido
@@ -309,55 +324,63 @@ Se um \emph{stride} $2 \times 2$ fosse aplicado na convolução da figura
 \subsection{Profundidade do Filtro}
 A figura \ref{fig:ex_conv_2d} mostrou um único filtro sendo aplicado ao
 tensor de entrada. No entanto, é possível aplicar um número arbitrário
-deles, sendo que cada filtro produz um tensor de saída.
+deles, sendo que cada filtro produz um tensor de saída. O número de filtros é
+denominado ``profundidade'' da camada convolucional.
 
-Se o tensor de entrada possui dimensões $d0 \times d1 \times ... \times C$
-e deseja-se aplicar sobre este
-tensor $N$ convoluções é possível representar isso com um único tensor
-com dimensões
-$N \times d0 \times d1 \times ... \times C$. Cada um dos filtros vai gerar
-um tensor de saída, em um total de $N$. O
-número de filtros é denominado “profundidade do filtro”. Todas as saídas podem
-ser representadas em um único tensor com uma dimensão adicional. Usa-se a última
-dimensão do tensor de saída para este fim. O motivo para isso é que cada uma
-dessas saídas efetivamente se torna um “canal” de saída desta rede neural. No
-exemplo da figura \ref{fig:ex_conv_2d}, se fossem aplicados 3 filtros a saída
-seria um tensor $4 \times 4 \times 3$. Para isso o tensor que define o filtro
-convolucional passaria a ser um
-filtro de profundidade 3 descrito por um tensor de dimensões
-$3 \times 4 \times 4 \times 2$.
+A camada convolucional vai produzir uma saída para cada filtro. É conveniente
+agrupar todas as saídas em um único tensor. Se a entrada da convolução
+possui dimensões $d0 \times d1 \times ... \times C$ e a profundidade da camada
+convolucional é $D$ pode-se representar as $D$ saídas com um tensor de
+dimensões $d0 \times d1 \times ... \times D$. Observar que o tensor de saída
+agora é semelhante ao tensor de entrada, substituindo apenas $C$ no tensor de
+entrada por $D$ no tensor de saída. Se houver uma camada convolucional depois
+desta ela vai tratar a última dimensão da mesma forma que esta trata o canal, o
+que é conveniente. Se na figura \ref{fig:ex_conv_2d} fossem aplicados 8
+filtros a saída seria um tensor $4 \times 4 \times 8$.
+
+O tensor que representa o filtro também precisa receber uma dimensão adicional,
+para poder representar todos os $D$ filtros, e também vai ser a última dimensão
+do tensor. Sendo assim, para aplicar em uma imagem RGB 8 filtros $5 \times 5$ o
+tensor que representa os pesos das convoluções possui dimensões $5 \times 5
+\times 3 \times 8$.
 
 \subsection{Processamento em Lotes}
-Existem alguns cuidados especiais que devem ser tomados durante o treinamento de
-redes neurais. Tomando o caso do treinamento supervisionado como exemplo, o
-otimizador ajusta os parâmetros treináveis da rede neural para tentar reduzir o
-erro. Para verificar se a alteração teve sucesso, a rede neural é
-alimentada com
-dados rotulados, e o valor de saída da rede neural é comparado com os dados
-esperados. É conveniente fornecer vários exemplos rotulados, não apenas um, e
-usar a média do erro para alimentar o otimizador. A ideia é que o valor passado
-seja o mais representativo possível.
+Durante o treinamento das redes convolucionais o otimizador vai fazer
+alterações nos valores dos parâmetros treináveis e precisa determinar se elas
+melhoraram ou pioraram o desempenho. No caso de treinamento supervisionado
+a rede neural é alimentada com dados e o resultado da classificação é comparado
+com o valor esperado. É conveniente usar múltiplas imagens para este teste,
+para que ele seja o mais representativo possível.
 
 O número de imagens fornecidas é denominado ``tamanho do lote''. Se uma rede
 neural trabalha com dados de dimensões $d0 \times d1 \times ... \times C$
-podem-se agrupar “B” exemplos em
+podem-se agrupar $B$ exemplos em
 um único tensor, com dimensões $B \times d0 \times d1 \times ... \times C$.
 As camadas convolucionais tratam cada uma das imagens separadamente,
 conforme já foi descrito, e emite na sua saída um
-único tensor que também usa uma dimensão adicional para agrupar as diferentes
-imagens.
+único tensor com dimensões $B \times d0 \times d1 \times ... \times D$, sendo
+$D$ a profundidade da camada. A figura \ref{fig:cap2_conv_block} ilustra as
+entradas e saídas de uma camada convolucional usando lotes e profundidade.
 
-O valor de B não é um hiperparâmetro, mas sim um parâmetro de treinamento.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.6]{cap2_conv_block.png}
+	\caption{Convolução com múltiplos filtros e entrada em lote}
+	\label{fig:cap2_conv_block}
+	Diagrama de uma camada convolucional de profundidade $D$ sendo aplicada em
+	um lote contendo $B$ imagens. Ilustração não inclui \emph{bias}
+	(próprio autor).
+\end{figure}
 
 \subsection{Pooling}
 Após a aplicação de uma camada convolucional pode-se aplicar uma camada de
 \emph{pooling}, que é uma forma de subamostragem. A figura
-\ref{fig:ex_maxpool} ilustra uma operação de \emph{maxpool}, que é um tipo de
-\emph{pooling}.
+\ref{fig:ex_maxpool} ilustra um dos tipos de \emph{pooling}, denominado
+\emph{maxpool}.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=0.7]{ex_maxpool.png}
+	\includegraphics[scale=0.6]{ex_maxpool.png}
 	\caption{Exemplo de \emph{maxpool} $2 \times 2$}
 	\label{fig:ex_maxpool}
 	Ilustração de uma operação \emph{maxpool} $2 \times 2$ aplicado usando
@@ -517,8 +540,8 @@ da convolução, número de filtros e de camadas precisam ser escolhidos mediant
 decisões de meta de precisão e \emph{recall}, tempo para classificação e
 complexidade dos conceitos a serem aprendidos.
 
-As redes neurais convolucionais resolvem todos esses problemas simultaneamente.
-O primeiro ponto é a preservação da geometria da imagem. Se uma imagem de 50
+Para que seja possível usar convoluções é preciso preservar a
+geometria dos dados. Se uma imagem de 50
 \emph{pixels} de altura por 100 \emph{pixels} de largura contendo 3 canais de
 cor for usado na
 entrada de uma rede neural convolucional, ela precisa ser representada por um
@@ -527,7 +550,7 @@ permite alimentar a rede neural com um lote de 32 imagens.
 
 Para aplicar uma camada convolucional à imagem de entrada escolhe-se o tamanho
 da convolução, o número de filtros e o modo de operação nas bordas. A figura
-\ref{fig:ex_cnn_img} ilustra um filtro 33 sendo aplicado a uma imagem
+\ref{fig:ex_cnn_img} ilustra um filtro $3 \times 3$ sendo aplicado a uma imagem
 \sigla{RGB}{\emph{Red, green, blue}, vermelho, verde, vermelho}.
 
 \begin{figure}[!htb]
@@ -545,13 +568,13 @@ da convolução, o número de filtros e o modo de operação nas bordas. A figur
 \end{figure}
 
 Para que o filtro tenha profundidade 64, por exemplo, o tensor que define o
-filtro será $64 \times 3 \times 3 \times 3$ e o tensor resultante da
+filtro será $3 \times 3 \times 3 \times 64$ e o tensor resultante da
 convolução será $32 \times 40 \times 120 \times 64$,
 considerando que seja usado preenchimento nas bordas.
 
-Para finalizar a camada convolucional adiciona-se um bias. Para isso usa-se um
-escalar para cada uma das 64 imagens resultantes. O tensor que define os bias é
-um tensor unidimensional com tamanho 64.
+Para finalizar a camada convolucional adiciona-se um \emph{bias}. Para
+isso usa-se um escalar para cada uma das 64 imagens resultantes. O
+tensor que define os \emph{bias} é um tensor unidimensional com tamanho 64.
 
 Camadas \emph{maxpool} e ReLu podem ser adicionadas para reduzir as
 dimensões da imagem ou aumentar a sua não-linearidade. A figura
@@ -595,11 +618,12 @@ Podem ser representados como uma convolução $1 \times 1$. Visto que as
 convoluções são implementadas de forma bastante eficientes nas bibliotecas
 de redes neurais convolucionais, algumas vezes até usando aceleração por
 hardware, então não necessariamente haverá economia durante a execução
-durante a execução da rede neural, pois, no pior caso, ela mesma pode fazer
+durante a execução da rede neural, pois, no pior caso, quando a cor não
+é útil, a CNN pode fazer
 essa conversão de forma eficiente, sendo que os coeficientes associados
 à cada canal, que no exemplo da equação \ref{eq:rgb2gray} são fixos, podem
-treinados pelo otimizador, potencialmente obtendo uma conversão mais apropriada
-para a rede neural.
+escolhidos pelo otimizador, potencialmente obtendo uma conversão mais
+apropriada para o caso específico onde a rede neural está sendo aplicada.
 
 Outro ponto é que os sistemas que representam o atual
 estado-da-arte para reconhecimento de imagem, como \cite{szegedy2015going}
@@ -620,7 +644,7 @@ permite que a rede neural seja treinada e, após o treinamento, estime a
 probabilidade da sua entrada pertencer a cada uma de N classes. A rede neural é
 implementada usando $N$ saídas, de forma que cada saída é treinada para
 representar a probabilidade da entrada ser classificada em em uma das classes.
-Uma saída \emph{softmax} realiza uma normalização das saídas da rede neural,
+Uma camada \emph{softmax} realiza uma normalização das saídas da rede neural,
 usando a equação:
 
 \begin{equation}
@@ -654,17 +678,18 @@ otimizador é a função \emph{cross entropy}:
 Onde $y_i$ é o valor da probabilidade manualmente
 marcadas de uma imagem pertencer à classe $i$ (no caso, a probabilidade de ser
 uma imagem que contém o objeto e a probabilidade não conter) e $\widehat{y_i}$
-é o valor estimado pela rede neural. $H$ é o valor estimado de
+é o valor estimado pela rede neural. $\widehat{H}$ é o valor estimado de
 \emph{cross entropy}.
 
-Quando têm-se o objeto desejado centrado na imagem, ou o objeto não consta
-em lugar nenhum da imagem usa-se os valores $0$ e $1$ para rotular os exemplos.
+Quando têm-se o objeto desejado centrado na imagem a saída ``presente`` deve
+ser 1 e a outra saída 0. Quando o objeto não é visível em lugar nenhum no campo
+visual da rede neural os valores devem ser invertidos.
 Os casos onde o objeto está visível apenas parcialmente deve ser considerado
 cuidadosamente, produzindo valores intermediários nos rótulos, para evitar que
 duas imagens parecidas gerem valores muito diferentes na saída da rede neural.
 
 As redes neurais também podem ser usadas para fazer regressão, ou seja, modelar
-uma função. A forma mais óbvia de implementação é a regressão L2. Neste tipo de
+uma função. Uma forma usual de implementação é a regressão L2. Neste tipo de
 função o otimizador vai minimizar o erro quadrático:
 
 \begin{equation}
@@ -697,14 +722,21 @@ pesos vai gerar um erro muito grande.
 Até agora foi mostrado como usar redes neurais convolucionais para detectar um
 objeto em uma imagem. Isso envolve apenas determinar se uma imagem possui ou não
 o objeto de interesse. Localização, ao contrário, requer a determinação das
-coordenadas do objeto.
+coordenadas do objeto. Em alguns casos pode requerer o cálculo do retângulo
+envolvente mínimo ou até da curva de perímetro do objeto.
 
 Um sistema de localização pode ser construído a partir de um sistema de
 detecção. A abordagem mais simples para isso envolve construir um sistema capaz
 de detectar o objeto de interesse e aplicar este
 detector à imagem várias vezes a imagem usando ``janelas deslizantes''.
-Se o detector for construído para produzir “1” quando detectar o objeto e
-“0” então os pontos de máxima são candidatos a centros dos objetos.
+Se o detector for construído para produzir ``1'' quando detectar o objeto e
+“0” caso contrário, então os pontos de máxima são candidatos a centros dos
+objetos.
+
+Se os objetos puderem variar muito em tamanho pode ser necessário o uso de
+técnica de aplicação multi escala, onde a janela deslizante também é aplicada a
+versões reduzidas da imagem. Caso o objeto procurado varie pouco em tamanho
+isso não é necessário.
 
 Como cada \emph{pixel} da imagem é candidato a centro do objeto que está sendo
 localizado, deve-se aplicar o filtro uma vez para cada \emph{pixel}. Se não
