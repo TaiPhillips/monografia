@@ -51,7 +51,7 @@ implementado por completo três vezes, sendo que só produziu resultados
 satisfatórios na última.
 
 A ideia inicial para este projeto era o uso de redes neurais não-convolucionais
-aplicadas diretamente aos pixels das imagens. Para tal foi escolhida a
+aplicadas diretamente aos \emph{pixels} das imagens. Para tal foi escolhida a
 biblioteca \emph{neuroph}, devido à familiaridade e ao uso da linguagem Java. A
 solução foi totalmente implementada conforme arquitetura ilustrada na figura
 \ref{fig:cap5_arquit_global}.
@@ -368,12 +368,12 @@ $40 \times 120$ centrada na placa do veículo, como ilustrado na figura
 	\includegraphics{cap5_regiao_coleta_amostras.png}
 	\caption{Região onde amostras são coletadas}
 	\label{fig:cap5_regiao_coleta_amostras}
-	Esta região delimita os centros das partições, então pixels fora dessa
-	região são coletados. Partições centrados dentro da região delimitada são
-	coletados de 4 em 4 pixels, sendo que cada uma dessas regiões é deslocada 2
-	pixels para a direita ou para a esquerda. Em verde estão marcados três
-	pontos, a, b e c, que serão atribuídos respectivamente aos rótulos 0,
-	$^1/_2$ e 1 (próprio autor).
+	Esta região delimita os centros das partições, então \emph{pixels} fora
+	dessa região são coletados. Partições centrados dentro da região delimitada
+	são coletados de 4 em 4 \emph{pixels}, sendo que cada uma dessas regiões é
+	deslocada 2 \emph{pixels} para a direita ou para a esquerda. Em verde estão
+	marcados três pontos, a, b e c, que serão atribuídos respectivamente aos
+	rótulos 0, $^1/_2$ e 1 (próprio autor).
 \end{figure}
 
 A região delimitada é exatamente a região na qual o valor é não-zero. O ponto
@@ -403,22 +403,21 @@ sendo um exemplo muito parecido, como ilustrado na figura
 	\includegraphics{cap5_coleta_negativa_igual.png}
 	\caption{Exemplo de duas regiões iguais em frames diferentes}
 	\label{fig:cap5_coleta_negativa_igual}
-	As regiões possuem as mesmas coordenadas, e contém pixels de fundo da
-	imagem (próprio autor).
+	As regiões possuem as mesmas coordenadas, e contém \emph{pixels} de fundo
+	da imagem (próprio autor).
 \end{figure}
 
 Por este motivo o software mantém as últimas 100 \emph{frames} processadas.
 Quando um “exemplo negativo” vai ser coletado em uma região a imagem é
-comparada com os
-pixels da mesma região nestas frames que foram armazenadas. O critério de
-comparação é:
+comparada com os \emph{pixels} da mesma região nestas \emph{frames} que foram
+armazenadas. O critério de comparação é:
 
 \begin{equation}
 	d_C=\frac{1}{N} \sum_{n=1}^N \sqrt{\left| R_C [n] -I_C [n] \right|}
 \end{equation}
 
 Onde $R_C[n]$ é o valor do canal de cor “C” do n-ésimo píxel da partição de
-referência, e $I_C[n]$ é o mesmo canal do n-ésimo pixel da
+referência, e $I_C[n]$ é o mesmo canal do n-ésimo \emph{pixel} da
 partição que está sendo testada. Quando o valor da média dessa métrica
 para os três canais é menor que $\sqrt{8}$ as imagens são consideradas
 semelhantes, e a amostra é recusada. Foram
@@ -432,8 +431,8 @@ Observa-se que o asfalto não está sendo coletado.
 A segunda otimização foi a distância entre duas amostras negativas. Duas
 amostras muito próximas tem pouco valor para treinamento da rede neural devido
 à invariância a deslocamento. Por isso, para uma amostra ser aceita como
-“exemplo negativo” ela precisa estar a mais de 4 pixels de todos os outros
-exemplos coletados.
+“exemplo negativo” ela precisa estar a mais de 4 \emph{pixels} de todos os
+outros exemplos coletados.
 
 A terceira otimização foi o processo de escolha das coordenadas onde os
 exemplos são coletados. Inicialmente usava-se um grid regular, mas essa
@@ -740,10 +739,10 @@ do software e os seus resultados.
 Como o método de localização proposto é aproximado, a abordagem para teste de
 desempenho é baseada na contagem de placas corretamente ou
 incorretamente localizadas. Para que uma placa seja considerada corretamente
-localizada basta que ela esteja a menos de 60 pixels de distância na largura e
-menos de 20 pixels na altura. Estes limites foram escolhidos por serem metade
-do tamanho das partições, que representa a distância na qual a função que está
-sendo modelada pela rede neural deve ir à zero.
+localizada basta que ela esteja a menos de 60 \emph{pixels} de distância na
+largura e menos de 20 \emph{pixels} na altura. Estes limites foram escolhidos
+por serem metade do tamanho das partições, que representa a distância na qual
+a função que está sendo modelada pela rede neural deve ir à zero.
 	
 Para a medição de desempenho serão usadas as métricas \emph{precision}
 (equação \ref{eq:precision}) e \emph{recall} (equação \ref{eq:recall}).
@@ -916,7 +915,8 @@ tenta balancear a quantidade de exemplos positivos e negativos.
 Como o método proposto envolve fazer a regressão de uma função, as primeiras
 medições aqui apresentadas estão mostrando o resultado desse modelamento. As
 figuras \ref{fig:cap5_res_func_1} e \ref{fig:cap5_res_func_2} mostram 3 carros,
-uma moto e um ônibus, sendo que o classificador foi aplicado pixel-a-pixel na
+uma moto e um ônibus, sendo que o classificador foi aplicado
+\emph{pixel}-a-\emph{pixel} na
 região próxima da placa, e o seu valor representado em um gráfico 3D. Este
 gráfico pode ser comparado com o gráfico mostrado na figura
 \ref{fig:func_a_modelar_3d}, que mostra o gráfico ideal.
@@ -937,7 +937,7 @@ A capacidade de produzir estes gráficos foi incluído no software
 	visível, outra com imagem com perda resultante de compactação, e um
 	terceiro em posição, e cores diferentes, inclusive usando letras mais
 	claras que o frame da placa. O gráfico mostra o resultado do classificador
-	quando ele está centrada em cada um dos pixels próximo à placa.
+	quando ele está centrada em cada um dos \emph{pixels} próximo à placa.
 	As abiscissas referem-se as coordenadas do canto superior-esquerdo da
 	partição, não ao seu centro (próprio autor).
 \end{figure}

@@ -257,7 +257,7 @@ figura \ref{fig:ex_conv_2d}.
 	da entrada precisam ser iguais, no caso 2. As dimensões $3 \times 3$ do
 	filtro foram escolhidas arbitrariamente. O símbolo do círculo na imagem
 	representa um produto interno. A imagem de saída foi gerada deslocando
-	a seleção de pixel a pixel até cobrir toda a
+	a seleção de \emph{pixel} a \emph{pixel} até cobrir toda a
 	imagem de entrada. Como as bordas não foram estendidas, a imagem
 	resultante é menor que a de entrada (próprio autor).
 \end{figure}
@@ -291,17 +291,17 @@ A opção de extensão de borda é um hiperparâmetro.
 Ao se aplicar o filtro de convolução no tensor de entrada pode-se movê-lo de
 posição a posição, até cobrir todos os locais válidos em cada direção, como
 ilustrado na figura \ref{fig:ex_conv_2d}, ou pode-se desejar aplicar a cada
-``$n_0$'' pixels em uma direção, ``$n_1$'' pixels em outra direção, e assim
-por diante.  Esta opção é denominada \emph{stride}.
+``$n_0$'' \emph{pixels} em uma direção, ``$n_1$'' \emph{pixels} em outra
+direção, e assim por diante.  Esta opção é denominada \emph{stride}.
 
 Quando uma camada convolucional possui como entrada um tensor de dimensões
 $d1\times d2 \times ... \times dj \times C$, o \emph{stride} é definido como
 sendo um tensor unidimensional de tamanho j.
 O \emph{stride} $[1,2,1]$, por exemplo, indica que na primeira dimensão o
 filtro será aplicado em todas as posições válidas, na segunda dimensão será
-aplicado a cada 2 pixels e na terceira será aplicada novamente em todas as
-posições válidas. \emph{Stride} maior que 1 causa redução no tamanho do
-tensor de saída.
+aplicado a cada 2 \emph{pixels} e na terceira será aplicada novamente em
+todas as posições válidas. \emph{Stride} maior que 1 causa redução no
+tamanho do tensor de saída.
 
 Se um \emph{stride} $2 \times 2$ fosse aplicado na convolução da figura
 \ref{fig:ex_conv_2d} a imagem de saída seria $2 \times 2$.
@@ -361,8 +361,8 @@ Após a aplicação de uma camada convolucional pode-se aplicar uma camada de
 	\caption{Exemplo de \emph{maxpool} $2 \times 2$}
 	\label{fig:ex_maxpool}
 	Ilustração de uma operação \emph{maxpool} $2 \times 2$ aplicado usando
-	\emph{stride} $2 \times 2$. O filtro move de dois em dois pixels e possui
-	tamanho 2 em cada dimensão (próprio autor).
+	\emph{stride} $2 \times 2$. O filtro move de dois em dois \emph{pixels}
+	e possui tamanho 2 em cada dimensão (próprio autor).
 \end{figure}
 
 Esta operação possui como parâmetros o tamanho do filtro, o \emph{stride} e
@@ -460,7 +460,7 @@ $H \cdot W \cdot C \times 1$.
 
 O uso de camadas totalmente conectadas é proibitivo para classificação de
 imagens desta maneira. Se uma rede neural for usada para processar imagens de 1
-megapixel, ou $720 \times 1280$, e a primeira camada possuir um
+\emph{megapixel}, ou $720 \times 1280$, e a primeira camada possuir um
 número de neurônios igual
 ao número de neurônios da camada de entrada, a matriz de pesos teria
 $(720 \cdot 1280 \cdot 3)^2 \approx 7.6 \cdot 10^{12}$ parâmetros. Se for
@@ -479,7 +479,8 @@ aparecer, e fazer isso para todas as \emph{features}.
 
 Como a primeira operação feita foi converter a imagem para um formato “plano”, a
 geometria da imagem foi destruída. Não é mais possível determinar quando dois
-pixels estão próximos, e essa é uma informação muito importante sobre a imagem.
+\emph{pixels} estão próximos, e essa é uma informação muito importante sobre a
+imagem.
 
 \subsection{Uso de descritores}
 Uma das abordagens possíveis para reconhecimento e detecção de imagens é o uso
@@ -506,8 +507,8 @@ envolvendo correlação entre múltiplas características, o descritor e o
 classificador precisam ser escolhidos especificamente para isso.
 
 \subsection{Redes Neurais Convolucionais em Imagens}
-As redes neurais convolucionais operam diretamente nos pixels da imagem, não
-sendo necessário escolher um descritor, e não possuem os problemas que as
+As redes neurais convolucionais operam diretamente nos \emph{pixels} da imagem,
+não sendo necessário escolher um descritor, e não possuem os problemas que as
 redes não-convolucionais possuem. As camadas convolucionais se comportam como
 descritores, porém os parâmetros são aprendidos como parte do processo de
 treinamento, portanto são otimizados para responderem precisamente para os
@@ -518,7 +519,8 @@ complexidade dos conceitos a serem aprendidos.
 
 As redes neurais convolucionais resolvem todos esses problemas simultaneamente.
 O primeiro ponto é a preservação da geometria da imagem. Se uma imagem de 50
-pixels de altura por 100 pixels de largura contendo 3 canais de cor for usado na
+\emph{pixels} de altura por 100 \emph{pixels} de largura contendo 3 canais de
+cor for usado na
 entrada de uma rede neural convolucional, ela precisa ser representada por um
 tensor apropriado, como $32 \times 50 \times 100 \times 3$. Este tensor
 permite alimentar a rede neural com um lote de 32 imagens.
@@ -704,6 +706,8 @@ detector à imagem várias vezes a imagem usando ``janelas deslizantes''.
 Se o detector for construído para produzir “1” quando detectar o objeto e
 “0” então os pontos de máxima são candidatos a centros dos objetos.
 
-Como cada pixel da imagem é candidato a centro do objeto que está sendo
-localizado, deve-se aplicar o filtro uma vez para cada pixel. Se não houver
-extensão de bordas, o filtro não pode ser aplicado em parte dos pixels.
+Como cada \emph{pixel} da imagem é candidato a centro do objeto que está sendo
+localizado, deve-se aplicar o filtro uma vez para cada \emph{pixel}. Se não
+houver extensão de bordas, o filtro não pode ser aplicado em parte dos
+\emph{pixels}.
+

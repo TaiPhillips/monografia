@@ -21,7 +21,7 @@ vídeo geram tensores do mesmo tamanho.
 
 O processo “fatiamento” toma como entrada uma \emph{frame} do vídeo e gera
 múltiplas sub imagens aqui denominadas “partições”, geradas através de um
-recorte retangular de pixels contíguos. As partições têm dimensões
+recorte retangular de \emph{pixels} contíguos. As partições têm dimensões
 compatíveis com a rede neural que será usada no passo seguinte.
 
 A etapa denominada “detecção” é, mais especificamente, uma rede neural
@@ -56,8 +56,8 @@ o tamanho do seu “campo visual”.
 	Em (a) a partição possui um grande campo visual, porém tem baixa precisão.
 	Em (b) há um campo visual muito pequeno para permitir que a rede neural
 	opere corretamente. A terceira é apropriada, pois é relativamente pequena e
-	inclui a placa inteira e vários pixels adicionais, permitindo que a rede
-	neural aprenda o contraste entre placa e o fundo (próprio autor).
+	inclui a placa inteira e vários \emph{pixels} adicionais, permitindo que a
+	rede neural aprenda o contraste entre placa e o fundo (próprio autor).
 \end{figure}
 
 Quanto maior o campo visual da rede neural, mais dados ela vai ter para
@@ -92,10 +92,10 @@ localizador. Uma implementação ingênua desta abordagem seria treinar o detect
 para detectar placas de trânsito que estejam centradas na sua entrada e aplicar
 este detector como descrito na sessão \ref{sec:localiz_objetos}, usando
 \emph{stride} $1 \times 1$.  Isso iria requerer aplicar a rede neural centrada
-em cada pixel da imagem. Se for feita a aplicação de um detector com campo
-visual $D_1 \times D_2$ em uma \emph{frame} com dimensões $F_1 \times F_2$
-com \emph{stride} $1 \times 1$ sem estender as bordas pode-se demonstrar que
-o detector terá que ser aplicado $N$ vezes, onde:
+em cada \emph{pixel} da imagem. Se for feita a aplicação de um detector com
+campo visual $D_1 \times D_2$ em uma \emph{frame} com dimensões $F_1 \times
+F_2$ com \emph{stride} $1 \times 1$ sem estender as bordas pode-se demonstrar
+que o detector terá que ser aplicado $N$ vezes, onde:
 
 \begin{equation}
 	N = (F_1 - D_1 + 1) \cdot (F_2 - D_2 + 1)
