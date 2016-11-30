@@ -236,7 +236,7 @@ nome de um arquivo de vídeo como parâmetro. Ele permite:
 \begin{enumerate}
 \item Reproduzir o vídeo;
 \item Pausar a reprodução do vídeo
-\item Avançar / voltar frame-a-frame;
+\item Avançar / voltar \emph{frame-a-frame};
 \item Saltar para uma \emph{frame} digitando-se o número dela;
 \item Quando o vídeo está em pausa, permite clicar no vídeo para adicionar um
 	marcador de placa;
@@ -336,11 +336,11 @@ terminando sem intervenção do usuário quando a geração do conjunto de
 treinamento está concluída. A interface gráfica está ilustrada na figura
 \ref{fig:cap5_tela_gerador}
 
-O conjunto de treinamento é armazenado em formato binário contendo registros de
+O conjunto de treinamento é armazenado em formato binário com registros de
 tamanho fixo. Cada registro contém a imagem seguida de um rótulo. A
 imagem é codificada no formato HWC usando 1 byte por canal de cor,
 sendo a cor na ordem RGB. O rótulo representa o valor que a rede neural
-deve aprender (número ponto-flutuange de 0 à 1), mas é codificado como um
+deve aprender (número ponto-flutuante de 0 à 1), mas é codificado como um
 inteiro de
 8 bits sem sinal.  Como a imagem é $40 \times 120 \times 3$ e o rótulo
 tem 1 byte, então cada registro possui 14401 bytes.
@@ -348,9 +348,9 @@ tem 1 byte, então cada registro possui 14401 bytes.
 Este \emph{software} lê a lista de \emph{frames} marcadas em uma ordem
 aleatória. Então vai coletar exemplos de placas veiculares centradas e fora
 de centro e exemplos de imagens que não contém placas, e vai salvá-las no
-arquivo de saída. A cada um dos exemplos de treinamento este \emph{software}
-também salva um número que é o valor da função que a rede neural deve
-produzir para esta placa, conforme equação \ref{eq:funcao_a_modelar}.
+arquivo de saída. O rótulo que vai ser salvo com a imagem é o resultado da
+equação \ref{eq:funcao_a_modelar}, que a rede neural precisa aprender a
+reproduzir a partir dos dados dos pixels.
 
 Tomando uma placa nas coordenadas $y \times x$, o \emph{software} primeiro gera
 um recorte centrado nessas coordenadas e com o tamanho $40 \times 120$. Este
@@ -361,9 +361,9 @@ Para obter os exemplos de placas não centralizadas são coletados recortes
 com dimensões $40 \times 120$ de
 aproximadamente 4 em 4 \emph{pixels} dentro de uma região próxima da placa. O
 algoritmo avança precisamente na taxa de 4 \emph{pixels}, porém adiciona um
-número aleatório de -2 à 2 em cada um deles. Isso tem como objetivo evitar de
-fornecer dados muito regulares para a rede neural para evitar que ela
-aprenda algum truque relacionado à este padrão de distância. A região onde
+número aleatório de -2 à 2 em cada um deles. Isso tem como objetivo evitar
+fornecer dados muito regulares para a rede neural para impedir que ela
+infira alguma regra relacionada a essa regularidade. A região onde
 coleta-se estes exemplos é tal que o centro fica dentro de uma região
 $40 \times 120$ centrada na placa do veículo, como ilustrado na figura
 \ref{fig:cap5_regiao_coleta_amostras}.
@@ -374,14 +374,20 @@ $40 \times 120$ centrada na placa do veículo, como ilustrado na figura
 	\caption{Região onde amostras são coletadas}
 	\label{fig:cap5_regiao_coleta_amostras}
 	Esta região delimita os centros das partições, então \emph{pixels} fora
-	dessa região são coletados. Partições centrados dentro da região delimitada
+	dela podem ser coletados. Partições centradas dentro da região delimitada
 	são coletados de 4 em 4 \emph{pixels}, sendo que cada uma dessas regiões é
 	deslocada 2 \emph{pixels} para a direita ou para a esquerda. Em verde estão
 	marcados três pontos, a, b e c, que serão atribuídos respectivamente aos
-	rótulos 0, $^1/_2$ e 1 (próprio autor).
+	rótulos 0, $^1/_2$ e 1 por estarem respectivamente a uma distância
+	normalizada de $^1/_2$, $^3/_8$ (meio do caminho) e $^1/_4$
+	(próprio autor).
 \end{figure}
 
-A região delimitada é exatamente a região na qual o valor é não-zero. O ponto
+Quando o centro de uma placa veicular está localizada dentro da região
+delimitada a função vai produzir valores maiores que zero. Quando o centro da
+placa está fora dessa região a função vai vai produzir valor zero. Por mais que
+alguns pixels da placa estejam dentro desta partição, a partição vizinha possui
+mais pixels da mesma placa. O ponto
 (c) na figura \ref{fig:cap5_regiao_coleta_amostras} mostra o limiar que está
 a $^1/_4$ de distância do centro na direção da largura. Neste ponto a função
 começa a decair de 1 para 0 (que são codificados como 255 e 0). O ponto (a)
@@ -389,10 +395,10 @@ começa a decair de 1 para 0 (que são codificados como 255 e 0). O ponto (a)
 meio do caminho, possuindo o valor 0,5 (codificado como 128).
 
 Após coletar os exemplos de placas contidas na região acima indicada ocorre a
-coleta de imagens fora da região, denominada coleta de “exemplos negativos”. A
-todos os exemplos coletados dessa maneira é atribuído o rótulo 0.
+coleta de imagens fora da região, denominada coleta de ``exemplos negativos''.
+A todos os exemplos coletados dessa maneira é atribuído o rótulo 0.
 
-O algorítmo que coleta esses exemplos passou por vários aprimoramentos. A
+O algoritmo que coleta esses exemplos passou por vários aprimoramentos. A
 versão final, que vai ser descrita, melhorou consideravelmente o desempenho do
 treinamento comparado com as versões iniciais.
 
@@ -406,14 +412,14 @@ sendo um exemplo muito parecido, como ilustrado na figura
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{cap5_coleta_negativa_igual.png}
-	\caption{Exemplo de duas regiões iguais em frames diferentes}
+	\caption{Exemplo de duas regiões iguais em \emph{frames} diferentes}
 	\label{fig:cap5_coleta_negativa_igual}
 	As regiões possuem as mesmas coordenadas, e contém \emph{pixels} de fundo
 	da imagem (próprio autor).
 \end{figure}
 
 Por este motivo o \emph{software} mantém as últimas 100 \emph{frames} processadas.
-Quando um “exemplo negativo” vai ser coletado em uma região a imagem é
+Quando um ``exemplo negativo'' vai ser coletado em uma região a imagem é
 comparada com os \emph{pixels} da mesma região nestas \emph{frames} que foram
 armazenadas. O critério de comparação é:
 
@@ -421,7 +427,7 @@ armazenadas. O critério de comparação é:
 	d_C=\frac{1}{N} \sum_{n=1}^N \sqrt{\left| R_C [n] -I_C [n] \right|}
 \end{equation}
 
-Onde $R_C[n]$ é o valor do canal de cor “C” do n-ésimo píxel da partição de
+Onde $R_C[n]$ é o valor do canal de cor ``C'' do n-ésimo píxel da partição de
 referência, e $I_C[n]$ é o mesmo canal do n-ésimo \emph{pixel} da
 partição que está sendo testada. Quando o valor da média dessa métrica
 para os três canais é menor que $\sqrt{8}$ as imagens são consideradas
@@ -436,7 +442,7 @@ Observa-se que o asfalto não está sendo coletado.
 A segunda otimização foi a distância entre duas amostras negativas. Duas
 amostras muito próximas tem pouco valor para treinamento da rede neural devido
 à invariância a deslocamento. Por isso, para uma amostra ser aceita como
-“exemplo negativo” ela precisa estar a mais de 4 \emph{pixels} de todos os
+``exemplo negativo'' ela precisa estar a mais de 4 \emph{pixels} de todos os
 outros exemplos coletados.
 
 A terceira otimização foi o processo de escolha das coordenadas onde os
@@ -444,7 +450,8 @@ exemplos são coletados. Inicialmente usava-se um grid regular, mas essa
 abordagem acabava coletando uma quantidade muito grande de exemplos negativos.
 
 Como isso a rede neural acabava aprendendo a favorecer valores negativos, pois
-errar “para mais” acabava sendo punido mais severamente que errar “para menos”
+errar ``para mais'' acabava sendo punido mais severamente que errar ``para
+menos''
 durante a otimização. Para poder balancear a quantidade de exemplos negativos e
 positivos foi necessário substituir o grid linear, já que ele favorecia coletar
 exemplos negativos na parte superior da imagem, pois a coleta terminava antes
@@ -452,11 +459,12 @@ da imagem chegar na parte inferior.
 
 Para resolver isso foi adotado um processo que escolhe coordenadas usando uma
 distribuição uniforme e testa se nas coordenadas existe um exemplo negativo
-válido. Infelizmente este algoritmo é $O(\infty)$ no pior caso. Por isso um
-novo algoritmo de busca
-que tem probabilidade próxima de uniforme para a busca, vai sempre encontrar
-todas as soluções, e sempre termina precisou ser criado. Este algoritmo é uma
-modificação do BFS (\emph{breadth-first search}), no no qual a ordem na
+válido, repetindo este processo até encontrar o número desejado de amostras.
+Infelizmente este algoritmo é $O(\infty)$ no pior caso. Por isso um
+novo algoritmo de busca que tenha probabilidade próxima de uniforme, encontre
+todas as soluções, e sempre termine precisou ser criado. Este algoritmo é uma
+modificação do \sigla{BFS}{\emph{Breadth-first search}, busca em largura}
+(\emph{breadth-first search}), no no qual a ordem na
 qual a busca é adicionada à pilha é aleatória. O algoritmo pega
 de uma pilha uma região
 retangular na qual deve encontrar pontos válidos e usa um gerador aleatório
@@ -486,13 +494,14 @@ continua.
 	\label{tbl:ex_marc_videos}
 \end{table}
 
-Um script escrito em bash foi escrito partir um arquivo destes em arquivos
-menores, contendo 128 amostras cada. Isso gerou 630 arquivos a partir de
-\emph{video1.nn1.bin} e 240 arquivos a partir de \emph{video2.nn1.bin}.
+Um \emph{script} em \emph{Bash} foi escrito para partir um arquivo destes em
+arquivos menores, contendo aproximadamente 128 amostras cada. Isso gerou
+699 arquivos a partir de \emph{video1.nn1.bin} e 504 arquivos a partir de
+\emph{video2.nn1.bin}.
 
-Finalmente, um diretório foi criado contendo links simbólicos para todos os 869
-arquivos. Este diretório é o resultado final da geração de exemplos, e contém
-todas as amostras coletadas de todos os vídeos.
+Finalmente, um diretório foi criado contendo links simbólicos para todos os
+1203 arquivos. Este diretório é o resultado final da geração de exemplos,
+e contém todas as amostras coletadas de todos os vídeos.
 
 \subsection{Treinador}
 
@@ -509,8 +518,8 @@ O treinador é um módulo de \emph{software} onde se configura uma topologia de 
 neural convolucional, que é treinada usando os dados produzidos pelo gerador de
 dados de treinamento.
 
-Para realizar o treinamento tanto da rede neural um grafo apresentado na figura
-\ref{fig:cap5_grafo_treinamento} foi construído.
+Para realizar o treinamento da rede neural o grafo apresentado na figura
+\ref{fig:cap5_grafo_treinamento} foi construído no \emph{TensorFlow}.
 
 \begin{figure}[!htb]
 	\centering
@@ -518,13 +527,13 @@ Para realizar o treinamento tanto da rede neural um grafo apresentado na figura
 	\caption{Grafo usado para treinamento da rede neural convolucional}
 	\label{fig:cap5_grafo_treinamento}
 	Esta imagem mostra o grafo do \emph{TensorFlow} usado para treinar
-	a rede neural, que é o bloco \emph{NN1} (próprio autor).
+	a rede neural, designada ``NN1'' (próprio autor).
 \end{figure}
 
-O bloco “FileRead” possui uma lista com todos os arquivos de treinamento
+O bloco ``FileRead'' possui uma lista com todos os arquivos de treinamento
 gerados pelo gerador de exemplos de treinamento. Essa lista é embaralhada, e
-então cada um dos registros é lido em sequência. A imagem é representada por um
-tensor de inteiros de 8 bits com dimensões $40 \times 120 \times 3$, e o
+então cada um dos registros é lido em sequência. Cada imagem é representada por
+um tensor de inteiros de 8 bits com dimensões $40 \times 120 \times 3$, e o
 rótulo da imagem é representado com um tensor unidimensional com dimensão $1$.
 
 Como a rede neural está sendo treinada usando apenas dois vídeos existe o risco
@@ -532,11 +541,11 @@ da rede neural treinada fique muito sensível a fatores como a iluminação. Par
 impedir que isso aconteça as imagens são distorcidas durante o treinamento no
 bloco de distorções, que está ilustrado na figura \ref{fig:cap5_distorcao}.
 A imagem é convertida para ponto-flutuante com canais no intervalo $[0;1]$,
-conforme requerido pelos primitivos do próprio \emph{TensorFlow}.
-No final das distorções a imagem é convertida
+conforme requerido pelas funções de processamento de imagem do
+\emph{TensorFlow}.  No final das distorções a imagem é convertida
 novamente para inteiro de 8 bits por canal. O motivo para isso é fazer com o
-que o bloco “NN1”, que implementa a rede neural seja o mais otimizado possível
-para classificar imagens, não tanto para treinamento.
+que o bloco ``NN1'', que implementa a rede neural seja o mais otimizado
+possível para classificar imagens, não tanto para treinamento.
 
 \begin{figure}[!htb]
 	\centering
@@ -544,70 +553,73 @@ para classificar imagens, não tanto para treinamento.
 	\caption{\emph{Pipeline} de distorção de imagens}
 	\label{fig:cap5_distorcao}
 	A imagem é convertida para ponto-flutuante com cada canal no intervalo
-	$[0;1]$, é adicionado ruído normal, a saturação, brilho e contraste são
-	alterados conforme uma distribuição normal. O número é então convertido
+	$[0;1]$, é adicionado ruído normal e a saturação, brilho e contraste são
+	alterados conforme uma distribuição uniforme. A imagem é então convertida
 	novamente para inteiro de 8 bits por canal (próprio autor).
 \end{figure}
 
-O bloco “Noise” adiciona ruído normal à imagem somando-a com um tensor com as
-mesmas dimensões onde o valor de cada canal é gerado por uma distribuição
-normal de média 0 e desvio padrão 0,06.
+O bloco ``\emph{Noise}'' adiciona ruído normal à imagem somando-a com um
+tensor com as mesmas dimensões onde o valor de cada canal é gerado por
+uma distribuição normal de média 0 e desvio padrão 0,06.
 
-O bloco “Saturation” altera a saturação entre 0,2 a 1,5, sendo que 1 representa
-manter a saturação inalterada. O bloco “Brightness” faz uma alteração no brilho
-aumentando ou diminuindo em até 40\%. O bloco “Contrast” faz uma alteração de
+O bloco ``\emph{Saturation}'' altera a saturação entre 0,2 a 1,5, sendo que 1
+representa manter a saturação inalterada. O bloco ``\emph{Brightness}'' faz
+uma alteração no brilho aumentando ou diminuindo em até 40\%. O bloco
+``\emph{Contrast}'' faz uma alteração de
 contraste entre 0,6 e 1,4, sendo que 1 representa manter o brilho. As escolha
 do valor em todos os casos é aleatória de acordo com distribuição uniforme.
 
 O resultado das distorções, juntamente com o rótulo da imagem são fornecidos
-para o bloco “shuffle\_batch”. Este bloco tem a função de embaralhar os
-dados e agrupar imagens em batches. Este bloco usa 8 threads para consumir
-os dados dos blocos anteriores, o que significa que leitura e shuffling vai
-ocorrer em paralelo. Quando 2560 imagens são lidas elas são embaralhadas
-elas são agrupadas em batches de 256 imagens, gerando tensores com
+para o bloco ``\emph{shuffle\_batch}''. Este bloco tem a função de embaralhar os
+dados e agrupar imagens em lotes. Este bloco usa 8 \emph{threads} para consumir
+os dados dos blocos anteriores, o que significa que leitura e embaralhamento
+vai ocorrer em paralelo. Quando 2560 imagens são lidas elas são embaralhadas
+elas são agrupadas em lotes de 256 imagens, gerando tensores com
 dimensões $256 \times 40 \times 120 \times 3$. Como cada arquivo contém
 128 registros, então as imagens
 sendo lidas contém, no pior caso, uma amostra aleatória proveniente de 20
-arquivos. Os arquivos em sí são lidos em ordem aleatória, o que gera uma
+arquivos. Os arquivos em si são lidos em ordem aleatória, o que gera uma
 amostragem razoavelmente diversa das informações de entrada.
 
-Quanto maior o tamanho do batch maior a precisão da estimativa de erro,
-portanto este número é o maior possível suportado pelo hardware onde o
-treinamento está sendo realizado.
+Quanto maior o tamanho do lote maior a precisão da estimativa de erro.
+A escolha por um lote de 256 imagens foi o maior suportado
+pela GPU usada para treinamento (GTX 750M com 2 GiB de RAM). Ao treinar
+usando CPU valores ainda maiores foram usados.
 
 Se o treinamento for rodado por tempo suficiente, todas as imagens serão
 lidas. Se o treinador precisar de mais exemplos as mesmas imagens serão lidas
 novamente, em ordem diferente. Porém, graças ao sistema de distorção de
-imagens que é parte do pipeline de leitura, uma mesma imagem lida múltiplas
-vezes muito provavelmente não chegará idêntica na rede neural.
+imagens que é parte do pipeline de leitura, uma mesma imagem passará novamente
+pelo pipeline de distorções, efetivamente gerando uma imagem diferente.
 
-Os tensores que saem do shuffler são fornecidos a rede neural, que está no
-bloco “NN1”, que está ilustrado na figura \ref{fig:cap5_cnn}.
+Os tensores que saem do embaralhador (bloco ``\emph{shuffle\_batch}'') são
+fornecidos à rede neural, que está no
+bloco ``NN1'', que está ilustrado na figura \ref{fig:cap5_cnn}.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{cap5_cnn.png}
-	\caption{Pipeline descrevendo a rede neural convolucionao profunda}
+	\caption{Pipeline descrevendo a rede neural convolucional profunda}
 	\label{fig:cap5_cnn}
 	(próprio autor)
 \end{figure}
 
 Pode-se ver pela espessura das linhas que conectam os blocos que a quantidade
 de informação reduz ligeiramente em cada etapa. Como a rede neural precisa
-de um tempo de propagação baixo algumas técnicas foram usadas para
-reduzir o número de computações.
+de um tempo de propagação baixo, por estar operando em vídeo, algumas técnicas
+foram usadas para reduzir o número de computações.
 
 A primeira estratégia é a redução agressiva do tamanho dos tensores nas duas
 primeiras camadas, inspirado em \cite{szegedy2015going}. \emph{Stride} é usado
 para fazer um resampling da imagem. Este método usa mais CPU do que resampling
 por métodos como bilinear, porém permite acesso à textura da imagem original. A
-primeira camada usa um kernel de $2 \times 2$ ao invéz de $3 \times 3$,
+primeira camada usa um \emph{kernel} de $2 \times 2$ ao invés de $3 \times 3$,
 reduzindo o número de multiplicações de 9 para 4.
 
 Não está sendo usada nenhuma convolução maior que $3 \times 3$.
-\cite{szegedy2015going} defende que, pelo menos em alguns casos,
+\citeonline{szegedy2015going} defende que, pelo menos em alguns casos,
 convoluções $5 \times 5$ podem ser substituídas por duas convolução
-sucessivas $3 \times 3$ enquanto reduz o número de
+sucessivas $3 \times 3$, reduzindo o número de
 multiplicações de $25$ para $2 \cdot 9=18$.
 
 \begin{table}
@@ -638,9 +650,10 @@ multiplicações de $25$ para $2 \cdot 9=18$.
 	\label{tbl:camadas_cnn}
 \end{table}
 
-Nas últimas camadas está sendo usado maxpool $2 \times 2$. Esta estratégia é
-computacionalmente mais cara que usar convolução com stride maior que 1, pois
-de cada 4 valores 3 deles são descartados. Como as imagens são menores no final
+Nas últimas camadas está sendo usado \emph{maxpool} $2 \times 2$. Esta
+estratégia é computacionalmente mais cara que usar convolução com
+\emph{stride} maior que 1, pois quatro valores são calculados e 3 deles
+são descartados. Como as imagens são menores no final
 da rede neural optou-se pela operação mais cara. O efeito em tempo de
 propagação é negligenciável, o efeito na qualidade da detecção não foi medido.
 
@@ -648,20 +661,22 @@ Outro ponto importante é o controle do número de graus de liberdade. Os
 primeiros modelos tinham mais de 50.000 graus de liberdade, e este valor foi
 reduzido para 5.242. Menos parâmetros implica várias vantagens, como
 treinamento mais rápido, menos uso de memória, capacidade de usar
-\emph{batches} maiores e menor chance de \emph{overfitting}.
+lotes maiores e menor chance de \emph{overfitting}.
 
-O processo que mais ajudou a aprimorar sucessivamente os hiperparâmetros da
-rede neural foi procurar uma rede neural com menos parâmetros que tenha
-desempenho comparável. Quando esta estratégia foi adotada a produtividade no
+O esforço de melhorar o desempenho da rede neural passou a ser
+consideravelmente mais produtivo quando um processo foi adotado, no qual
+somente eram testadas topologias que mantinham ou reduziam o número de
+parâmetros totais. Quando esta estratégia foi adotada a produtividade no
 que diz respeito a otimização destes parâmetros teve um salto considerável.
 
-A saída da rede neural, denominado “A”, é um tensor contendo um valor para cada
-uma das imagens, portanto um com dimensão 256. Para o treinamento a saída da
-rede neural vai ser comparado com os rótulos que estavam nos dados de
-treinamento, representado pelo tensor “B”, e também forma um tensor
-monodimensional com dimensão 256. O erro entre as duas medidas é mapeado para
-um único escalar, denominado perda, ou loss, pela metade da normal L2 entre os
-dois tensores sem a raíz quadrada:
+A saída da rede neural, denominado ``A'', é um tensor unidimensional com
+dimensão 256, contendo um escalar que representa o valor estimado da função
+para uma imagem. Para o treinamento a saída
+da rede neural vai ser comparado com os rótulos que estavam nos dados de
+treinamento, representado pelo tensor ``B'', e também forma um tensor
+unidimensional com dimensão 256. O erro entre as duas medidas é mapeado para
+um único escalar, denominado perda, ou \emph{loss}, pela metade da normal
+L2 entre os dois tensores sem a raiz quadrada:
 
 \begin{equation}
 	loss=\frac{1}{2} \sum_{n=1}^N \left( A[n] - B[n] \right)^2
@@ -686,7 +701,7 @@ dados e seus 154.386 exemplos de imagens cerca de 428 vezes.
 	\caption{Histograma temporal do erro classificação}
 	\label{fig:cap5_train_histogram}
 	Pode-se observar os erros se concentrando cada vez mais próximo de 0 a
-	medida que o treinamento avança. A escala indicada são batches de 256
+	medida que o treinamento avança. A escala indicada são lotes de 256
 	imagens, portanto este gráfico o resultado após mais de 66 milhões de
 	imagens (próprio autor).
 \end{figure}
@@ -697,7 +712,7 @@ dados e seus 154.386 exemplos de imagens cerca de 428 vezes.
 	\caption{Gráfico do erro de treinamento}
 	\label{fig:cap5_erro_treinamento}
 	Evolução da função de perda que o otimizador está minimizando, amortecido
-	usando método média local. A abscissa é o número do batch, e cada batch
+	usando método média local. A abscissa é o número do lotes, e cada lote
 	possui 256 imagens (próprio autor).
 \end{figure}
 
@@ -716,20 +731,24 @@ O quarto módulo de \emph{software} usa a rede neural treinada para reproduzir o
 conteúdo de um vídeo ou da câmera enquanto destaca as placas de carros
 localizadas. A figura \ref{fig:cap5_tela_player} mostra a interface do usuário
 no momento em que está exibindo um vídeo quando três veículos estão passando.
-As placas dos mesmos estão sendo destacadas.
+As placas veiculares estão sendo destacadas.
 
 O \emph{software} implementa o método de classificação proposto nesta
-monografia por
-completo. O método de binarização é um limiar simples em 0,75. Este valor
-permite que quando a placa está transitando de uma partição para outra, ambas
-as placas serão iluminadas momentaneamente antes da placa que ficou para trás
-apagar.
+monografia por completo. O método usado para gerar as coordenadas das placas a
+partir de todos os escores da imagem (mapeamento) é bastante simples: qualquer
+partição que possua valor maior que 0,8 (ver sessão \ref{sec:desemp_loc})
+e seja maior que que o valor das
+partições vizinhas, incluindo diagonais, deve estar mais próxima do centro de
+uma placa. O algoritmo vai assumir que a placa está no centro desta partição.
+Como a placa pode de fato estar a uma distância de $P_x/2=60$ \emph{pixels}
+para a direita ou para a esquerda, e $P_y/2=20$ \emph{pixels} para cima ou para
+baixo.
 
 Não foi implementado nenhum método para usar a correlação temporal das
-informações coletadas.
+informações coletadas ou rejeição de dados espúrios.
 
-Para o \emph{video1.avi} a rede neural é executada 288 vezes para frame do
-vídeo, sendo que uma linha completa contendo 12 partições é fornecido para a
+Para o \emph{video1.avi} a rede neural é executada 288 vezes para \emph{frame}
+do vídeo, sendo que uma linha completa contendo 11 partições é fornecido para a
 rede neural por vez.
 
 O \emph{software} é capaz de operar em qualquer vídeo que possa ser lido pelo
@@ -740,15 +759,13 @@ O \emph{software} é capaz de operar em qualquer vídeo que possa ser lido pelo
 Nesta sessão serão apresentados os experimentos realizados com a implementação
 do \emph{software} e os seus resultados.
 
-\subsection{Desempenho de Localização}
+\subsection{Desempenho de Localização} \label{sec:desemp_loc}
 
 Como o método de localização proposto é aproximado, a abordagem para teste de
 desempenho é baseada na contagem de placas corretamente ou
 incorretamente localizadas. Para que uma placa seja considerada corretamente
 localizada basta que ela esteja a menos de 60 \emph{pixels} de distância na
-largura e menos de 20 \emph{pixels} na altura. Estes limites foram escolhidos
-por serem metade do tamanho das partições, que representa a distância na qual
-a função que está sendo modelada pela rede neural deve ir à zero.
+largura e menos de 20 \emph{pixels} na altura.
 	
 Para a medição de desempenho serão usadas as métricas \emph{precision}
 (equação \ref{eq:precision}) e \emph{recall} (equação \ref{eq:recall}).
@@ -770,10 +787,11 @@ seguinte maneira:
 
 \begin{itemize}
 
-\item Quando o \emph{software} identificar uma placa em um ponto do \emph{frame} e
-	houver uma placa entre as manualmente marcadas, tal que a distância entre
+\item Quando o \emph{software} identificar uma placa em um ponto do
+	\emph{frame} e de fato houver uma placa entre as manualmente marcadas,
+	tal que a distância entre
 	os centros  das duas seja inferior ao erro, será contabilizado um
-	\emph{verdadeiro positivo}, ou \emph{tp} (figura \ref{fig:cap5_tp-fn-fp},
+	\emph{verdadeiro positivo}, ou \emph{vp} (figura \ref{fig:cap5_tp-fn-fp},
 	placa ``a'').
 	A placa é removida da lista de placas manualmente marcadas para não
 	ser usada novamente, pois já foi localizada (figura
@@ -811,17 +829,6 @@ a ser usado. A tabela \ref{tbl:curva-pr} e o gráfico na figura
 referência, o gráfico também foi calculado para o set de treinamentos, por ser
 maior, gerando o gráfico da figura \ref{fig:cap5_res_curva-pr-train}.
 
-\noindent\begin{minipage}{.5\linewidth}
-	\begin{equation} \label{eq:precision}
-		\text{Precision} = \frac{vp}{vp + fp}
-	\end{equation}
-\end{minipage}
-\begin{minipage}{.5\linewidth}
-	\begin{equation} \label{eq:recall}
-		\text{Recall} = \frac{vp}{vp + fn}
-	\end{equation}
-\end{minipage}
-
 \begin{table}
 	\center
 	\caption{Erros e acertos de localização}
@@ -853,10 +860,12 @@ maior, gerando o gráfico da figura \ref{fig:cap5_res_curva-pr-train}.
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.75]{cap5_res_curva-pr-train.png}
-	\caption{Gráfico da curva Precision-Recall (amostras de treinamento)}
+	\caption{Gráfico da curva \emph{Precision-Recall}
+		(amostras de treinamento)}
 	\label{fig:cap5_res_curva-pr-train}
-	Oserva-se uma curva semelhante a curva PR para o set de testes. Como este
-	set é maior a forma é mais suave (próprio autor).
+	Comparada com a mesma curva para os dados de teste esta é mais suave. Isso
+	se deve maior quantidade de dados no set de treinamento, o que gera menos
+	incerteza (próprio autor).
 \end{figure}
 
 \begin{figure}[!htb]
@@ -877,12 +886,13 @@ conjunto de dados de teste do que no conjunto de treinamento. Isso
 se deve ao fato de que a implementação, como foi feita, não detecta
 placas que estejam próximos a borda direita e
 inferior da imagem. O set de testes foi preparado tomando cuidado para não usar
-frames onde veículos se encontrem nesta região.
+\emph{frames} onde veículos se encontrem nesta região.
 
 O resultado do \emph{precision}
 no video2 foi apenas 59,0\%, causado pela quantidade excessiva de falso
 positivos. Observou-se que uma única das sessões da imagem que pertence ao
-asfalto, foi marcada em aproximadamente 50\% das frames como placa, gerando
+asfalto, foi marcada em aproximadamente 50\% das \emph{frames} como placa,
+gerando
 falso positivos. Atribui-se este problema a resolução deste vídeo, que é $1080
 \times 1920$, e portanto requer uma grande quantidade de marcações para que
 seja coletada uma quantidade suficiente de amostras de ``não-placa'' para
@@ -918,8 +928,8 @@ tenta balancear a quantidade de exemplos positivos e negativos.
 
 \subsection{Função}
 
-Como o método proposto envolve fazer a regressão de uma função, as primeiras
-medições aqui apresentadas estão mostrando o resultado desse modelamento. As
+O método proposto envolve fazer a regressão de uma função. Esta sessão tem com
+objetivo medir o desempenho da rede neural nesta tarefa. As
 figuras \ref{fig:cap5_res_func_1} e \ref{fig:cap5_res_func_2} mostram 3 carros,
 uma moto e um ônibus, sendo que o classificador foi aplicado
 \emph{pixel}-a-\emph{pixel} na
@@ -928,11 +938,12 @@ gráfico pode ser comparado com o gráfico mostrado na figura
 \ref{fig:func_a_modelar_3d}, que mostra o gráfico ideal.
 
 Estes dados foram todos levantados usando o vídeo3.avi, que não usado para
-treinamento. As cinco frames foram escolhidos ao acaso, garantindo-se apenas
-que as cinco imagens sejam suficientemente diferentes umas das outras.
+treinamento. As cinco \emph{frames} foram escolhidos ao acaso, garantindo-se
+apenas que as cinco imagens sejam suficientemente diferentes umas das outras.
 
 A capacidade de produzir estes gráficos foi incluído no \emph{software}
-``\emph{player}'', e pode ser invocada para qualquer frame de qualquer vídeo.
+``\emph{player}'', e pode ser invocada para qualquer \emph{frame} de qualquer
+vídeo.
 
 \begin{figure}[!htb]
 	\centering
@@ -941,10 +952,11 @@ A capacidade de produzir estes gráficos foi incluído no \emph{software}
 	\label{fig:cap5_res_func_1}
 	São destacados três carros, um com boa textura, placa razoavelmente
 	visível, outra com imagem com perda resultante de compactação, e um
-	terceiro em posição, e cores diferentes, inclusive usando letras mais
-	claras que o frame da placa. O gráfico mostra o resultado do classificador
-	quando ele está centrada em cada um dos \emph{pixels} próximo à placa.
-	As abiscissas referem-se as coordenadas do canto superior-esquerdo da
+	terceiro com orientação e cores diferentes, inclusive usando letras mais
+	claras que o \emph{frame} da placa. O gráfico mostra o resultado do
+	classificador quando ele está centrado em cada um dos \emph{pixels}
+	próximo à placa.
+	As abscissas referem-se as coordenadas do canto superior-esquerdo da
 	partição, não ao seu centro (próprio autor).
 \end{figure}
 
@@ -959,13 +971,14 @@ A capacidade de produzir estes gráficos foi incluído no \emph{software}
 \end{figure}
 
 A figura \ref{fig:cap5_res_func_frame} mostra a rede neural sendo aplicada
-na frame 11.197 do video1. Esta frame não faz parte do conjunto de treinamento.
-Pode-se verificar claramente onde estão as duas placas veiculares.
+na \emph{frame} 11.197 do video1. Esta \emph{frame} não faz parte do conjunto
+de treinamento. Pode-se verificar claramente onde estão as duas placas
+veiculares.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{cap5_res_func_frame.png}
-	\caption{Gráfico 3D mostrando a função aplicada à uma frame inteira}
+	\caption{Gráfico 3D mostrando a função aplicada à uma \emph{frame} inteira}
 	\label{fig:cap5_res_func_frame}
 	Pode-se ver claramente onde as placas dos dois veículos se encontram.
 	(próprio autor).
@@ -980,7 +993,7 @@ usados nas medições relacionadas a tempo de classificação.
 
 \begin{table}
 	\center
-	\caption{Taxa de Frames por Segundo}
+	\caption{Taxa de \emph{Frames} por Segundo}
 	\renewcommand{\arraystretch}{1.6}
 	\begin{tabular}{ccccc}
 		\Xhline{6\arrayrulewidth}
@@ -1000,25 +1013,25 @@ usados nas medições relacionadas a tempo de classificação.
 \end{table}
 
 Observa-se na tabela \ref{tbl:player_fps} que o \emph{player} não consegue
-atingir a taxa de 25 frames por segundo
-de nenhum dos três vídeos, mesmo com uso de GPU. A taxa de frames
+atingir a taxa de 25 \emph{frames} por segundo
+de nenhum dos três vídeos, mesmo com uso de GPU. A taxa de \emph{frames}
 aumenta consideravelmente quando a GPU é usada. Entre os casos
-testados o ganho é maior quando a resolução do vídeo aumenta. A figura
+testados o ganho aumenta quando a resolução do vídeo aumenta. A figura
 \ref{fig:cap5_player_fps} mostra o resultado em forma de gráfico.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{cap5_player_fps.png}
-	\caption{Taxa de frames por segundo no módulo \emph{Player}}
+	\caption{Taxa de \emph{frames} por segundo no módulo \emph{Player}}
 	\label{fig:cap5_player_fps}
-	Gráfico mostrando desempenho em frames por segundo para localizar placas na
-	câmera VGA do computador, e nos três vídeos. Computador é um Core i5 com
-	placa de vídeo GTX 750M. Maior é melhor (próprio
+	Gráfico mostrando desempenho em \emph{frames} por segundo para localizar
+	placas na câmera VGA do computador, e nos três vídeos. Computador é um
+	Core i5 com placa de vídeo GTX 750M. Maior é melhor (próprio
 	autor).
 \end{figure}
 
 O \emph{player} envia para o \emph{stdout} o tempo gasto em cada uma das
-tarefas durante o processamento da frame. Coletando-se estes dados e
+tarefas durante o processamento da \emph{frame}. Coletando-se estes dados e
 calculando-se as médias do tempo gasto em cada tarefa foi gerado o
 gráfico na figura \ref{fig:cap5_frame_benchmark}.
 
@@ -1031,7 +1044,7 @@ gráfico na figura \ref{fig:cap5_frame_benchmark}.
 	Gráfico mostra que, ao processar um vídeo $1080 \times 1920$ a grande
 	maioria do tempo é gasto executando o grafo do \emph{TensorFlow}. Outras
 	tarefas executadas pelo código em Python consomem um percentual
-	pequeno do tempo da frame. Computador é um Core i5 com
+	pequeno do tempo da \emph{frame}. Computador é um Core i5 com
 	placa de vídeo GTX 750M (próprio autor).
 \end{figure}
 
@@ -1039,5 +1052,5 @@ Pode-se ver claramente que a vasta maioria do tempo é gasta executando os
 grafos do \emph{TensorFlow}. Também foi possível confirmar que o ganho do
 desempenho no caso do uso do GPU foi consequência do \emph{TensorFlow}
 consumir menos tempo para executar. Observou-se que na implementação CPU
-o \emph{TensorFlow} tomou 94,9\% do tempo de processamento da frame, e no
-caso que usa GPU tomou 88,1\%.
+o \emph{TensorFlow} tomou 94,9\% do tempo de processamento da \emph{frame},
+e no caso que usa GPU tomou 88,1\%.
