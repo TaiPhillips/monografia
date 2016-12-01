@@ -2,9 +2,15 @@
 
 \chapter{Trabalhos Relacionados}
 
-\section{Redes neurais convolucionais aplicadas a imagens}
+Neste capítulo é feita uma apresentação do atual estado da pesquisa na área
+deste trabalho. Na sessão \ref{sec:cap3_img} são apresentados trabalhos que
+aplicam redes neurais convolucionais em imagens, na \ref{sec:cap3_ml_trafego} 
+são trabalhos que aplicam \emph{machine learning} a problemas de tráfego, e na
+\ref{sec:cap3_detec_placas} são trabalhos que usam detecção de placas.
 
-Comparação direta entre diferentes abordagens para reconhecimento e detecção de
+\section{Redes neurais convolucionais aplicadas a imagens} \label{sec:cap3_img}
+
+Comparações diretas entre diferentes abordagens para reconhecimento e detecção de
 imagem podem ser realizadas se um conjunto de dados comum e suficientemente
 grande for usado. A competição \emph{ILSVRC, ImageNet Large Scale Visual
 Recognition Challenge} é uma competição que ocorre anualmente desde 2010, e é
@@ -12,9 +18,10 @@ voltada a este fim. Esta competição permite comparar soluções
 para diferentes problemas, como classificação de imagens e localização de
 objetos em um conjunto de
 de dados contendo milhões de imagens manualmente rotuladas entre centenas de
-categorias. O set de dados está disponível publicamente, e existe um
-\emph{workshop} anual relativa a competição do ano. As imagens publicadas são
-separados em um set para treinamento, que estão rotulados, e outro set, de
+categorias. O conjunto de dados está disponível publicamente, e existe um
+\emph{workshop} anual relativo a competição do ano. As imagens publicadas são
+separados em um conjunto para treinamento, que está rotulado, e outro
+conjunto, de
 teste, cujos rótulos não são publicados, e são usados durante a competição
 \sigla{ILSVRC}{\emph{ImageNet Large Scale Visual Recognition Challenge},
 desafio de reconhecimento de imagens em larga escala ImageNet} \cite{ILSVRC15}.
@@ -23,7 +30,7 @@ O campeão de 2010 foi \citeonline{lin2010imagenet}, usando extrator de
 \emph{features} HOG e LBP e classificador SVM com 71,8\% de taxa de
 acerto (\emph{top 5}), com taxa de classificação de 52,9\%.
 
-O campeão de 2011 na categoria de classificação foi
+O campeão de 2011 na categoria de classificação, o vencedor foi
 \citeonline{perronnin2010large}, empregando vetores
 \emph{Fisher} comprimidos e classificador SVM. Na categoria de localização foi
 \citeonline{van2011segmentation}, usando busca seletiva baseada em agrupamento
@@ -43,7 +50,7 @@ CNNs.
 Em 2013 o vencedor na categoria de detecção usou uma detector de
 \emph{features}
 customizado baseado em SIFT. Os detalhes não foram divulgados. Na categoria de
-classificação o mesmo time que venceu com uma submissão baseada em CNNs, usando
+classificação, o mesmo time venceu com uma submissão baseada em CNNs, usando
 76 milhões de parâmetros. A terceira categoria do ano foi classificação +
 localização, vencida por \citeonline{sermanet2013overfeat} usando CNNs e
 janelas deslizantes de escala múltipla.
@@ -51,7 +58,7 @@ janelas deslizantes de escala múltipla.
 Em 2014 os organizadores decidiram separar os resultados de acordo com
 múltiplos critérios. Um dos resultados vencedores foi
 \citeonline{szegedy2015going}, que é baseada em CNNs, e define uma arquitetura
-denominada \emph{inception}, no qual várias técnicas são usadas para reduzir o
+denominada \emph{inception}, na qual várias técnicas são usadas para reduzir o
 número de parâmetros e aumentar o desempenho de classificação, como usar
 duas camadas convolucionais $3 \times 3$ ao invés de uma camada $1 \times 1$. A
 rede neural final possui 22 camadas com parâmetros, ou cerca de 100 camadas no
@@ -72,6 +79,7 @@ realizado. O método de treinamento foi demonstrado no conjunto de dados
 convolucional com 1000 camadas.
 
 \section{Aprendizado de Máquinas para monitoramento de tráfego}
+	\label{sec:cap3_ml_trafego}
 
 Existem sistemas com variadas capacidades aplicadas a monitoramento e
 fiscalização de tráfego. Os sistemas que usam visão computacional
@@ -86,8 +94,9 @@ envolve pré-processamento, localização da placa, segmentação das letras (ou
 números) e reconhecimento dos caracteres. Por mais que os primeiros passos não
 usem necessariamente aprendizado de máquinas diretamente, elas incluem OCR,
 que normalmente é implementado usando alguma técnica que envolve treinamento.
-No primeiro caso citado o uso é indireto, através de um módulo de software
-pré treinada que o autor usou. No segundo caso o treinamento do sistema de
+No primeiro caso citado o uso é indireto, através de um módulo de
+\emph{software}
+pré treinado que o autor usou. No segundo caso o treinamento do sistema de
 \emph{machine learning} foi feito pelo próprio autor.
 
 A solução apresentada em
@@ -114,7 +123,7 @@ próximos} (\emph{k-Nearest Neighbours}) aplicado aos dados de um
 (\emph{Singular Spectrum Analysis}). O SSA é usado para suavizar os dados antes
 deles serem fornecidos para o kNN, que faz a predição do tráfego.
 
-\section{Detecção de placas de veículos}
+\section{Detecção de placas de veículos} \label{sec:cap3_detec_placas}
 
 Em \citeonline{luvizonvideo} foi proposto um método para estimar velocidade de
 veículos pela detecção e rastreamento de placas veiculares. A etapa de detecção

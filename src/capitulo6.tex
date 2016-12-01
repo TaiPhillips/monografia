@@ -3,7 +3,8 @@
 \chapter{Conclusões}
 
 Os resultados obtidos mostram que o método proposto é capaz de localizar placas
-veiculares com excelentes valores de \emph{precision} e \emph{recall}.  
+veiculares com excelentes valores de \emph{precision} e \emph{recall}, enquanto
+executa em poucos milissegundos.  
 A rede neural reproduz corretamente o valor da função
 que está modelando, estimando a posição da placa veicular na sua
 entrada, apesar de ter sido treinada com substancial adição de ruído e outras
@@ -19,7 +20,7 @@ distribuição de tarefas para CPU e GPU.
 
 Uma consequência negativa do método de particionamento usado
 é a imprecisão na
-posição da placa. O algorítimo usado para converter os escores para coordenadas
+posição da placa. O algoritmo usado para converter os escores para coordenadas
 usou ``máxima local'', e por isso, quando uma placa é localizada, a posição real
 dela pode estar $\pm 20 \times \pm 60$ \emph{pixel}, o que pode ser excessivo
 para

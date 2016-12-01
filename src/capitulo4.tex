@@ -1,9 +1,6 @@
 \chapter{Localização de Placas Veiculares usando Redes Neurais Convolucionais}
 	\label{ses:metodo}
 
-O método proposto para a localização de placas envolve uma série de etapas,
-conforme ilustrado na figura \ref{fig:etapas_metodo_proposto}.
-
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.75]{etapas_metodo_proposto.png}
@@ -12,19 +9,19 @@ conforme ilustrado na figura \ref{fig:etapas_metodo_proposto}.
 	(próprio autor).
 \end{figure}
 
+O método proposto para a localização de placas envolve uma série de etapas,
+conforme ilustrado na figura \ref{fig:etapas_metodo_proposto}.
 O processo ``extração'' é responsável por obter as \emph{frames} do vídeo.
 Uma \emph{frame} é equivalente a uma imagem 2D, e pode ser representada por
 tensores de dimensões \sigla{HWC}{\emph{Height X Width X Channel}, altura X
 largura X
 canal} (altura, largura e canais de cor). Todos os \emph{frames} de um mesmo
 vídeo geram tensores do mesmo tamanho.
-
 O processo ``particionamento'' toma como entrada uma \emph{frame} do
 vídeo e gera
 múltiplas sub imagens aqui denominadas ``partições'', geradas através de um
 recorte retangular de \emph{pixels} contíguos. As partições têm dimensões
 compatíveis com a rede neural que será usada no passo seguinte.
-
 A etapa denominada ``detecção'' é, mais especificamente, uma rede neural
 artificial convolucional profunda treinada para modelar uma função escalar cujo
 valor, denominado ``escore'', é determinado pela presença e posição, ou não
@@ -52,10 +49,6 @@ supradescrito. Elas dizem respeito:
 \end{itemize}
 
 \section{Tamanho das Partições}
-O tamanho das partições define as dimensões do tensor da rede neural, portanto
-o tamanho do seu ``campo visual''.
-
-
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{ex_tres_segmentos.png}
@@ -68,6 +61,8 @@ o tamanho do seu ``campo visual''.
 	rede neural aprenda o contraste entre placa e o fundo (próprio autor).
 \end{figure}
 
+O tamanho das partições define as dimensões do tensor da rede neural, portanto
+o tamanho do seu ``campo visual''.
 Quanto maior o campo visual da rede neural, mais dados ela vai ter para
 processar, porém menor será a precisão. Se o campo visual for muito pequeno,
 como na figura \ref{fig:ex_tres_segmentos}b a precisão seria maximizada,
@@ -205,7 +200,7 @@ quando uma placa é movida horizontalmente entre duas partições.
 
 A figura \ref{fig:func_a_modelar_2_seg} mostra o valor da função para
 duas partições vizinhas à medida que a placa é movida. Pode-se observar que
-apenas um das partições possui valor 1 por vez, exceto no ponto cuja vizinhança
+apenas uma das partições possui valor 1 por vez, exceto no ponto cuja vizinhança
 é menor que 1. Também observa-se
 que quando a placa está centrada em uma partição, a função possui valor zero
 na outra partição.

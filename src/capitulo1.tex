@@ -36,6 +36,32 @@ acerto, ao custo de maior tempo de treinamento. Este tipo de rede
 neural representa o atual estado-da-arte em reconhecimento de
 imagens \cite{szegedy2015going}.
 
+Este projeto demonstra uma abordagem para localização aproximada de placas
+veiculares mediante à aplicação direta de DCNN aos pixels de partições das
+\emph{frames} de um vídeo. O sistema de particionamento da imagem evita a
+aplicação da rede neural usando janela deslizante \emph{pixel-a-pixel},
+permitindo que a localização das
+placas veiculares em um vídeo de $480 \times 768$ a uma taxa de 14,8 FPS, ou
+67,6 ms por \emph{frame} rodando em um notebook Core i5 com GPU GTX 750M.
+
+O projeto demonstra um método que permite o treinamento da rede neural de forma
+que ela seja robusta contra alguns fatores, como ruído e iluminação, mesmo
+quando esta rede neural é treinada sem estes componentes. Isso permite que a
+rede neural seja aplicada às \emph{frames} sem necessidade de
+pré-processamento, como filtragem ou normalização.
+
+O método proposto usa a rede neural para fazer a regressão de uma função
+escalar aplicada a uma imagem, de forma que o resultado da função permite
+determinar se uma placa está na imagem. Uma função específica é parte do método
+que será proposto.
+
+Será apresentado o desempenho de localização de placas usando medidas
+padronizadas, especificamente \emph{precision} e \emph{recall}, juntamente com
+a curva PR. Também será analisada a capacidade da rede neural de reproduzir a
+função para a qual foi trienada. Finalmente será medido o desempenho em
+\emph{frames} por segundo do sistema quando aplicado alguns vídeos diferentes,
+e quando rodando com e sem GPU.
+
 \section{Objetivo}
 O objetivo deste trabalho é desenvolver uma abordagem para
 treinamento e uso de redes neurais convolucionais para para a
