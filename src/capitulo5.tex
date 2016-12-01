@@ -18,7 +18,7 @@ sucesso de uma implementação acesso a dados ou a capacidade de produzi-los.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=1]{cap5_arquit_global.png}
+	\includegraphics[scale=1.2]{cap5_arquit_global.png}
 	\caption{Arquitetura Global da Implementação}
 	\label{fig:cap5_arquit_global}
 	Diagrama ilustrando os quatro componentes de \emph{software} em verde, os
@@ -85,7 +85,7 @@ com uma saída.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=0.75]{cap5_trein_redes_nao_conv.png}
+	\includegraphics[scale=1]{cap5_trein_redes_nao_conv.png}
 	\caption{Erro de treinamento de redes neurais não-convolucionais}
 	\label{fig:cap5_trein_redes_nao_conv}
 	A ordenada refere-se ao erro L2 calculado sem a raiz quadrada e suavizado
@@ -224,7 +224,7 @@ Nesta seção está detalhada a implementação de cada módulo de \emph{softwar
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=0.75]{cap5_tela_marcador.png}
+	\includegraphics[scale=0.9]{cap5_tela_marcador.png}
 	\caption{Interface com usuário do \emph{Marcador}}
 	\label{fig:cap5_tela_marcador}
 	A tela está mostrando 3 veículos marcados (próprio autor).
@@ -475,6 +475,9 @@ válidas são encontradas elas são adicionadas na lista de resposta. Se a lista
 possui o número solicitado de respostas o algoritmo termina, caso contrário
 continua.
 
+A tabela \ref{tbl:ex_marc_videos} mostra os dados coletados quando
+o software foi executado com todas as otimziações referidas.
+
 \begin{table}
 	\center
 	\caption{Exemplos de treinamento gerados para cada vídeo}
@@ -514,16 +517,20 @@ e contém todas as amostras coletadas de todos os vídeos.
 	treinamento (próprio autor).
 \end{figure}
 
-O treinador é um módulo de \emph{software} onde se configura uma topologia de rede
-neural convolucional, que é treinada usando os dados produzidos pelo gerador de
-dados de treinamento.
+O treinador é um módulo de \emph{software} onde se configura uma topologia
+de rede neural convolucional, que é treinada usando os dados produzidos pelo
+gerador de dados de treinamento. Quando o software é rodado informações de
+\emph{log} são coletadas, e um utilitário chamado \emph{TensorBoard} pode ser
+executado neste diretório para mostrar o progresso do treinamento. O utilitário
+é um servidor \emph{web}, e a página correspondente é mostrada na figura
+\ref{fig:cap5_tela_treinador}.
 
 Para realizar o treinamento da rede neural o grafo apresentado na figura
 \ref{fig:cap5_grafo_treinamento} foi construído no \emph{TensorFlow}.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=0.7]{cap5_grafo_treinamento.png}
+	\includegraphics[scale=0.9]{cap5_grafo_treinamento.png}
 	\caption{Grafo usado para treinamento da rede neural convolucional}
 	\label{fig:cap5_grafo_treinamento}
 	Esta imagem mostra o grafo do \emph{TensorFlow} usado para treinar
@@ -549,7 +556,7 @@ possível para classificar imagens, não tanto para treinamento.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{cap5_distorcao.png}
+	\includegraphics[scale=1.2]{cap5_distorcao.png}
 	\caption{\emph{Pipeline} de distorção de imagens}
 	\label{fig:cap5_distorcao}
 	A imagem é convertida para ponto-flutuante com cada canal no intervalo
@@ -589,8 +596,9 @@ usando CPU valores ainda maiores foram usados.
 Se o treinamento for rodado por tempo suficiente, todas as imagens serão
 lidas. Se o treinador precisar de mais exemplos as mesmas imagens serão lidas
 novamente, em ordem diferente. Porém, graças ao sistema de distorção de
-imagens que é parte do pipeline de leitura, uma mesma imagem passará novamente
-pelo pipeline de distorções, efetivamente gerando uma imagem diferente.
+imagens que é parte do \emph{pipeline} de leitura, uma mesma imagem passará
+novamente
+pelo \emph{pipeline} de distorções, efetivamente gerando uma imagem diferente.
 
 Os tensores que saem do embaralhador (bloco ``\emph{shuffle\_batch}'') são
 fornecidos à rede neural, que está no
@@ -598,8 +606,8 @@ bloco ``NN1'', que está ilustrado na figura \ref{fig:cap5_cnn}.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{cap5_cnn.png}
-	\caption{Pipeline descrevendo a rede neural convolucional profunda}
+	\includegraphics[scale=1.2]{cap5_cnn.png}
+	\caption{\emph{Pipeline} descrevendo a rede neural convolucional profunda}
 	\label{fig:cap5_cnn}
 	(próprio autor)
 \end{figure}
@@ -669,6 +677,22 @@ somente eram testadas topologias que mantinham ou reduziam o número de
 parâmetros totais. Quando esta estratégia foi adotada a produtividade no
 que diz respeito a otimização destes parâmetros teve um salto considerável.
 
+Na tabela \ref{tbl:camadas_cnn} é apresentada a topologia da rede neural
+convolucional final. Ela possui 7 camadas convolucionais com parâmetros
+(\emph{maxpol} e ReLu não contadas) e duas camadas totalmente conectadas. A
+primeira camada (M1) é uma convolução $2 \times 2$ aplicada com stride $2
+\times 2$. Isso significa que todos os pixels são visitados uma vêz por
+cada filtro desta camada, e tem com objetivo fazer uma subamostragem sem
+consumir muito tempo de processamento. A camada M2 também usa stride $2 \times
+2$, mas tem filtros $3 \times 3$, que são mais usuais. A partir da camada M3 o
+stride é sempre $1 \times 1$, não havendo mais subamostragem. Nas camadas M5 e
+M7 é feito \emph{maxpool}. Depois de M7 o tensor é planificado para poder ser
+usado pelas duas camadas convolucionais, que possuem respectivamente 32 e 1
+neurônio. O número de neurônios na camada FC32 possui quase metade dos
+parâmetros da rede neural, e afeta bastante o desempenho de
+classificação e o tempo de processamento. Este valor foi escolhido de forma a
+balancear estes fatores.
+
 A saída da rede neural, denominado ``A'', é um tensor unidimensional com
 dimensão 256, contendo um escalar que representa o valor estimado da função
 para uma imagem. Para o treinamento a saída
@@ -697,7 +721,7 @@ dados e seus 154.386 exemplos de imagens cerca de 428 vezes.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=0.75]{cap5_train_histogram.png}
+	\includegraphics[scale=0.9]{cap5_train_histogram.png}
 	\caption{Histograma temporal do erro classificação}
 	\label{fig:cap5_train_histogram}
 	Pode-se observar os erros se concentrando cada vez mais próximo de 0 a
@@ -720,7 +744,7 @@ dados e seus 154.386 exemplos de imagens cerca de 428 vezes.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics{cap5_tela_player.png}
+	\includegraphics[scale=1.3]{cap5_tela_player.png}
 	\caption{Interface com o usuário do módulo \emph{Player}}
 	\label{fig:cap5_tela_player}
 	No momento que a tela foi capturada o \emph{software} está exibindo um
@@ -809,7 +833,7 @@ seguinte maneira:
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=0.7]{cap5_tp-fn-fp.png}
+	\includegraphics[scale=0.85]{cap5_tp-fn-fp.png}
 	\caption{Contagem de acertos e erros de localização}
 	\label{fig:cap5_tp-fn-fp}
 	Cada círculo representa o centro de uma placa. Constam 1 \emph{verdadeiro
@@ -870,8 +894,8 @@ maior, gerando o gráfico da figura \ref{fig:cap5_res_curva-pr-train}.
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[scale=0.75]{cap5_res_curva-pr.png}
-	\caption{Gráfico da curva Precision-Recall (amostras de teste)}
+	\includegraphics[scale=1]{cap5_res_curva-pr.png}
+	\caption{Gráfico da curva \emph{Precision-Recall} (amostras de teste)}
 	\label{fig:cap5_res_curva-pr}
 	Pode-se observar como o limiar de classificação afeta \emph{precision} e
 	\emph{recall} (próprio autor).

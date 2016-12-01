@@ -30,7 +30,12 @@ aproximar mais as partições, reduzindo arbitrariamente estes valores.
 
 Para futuros trabalhos sugere-se adicionar ao modelo aqui proposto a
 capacidade de fazer segmentação e OCR, de forma a produzir um sistema completo
-de identificação de placas veiculares. Entre os aspectos práticos, e de
+de identificação de placas veiculares. Dois aspectos do método proposto que
+podem ser melhorados são a função modelada pela rede neural, que é $C0$ e
+poderia ser $C1$ para melhorar a regressão, e o processo de cálculo de
+coordenadas das placas a partir dos escores da rede neural que poderia
+aumentar a precisão da localização.  Entre os aspectos práticos, e de
 implementação, sugere-se continuar o trabalho de otimização da rede
 neural para reduzir a quantidade de computações sem gerar muito impacto nos
 resultados de classificação.
+
