@@ -2,6 +2,7 @@
 \usepackage[alf,abnt-emphasize=bf,bibjustif,recuo=0cm,abnt-etal-cite=2]{abntcite}
 \usepackage{graphicx,color}
 \usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsthm,amsfonts}
 
@@ -13,9 +14,11 @@
 \graphicspath{{figures/}}
 
 
+
 %======Instituição e programa
 \instituicao{Universidade Tecnológica Federal do Paraná}
-\departamento{Departamento Acadêmico de Informática}
+\departamento{Departamento Acadêmico de Informática \newline
+	Departamento Acadêmico de Eletrônica}
 \programa{Bacharelado em Engenharia da Computação}
 
 \orientador{Prof. Dr. Bogdan Tomoyuki Nassu}
@@ -31,10 +34,9 @@
 \keywords{License Plate Localization, Convolutional Neural Networks}
 
 %======Comentário da folha de rosto.
-\comentario{\UTFPRdocumentodata\ apresentado ao Departamento Acadêmico de
-Informática como requisito parcial para obtenção do grau de Bacharel
-em Engenharia de Computação da
-\ABNTinstituicaodata\ .
+\comentario{\UTFPRdocumentodata\ apresentado aos Departamentos Acadêmicos de
+Informática e Eletrônica como requisito parcial para obtenção do grau de
+Bacharel em Engenharia de Computação da \ABNTinstituicaodata\ .
 }
 
 %======Local e data
@@ -43,7 +45,7 @@ em Engenharia de Computação da
 
 
 \begin{document}
-\setcounter{figure}{200}
+%\hyphenation{fis-ca-li-za-\'cao}
 
 \capa
 
@@ -70,9 +72,7 @@ em Engenharia de Computação da
 	para mim, e encontrou uma forma de permitir que eu me concentrasse
 	nele por várias semanas em período integral;
 
-	aos meus pais, que sempre me deram edução, quando educação foi negada
-	a eles, e sempre acreditaram e investiram em mim.
-
+	À minha mãe Laurecy, que sempre me apoiou e acreditou em mim.
 \end{agradecimentos}
 
 \begin{resumo}
