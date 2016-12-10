@@ -645,7 +645,7 @@
 	\ifnum
 		\c@tocdepth > \m@ne
 		\addpenalty{-\@highpenalty}%
-		\setlength\@tempdima{1.5em}%
+		\setlength\@tempdima{1.6em}%
 		\begingroup
 			\ifthenelse{\boolean{ABNTpagenumstyle}}
 			{
@@ -676,7 +676,7 @@
 {
 	\ifnum \c@tocdepth >\m@ne
 		\addpenalty{-\@highpenalty}%
-		\setlength\@tempdima{2em}%
+		\setlength\@tempdima{2.1em}%
 		\begingroup
 			\ifthenelse{\boolean{ABNTpagenumstyle}}
 				{\renewcommand{\@pnumwidth}{1.6em}}
@@ -710,7 +710,7 @@
 {
 	\ifnum \c@tocdepth >\m@ne
 		\addpenalty{-\@highpenalty}%
-		\setlength\@tempdima{2.5em}%
+		\setlength\@tempdima{2.9em}%
 		\begingroup
 			\renewcommand{\@pnumwidth}{1.6em}
 			\parindent \z@ \rightskip \@pnumwidth
