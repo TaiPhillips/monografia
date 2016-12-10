@@ -2,19 +2,18 @@
 
 Localização de placas veiculares é um componente importante de sistemas de
 controle e fiscalização de tráfego contemporâneos. Alguns sistemas incluem
-localização como parte fundamental de um subcomponente. E alguns casos
+localização como parte fundamental de um subcomponente. Em alguns casos
 o desempenho do sistema de localização pode definir a viabilizada do sistema
-como um todo.
-Neste trabalho, é proposto um método de localização aproximado de placas
-veiculares
-em vídeo desenvolvida usando redes neurais convolucionais aplicadas diretamente
-aos valores RGB dos \emph{pixels}. O treinamento é feito aplicando distorções
-às imagens, como
+como um todo. Neste trabalho, é proposto um método de localização aproximado
+de placas veiculares em vídeo desenvolvida usando redes neurais convolucionais
+aplicadas diretamente aos valores RGB dos \emph{pixels}. Na implementação aqui
+exposta a placa pode ser localizada com uma margem de erro de
+$ \pm 20 \times \pm 60$ \emph{pixels}.
+O treinamento é feito aplicando distorções às imagens, como
 ruído e variação aleatória de brilho, contraste e saturação, para produzir um
 modelo robusto, mesmo sem uso de filtros ou normalização. A proposta inclui um
 método eficiente de particionar a imagem de forma a reduzir consideravelmente o
 número de vezes que a rede neural precisa ser aplicada. Os indicadores
 \emph{precision} e \emph{recall} obtidos foram, respectivamente, 98,9\% e
-96,7\% para localizar a placa com erro inferior à $60 \times 20$ pixels
-enquanto cada \emph{frame} é processada em 67,7 ms em um notebook Core i5 com
-GPU GXT 750M.
+96,7\% enquanto cada quadro de $480 \times 768$ é processado em 67,7 ms em
+um notebook Core i5 com GPU GTX 750M.

@@ -3,7 +3,7 @@
 \chapter{Trabalhos Relacionados}
 
 Neste capítulo é feita uma apresentação do atual estado da pesquisa na área
-deste trabalho. Na sessão \ref{sec:cap3_img} são apresentados trabalhos que
+deste trabalho. Na seção \ref{sec:cap3_img} são apresentados trabalhos que
 aplicam redes neurais convolucionais em imagens, na \ref{sec:cap3_ml_trafego} 
 são trabalhos que aplicam \emph{machine learning} a problemas de tráfego, e na
 \ref{sec:cap3_detec_placas} são trabalhos que usam detecção de placas.
@@ -17,7 +17,7 @@ Recognition Challenge} é uma competição que ocorre anualmente desde 2010, e �
 voltada a este fim. Esta competição permite comparar soluções 
 para diferentes problemas, como classificação de imagens e localização de
 objetos em um conjunto de
-de dados contendo milhões de imagens manualmente rotuladas entre centenas de
+dados contendo milhões de imagens manualmente rotuladas entre centenas de
 categorias. O conjunto de dados está disponível publicamente, e existe um
 \emph{workshop} anual relativo a competição do ano. As imagens publicadas são
 separados em um conjunto para treinamento, que está rotulado, e outro
@@ -34,8 +34,8 @@ O campeão de 2011 na categoria de classificação, o vencedor foi
 \citeonline{perronnin2010large}, empregando vetores
 \emph{Fisher} comprimidos e classificador SVM. Na categoria de localização foi
 \citeonline{van2011segmentation}, usando busca seletiva baseada em agrupamento
-hierárquico e detecção usando \sigla{SIFT}{\emph{Scale-invariant feature
-transform}, traformada invariante à escala}, RGB-SIFT e SVM como classificador.
+hierárquico e detecção usando \sigla{SIFT}{\emph{Scale-Invariant Feature
+Transform}, transformada invariante à escala}, RGB-SIFT e SVM como classificador.
 
 Em 2012 houve a primeira vitória de uma submissão baseada em redes neurais
 convolucionais. Nas categorias de classificação e localização de imagens o
@@ -70,7 +70,7 @@ neural com profundidade 152. Segundo o \emph{paper}, redes neurais com essa
 profundidade,
 quando treinadas da maneira convencional, produzem resultados piores que redes
 neurais muito mais rasas. Um método foi proposto para fazer o treinamento, que
-envolve treinar uma sessão da rede neural e progressivamente aumentar o tamanho
+envolve treinar uma secção da rede neural e progressivamente aumentar o tamanho
 da rede neural adicionando camadas antes e depois do trecho treinado, sendo que
 essas camadas adicionadas estão configuradas para realizarem o equivalente a
 uma função identidade, não afetando o resultado do treinamento que já foi
@@ -135,7 +135,7 @@ SVM, depois agrupados com regras de forma e distância e finalmente
 filtrados usando T-HOG e mais um classificador SVM. A detecção de placas ocorre
 usando detector de movimentos
 
-\citeonline{anagnostopoulos2008license} faz um \emph{survey} em 2008 de
+\citeonline{anagnostopoulos2008license} faz um \emph{survey} de
 várias técnicas de reconhecimento de placas de trânsito. Neste artigo
 captura em ``tempo real'' é considerado um sistema que processa cada
 \emph{frame} em 50ms. Este \emph{survey} encontrou sistemas 
@@ -150,10 +150,11 @@ que analisa componentes conectados quanto a sua geometria (dimensões e
 do operador \emph{Snobel} é bastante comum entre os artigos pesquisados para
 produzir resultado final dentro do limite de 50ms.
 
-A categoria de abordagens que encontram mais soluções é a que aplica tons de
+Ainda de acordo com \citeonline{anagnostopoulos2008license},
+a categoria de abordagens que encontram mais soluções é a que aplica tons de
 cinza. Várias abordagens usam
 contagem do número de variações abruptas de contraste em um eixo,
-tipicamente o horizontal, para localizar placas. Este tipo de algorítimo
+tipicamente o horizontal, para localizar placas. Este tipo de algoritmo
 pode operar em uma a cada $N$ linhas da imagens, sendo muito econômico em
 tempo de CPU, porém é simplista demais para operar em vários cenários.
 Processamento estatístico de bordas pode ser usada focando nas letras
@@ -161,8 +162,10 @@ para operar bem quando o contorna da placa não é clara. O uso de
 \emph{quadtrees} hierárquicos foi proposto, no qual cada quadrante é novamente
 dividido se tiver bastante variação de contraste. Segmentos contíguos são
 agrupados se o brilho deles for muito diferente ou muito próximo. Cada
-segmento pelo seu tamanho e pelo escore dos blocos que o compõe, que
-também é baseado em tamanhos. O melhor (ou melhores) \emph{strips} são
+segmento recebe um escore de acordo com seu tamanho e o escore dos blocos que o
+compõe, que
+também é baseado em tamanhos. Os melhores \emph{strips} (\emph{quadtrees}
+sucessivos) são
 selecionados. Este algoritmo é bastante robusto a condições de iluminação e
 tem boa taxa de acertos. Uso de janela deslisante, nas quais a média e o
 desvio padrão são calculados e usados diretamente contra um limiar
@@ -179,8 +182,8 @@ neurais com taxas variadas de acerto, de 75\% a 98\%.
 
 O uso de câmeras e iluminação infravermelha foram demonstradas
 como sendo capazes de produzir sistemas com taxa de acerto de 99.3\%.
-Baixo número de \emph{pixels} foi demonstrado como tendo efeito negativo em
-todos os sistemas testados.
+Baixo número de \emph{pixels} (baixa resolução) foi demonstrado como tendo
+efeito negativo em todos os sistemas testados.
 
 Em \citeonline{jain2015automatic} um método de reconhecimento de placas usando
 redes neurais é proposto, porém a etapa de localização usa filtro \emph{Sobel}

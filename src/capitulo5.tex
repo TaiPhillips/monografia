@@ -7,10 +7,10 @@ no capítulo \ref{ses:metodo}. Esta implementação será usada para medir o
 desempenho do método proposto segundo métricas padronizadas, além de métricas
 adicionais.
 
-Na sessão \ref{sec:cap5:arq} será apresentada a arquitetura da implementação.
-Na sessão \ref{sec:cap5_abord_ant} serão apresentadas tentativas mal sucedidas
+Na seção \ref{sec:cap5:arq} será apresentada a arquitetura da implementação.
+Na seção \ref{sec:cap5_abord_ant} serão apresentadas tentativas mal sucedidas
 que foram realizadas antes da versão final, mostrando por quê elas falharam. A
-sessão \ref{sec:cap5_tecnol} são apresentadas as tecnologias usadas na
+seção \ref{sec:cap5_tecnol} são apresentadas as tecnologias usadas na
 implementação, e na \ref{sec:cap5_hw} os recursos de hardware. O capítulo
 \ref{sec:cap5_impl} apresenta o software como foi implementado.
 
@@ -22,12 +22,13 @@ sucesso de uma implementação acesso a dados ou a capacidade de produzi-los.
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=1.2]{cap5_arquit_global.png}
-	\caption{Arquitetura Global da Implementação}
+	\caption[Arquitetura Global da Implementação]{
+		Arquitetura Global da Implementação.
+		Diagrama ilustrando os quatro componentes de \emph{software} em verde, os
+		vídeos
+		de entrada em azul, as informações intermediárias em vermelho e a saída do
+		sistema em amarelo (autoria própria).}
 	\label{fig:cap5_arquit_global}
-	Diagrama ilustrando os quatro componentes de \emph{software} em verde, os
-	vídeos
-	de entrada em azul, as informações intermediárias em vermelho e a saída do
-	sistema em amarelo (próprio autor).
 \end{figure}
 
 Durante a faze conceitual optou-se por dar um grande enfoque no
@@ -55,7 +56,8 @@ satisfatórios na última.
 
 A ideia inicial para este projeto era o uso de redes neurais não-convolucionais
 aplicadas diretamente aos \emph{pixels} das imagens. Para tal foi escolhida a
-biblioteca \emph{Neuroph}, devido linguagem Java e grande flexibilidade. A
+biblioteca \emph{Neuroph}, por ter sido implementado na linguagem Java e pela
+sua grande flexibilidade. A
 solução foi totalmente implementada conforme arquitetura ilustrada na figura
 \ref{fig:cap5_arquit_global}.
 
@@ -89,11 +91,12 @@ com uma saída.
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=1]{cap5_trein_redes_nao_conv.png}
-	\caption{Erro de treinamento de redes neurais não-convolucionais}
+	\caption[Erro de treinamento de redes neurais não-convolucionais]{
+		Erro de treinamento de redes neurais não-convolucionais.
+		A ordenada refere-se ao erro L2 calculado sem a raiz quadrada e suavizado
+		usando \emph{exponential smoothing}. A legenda refere-se ao número de
+		neurônios em cada camada totalmente conectada (autoria própria).}
 	\label{fig:cap5_trein_redes_nao_conv}
-	A ordenada refere-se ao erro L2 calculado sem a raiz quadrada e suavizado
-	usando \emph{exponential smoothing}. A legenda refere-se ao número de
-	neurônios em cada camada totalmente conectada (próprio autor).
 \end{figure}
 
 Quando o \emph{player} era usado com as redes neurais resultantes
@@ -134,7 +137,7 @@ de dados de treinamento foi reescrito em Python.
 
 Desde os primeiros experimentos a abordagem usando redes neurais foi muito bem
 sucedida. A primeira abordagem foi usando regressão logística. No entanto os
-exemplos de treinamento foram etiquetados de usando apenas valores 0 e 1. Por
+exemplos de treinamento foram etiquetados usando apenas valores 0 e 1. Por
 não saber exatamente como mapear uma placa parcialmente visível para
 probabilidades, foi feita a migração para um modelo de regressão, onde uma
 função suave pode ser definida para ser imitada pela rede neural.
@@ -167,12 +170,12 @@ Tanto o \emph{wrapper} Python do OpenCV quanto o \emph{TensorFlow} representam
 dados numéricos, como tensores, usando uma biblioteca numérica para
 Python chamada \emph{NumPy}. Ela foi usada para várias operações, como
 extrair sub imagens
-das \emph{frames} de vídeo, após terem sido lidas pelo OpenCV, e fornecer
+dos \emph{frames} de vídeo, após terem sido lidos pelo OpenCV, e fornecer
 estes dados para o \emph{TensorFlow}.
 
 Para representar as marcações que o usuário faz nos vídeos, para identificar
 onde estão as placas, foi usado o formato \sigla{JSON}{\emph{JavaScript
-object notation}, notação de objetos do \emph{JavaScript}}.
+Object Notation}, notação de objetos do \emph{JavaScript}}.
 Existem boas
 bibliotecas em várias linguagens, inclusive Python e Java, o que garante que os
 dados poderão ser lidos facilmente.
@@ -188,11 +191,9 @@ Repository}} (Arch User Repository), que permite a instalação a partir do
 código-fonte do \emph{TensorFlow} mesmo antes de uma versão oficial ser liberada.
 
 O sistema de controle de versões usado foi o GIT.
-Esse \sigla{VCS}{\emph{Version control system}, sistema de controle de versão}
-já é usado no projeto \emph{TensorFlow}.
 
-Para edição de código foi usado exclusivamente vim. Esse editor é sofisticado
-e produtivo quando usado com uma linguagem como Python.
+Para edição de código foi usado exclusivamente \emph{Vim}, de forma que não
+houve necessidade de nenhuma licença para o desenvolvimento.
 
 \section{Recursos de Hardware} \label{sec:cap5_hw}
 
@@ -211,7 +212,7 @@ O desenvolvimento do projeto foi quase todo feito usando o Core i7. Assim que
 o suporte a GPU foi incluída no código o notebook Core i5 começou a ser usado
 concomitantemente.
 
-A \sigla{CPU}{\emph{Central processing unit}, central unificada de
+A \sigla{CPU}{\emph{Central Processing Unit}, unidade central de
 processamento} do computador Core i7, quando usado para treinamento, rapidamente
 atinge \SI{85}{\degree} e o desempenho do treinamento reduz consideravelmente,
 como consequência da CPU estar atuando para limitar a potência dissipada. Após
@@ -230,9 +231,10 @@ Nesta seção está detalhada a implementação de cada módulo de \emph{softwar
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.9]{cap5_tela_marcador.png}
-	\caption{Interface com usuário do \emph{Marcador}}
+	\caption[Interface com usuário do \emph{Marcador}]{
+		Interface com usuário do \emph{Marcador}.
+		A tela está mostrando 3 veículos marcados (autoria própria).}
 	\label{fig:cap5_tela_marcador}
-	A tela está mostrando 3 veículos marcados (próprio autor).
 \end{figure}
 
 O \emph{software} marcador foi construído como um script Python que recebe o
@@ -242,7 +244,7 @@ nome de um arquivo de vídeo como parâmetro. Ele permite:
 \item Reproduzir o vídeo;
 \item Pausar a reprodução do vídeo
 \item Avançar / voltar \emph{frame-a-frame};
-\item Saltar para uma \emph{frame} digitando-se o número dela;
+\item Saltar para um \emph{frame} digitando-se o número dele;
 \item Quando o vídeo está em pausa, permite clicar no vídeo para adicionar um
 	marcador de placa;
 \item Usar o teclado para mover, rotacionar e alterar o marcador, de forma que ele
@@ -256,11 +258,11 @@ carros e motos, e é possível identificar o número da placa. Isto tem como
 objetivo permitir que as mesmas marcações possam ser usadas futuramente para
 fazer OCR das placas. As marcações são salvas em um arquivo JSON.
 
-Quando uma \emph{frame} possui pelo menos uma placa veicular marcada, todo
+Quando um \emph{frame} possui pelo menos uma placa veicular marcada, todo
 o resto da
 imagem vai ser considerado pelo \emph{software} de treinamento como região
-sem placa.  Por isso, se uma placa for marcada em uma \emph{frame}, devem-se
-marcar todas as placas.
+sem placa.  Por isso, se uma placa for marcada em um \emph{frame}, devem-se
+marcar todas.
 
 \begin{table}
 	\center
@@ -283,15 +285,16 @@ marcar todas as placas.
 \end{table}
 
 Todo o desenvolvimento foi feito usando três vídeos. As características dos
-vídeos estão listadas na tabela \ref{tbl:videos}, e uma \emph{frame} de
-cada vídeo está mostrada na figura \ref{fig:cap5_3_videos}.
+vídeos estão listadas na tabela \ref{tbl:videos}, e um \emph{frame} de
+cada vídeo está mostrado na figura \ref{fig:cap5_3_videos}.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{cap5_3_videos.png}
-	\caption{Uma \emph{frame} de cada vídeo usado durante o desenvolvimento}
+	\caption[Um \emph{frame} de cada vídeo usado durante o desenvolvimento]{
+		Um \emph{frame} de cada vídeo usado durante o desenvolvimento.
+		(autoria própria).}
 	\label{fig:cap5_3_videos}
-	(próprio autor).
 \end{figure}
 
 A tabela \ref{tbl:marc_videos} mostra a quantidade de marcações feitas em cada
@@ -326,12 +329,13 @@ testar o desempenho do modelo. Os dados de treinamento estão todos antes do
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{cap5_tela_gerador.png}
-	\caption{Interface gráfica do gerador de dados}
+	\caption[Interface gráfica do gerador de dados]{
+		Interface gráfica do gerador de dados.
+		A imagem da esquerda mostra o quadro que está sendo processado e mostra as
+		regiões onde os exemplos negativos estão sendo coletados. A imagem da
+		direita mostra os próprios exemplos negativos que estão sendo enviados para
+		o arquivo (autoria própria).}
 	\label{fig:cap5_tela_gerador}
-	A imagem da esquerda mostra o quadro que está sendo processado e mostra as
-	regiões onde os exemplos negativos estão sendo coletados. A imagem da
-	direita mostra os próprios exemplos negativos que estão sendo enviados para
-	o arquivo (próprio autor).
 \end{figure}
 
 O \emph{software} gerador de dados de treinamento também recebe como parâmetro
@@ -350,11 +354,11 @@ inteiro de
 8 bits sem sinal.  Como a imagem é $40 \times 120 \times 3$ e o rótulo
 tem 1 byte, então cada registro possui 14401 bytes.
 
-Este \emph{software} lê a lista de \emph{frames} marcadas em uma ordem
+Este \emph{software} lê a lista de \emph{frames} marcados em uma ordem
 aleatória. Então vai coletar exemplos de placas veiculares centradas e fora
 de centro, e exemplos de imagens que não contêm placas, e vai salvá-las no
 arquivo de saída. O rótulo que vai ser salvo com a imagem é o resultado da
-equação \ref{eq:funcao_a_modelar} da sessão \ref{ses:funcao_a_modelar}, que
+equação \ref{eq:funcao_a_modelar} da seção \ref{ses:funcao_a_modelar}, que
 a rede neural precisa aprender a
 reproduzir a partir dos dados dos pixels.
 
@@ -377,16 +381,17 @@ $40 \times 120$ centrada na placa do veículo, como ilustrado na figura
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{cap5_regiao_coleta_amostras.png}
-	\caption{Região onde amostras são coletadas}
+	\caption[Região onde amostras são coletadas]{
+		Região onde amostras são coletadas.
+		Esta região delimita os centros das partições, então \emph{pixels} fora
+		dela podem ser coletados. Partições centradas dentro da região delimitada
+		são coletados de 4 em 4 \emph{pixels}, sendo que cada uma dessas regiões é
+		deslocada 2 \emph{pixels} para a direita ou para a esquerda. Em verde estão
+		marcados três pontos, a, b e c, que serão atribuídos respectivamente aos
+		rótulos 0, $^1/_2$ e 1 por estarem respectivamente a uma distância
+		normalizada de $^1/_2$, $^3/_8$ (meio do caminho) e $^1/_4$
+		(autoria própria).}
 	\label{fig:cap5_regiao_coleta_amostras}
-	Esta região delimita os centros das partições, então \emph{pixels} fora
-	dela podem ser coletados. Partições centradas dentro da região delimitada
-	são coletados de 4 em 4 \emph{pixels}, sendo que cada uma dessas regiões é
-	deslocada 2 \emph{pixels} para a direita ou para a esquerda. Em verde estão
-	marcados três pontos, a, b e c, que serão atribuídos respectivamente aos
-	rótulos 0, $^1/_2$ e 1 por estarem respectivamente a uma distância
-	normalizada de $^1/_2$, $^3/_8$ (meio do caminho) e $^1/_4$
-	(próprio autor).
 \end{figure}
 
 Quando o centro de uma placa veicular está localizada dentro da região
@@ -411,23 +416,25 @@ treinamento comparado com as versões iniciais.
 A primeira, e mais importante otimização foi a eliminação de exemplos
 parecidos. Quando são coletados exemplos de regiões da imagem que não são
 placas de carro pode-se acabar obtendo um recorte que inclui apenas o asfalto.
-Se outro recorte for feito em outra \emph{frame} na mesma região pode acabar
+Se outro recorte for feito em outro \emph{frame} na mesma região pode acabar
 sendo um exemplo muito parecido, como ilustrado na figura
 \ref{fig:cap5_coleta_negativa_igual}.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{cap5_coleta_negativa_igual.png}
-	\caption{Exemplo de duas regiões iguais em \emph{frames} diferentes}
+	\caption[Exemplo de duas regiões iguais em \emph{frames} diferentes]{
+		Exemplo de duas regiões iguais em \emph{frames} diferentes.
+		As regiões possuem as mesmas coordenadas, e contém \emph{pixels} de fundo
+		da imagem (autoria própria).}
 	\label{fig:cap5_coleta_negativa_igual}
-	As regiões possuem as mesmas coordenadas, e contém \emph{pixels} de fundo
-	da imagem (próprio autor).
 \end{figure}
 
-Por este motivo o \emph{software} mantém as últimas 100 \emph{frames} processadas.
+Por este motivo o \emph{software} mantém os últimos 100 \emph{frames}
+processados.
 Quando um ``exemplo negativo'' vai ser coletado em uma região a imagem é
-comparada com os \emph{pixels} da mesma região nestas \emph{frames} que foram
-armazenadas. O critério de comparação é:
+comparada com os \emph{pixels} da mesma região nestes \emph{frames} que foram
+armazenados. O critério de comparação é:
 
 \begin{equation}
 	d_C=\frac{1}{N} \sum_{n=1}^N \sqrt{\left| R_C [n] -I_C [n] \right|}
@@ -517,15 +524,16 @@ e contém todas as amostras coletadas de todos os vídeos.
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{cap5_tela_treinador.png}
-	\caption{Página do \emph{TensorBoard} mostrando progresso do treinamento}
+	\caption[Página do \emph{TensorBoard} mostrando progresso do treinamento]{
+		Página do \emph{TensorBoard} mostrando progresso do treinamento.
+		Esta é uma página \emph{web} que permite observar a evolução do
+		treinamento (autoria própria).}
 	\label{fig:cap5_tela_treinador}
-	Esta é uma página \emph{web} que permite observar a evolução do
-	treinamento (próprio autor).
 \end{figure}
 
 O treinador é um módulo de \emph{software} onde se configura uma topologia
 de rede neural convolucional, que é treinada usando os dados produzidos pelo
-gerador de dados de treinamento. Quando o software é rodado informações de
+gerador de dados de treinamento. Quando o software é executado informações de
 \emph{log} são coletadas, e um utilitário chamado \emph{TensorBoard} pode ser
 executado neste diretório para mostrar o progresso do treinamento. O utilitário
 é um servidor \emph{web}, e a página correspondente é mostrada na figura
@@ -536,10 +544,11 @@ Para realizar o treinamento da rede neural o grafo apresentado na figura
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.9]{cap5_grafo_treinamento.png}
-	\caption{Grafo usado para treinamento da rede neural convolucional}
+	\caption[Grafo usado para treinamento da rede neural convolucional]{
+		Grafo usado para treinamento da rede neural convolucional.
+		Esta imagem mostra o grafo do \emph{TensorFlow} usado para treinar
+		a rede neural, designada ``NN1'' (autoria própria).}
 	\label{fig:cap5_grafo_treinamento}
-	Esta imagem mostra o grafo do \emph{TensorFlow} usado para treinar
-	a rede neural, designada ``NN1'' (próprio autor).
 \end{figure}
 
 O bloco ``FileRead'' possui uma lista com todos os arquivos de treinamento
@@ -563,12 +572,13 @@ imagem, sem nenhuma conversão.
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=1.2]{cap5_distorcao.png}
-	\caption{\emph{Pipeline} de distorção de imagens}
+	\caption[\emph{Pipeline} de distorção de imagens]{
+		\emph{Pipeline} de distorção de imagens.
+		A imagem é convertida para ponto-flutuante com cada canal no intervalo
+		$[0;1]$, é adicionado ruído normal e a saturação, brilho e contraste são
+		alterados conforme uma distribuição uniforme. A imagem é então convertida
+		novamente para inteiro de 8 bits por canal (autoria própria).}
 	\label{fig:cap5_distorcao}
-	A imagem é convertida para ponto-flutuante com cada canal no intervalo
-	$[0;1]$, é adicionado ruído normal e a saturação, brilho e contraste são
-	alterados conforme uma distribuição uniforme. A imagem é então convertida
-	novamente para inteiro de 8 bits por canal (próprio autor).
 \end{figure}
 
 O bloco ``\emph{Noise}'' adiciona ruído normal à imagem somando-a com um
@@ -611,9 +621,10 @@ bloco ``NN1'', que está ilustrado na figura \ref{fig:cap5_cnn}.
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=1.2]{cap5_cnn.png}
-	\caption{\emph{Pipeline} descrevendo a rede neural convolucional profunda}
+	\caption[\emph{Pipeline} descrevendo a rede neural convolucional profunda]{
+		\emph{Pipeline} descrevendo a rede neural convolucional profunda
+		(autoria própria).}
 	\label{fig:cap5_cnn}
-	(próprio autor)
 \end{figure}
 
 Pode-se ver pela espessura das linhas que conectam os blocos que a quantidade
@@ -727,22 +738,25 @@ dados e seus 154.386 exemplos de imagens cerca de 428 vezes.
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.9]{cap5_train_histogram.png}
-	\caption{Histograma temporal do erro classificação}
+	\caption[Histograma temporal do erro de classificação]{
+		Histograma temporal do erro classificação.
+		Podem-se observar os erros se concentrando cada vez mais próximo de 0 à
+		medida que o treinamento avança. 
+		A escala representa lotes de 256 imagens cada, de forma que está
+		representado o processamento de 66 milhões de imagens (autoria
+		própria).}
 	\label{fig:cap5_train_histogram}
-	Podem-se observar os erros se concentrando cada vez mais próximo de 0 à
-	medida que o treinamento avança. A escala indicada são lotes de 256
-	imagens, portanto este gráfico o resultado após mais de 66 milhões de
-	imagens (próprio autor).
 \end{figure}
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=1]{cap5_erro_treinamento.png}
-	\caption{Gráfico do erro de treinamento}
+	\caption[Gráfico do erro de treinamento]{
+		Gráfico do erro de treinamento.
+		Evolução da função de perda que o otimizador está minimizando, amortecido
+		usando método média local. A abscissa é o número do lotes, e cada lote
+		possui 256 imagens (autoria própria).}
 	\label{fig:cap5_erro_treinamento}
-	Evolução da função de perda que o otimizador está minimizando, amortecido
-	usando método média local. A abscissa é o número do lotes, e cada lote
-	possui 256 imagens (próprio autor).
 \end{figure}
 
 \subsection{Player}
@@ -750,10 +764,11 @@ dados e seus 154.386 exemplos de imagens cerca de 428 vezes.
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=1.3]{cap5_tela_player.png}
-	\caption{Interface com o usuário do módulo \emph{Player}}
+	\caption[Interface com o usuário do módulo \emph{Player}]{
+		Interface com o usuário do módulo \emph{Player}.
+		No momento que a tela foi capturada o \emph{software} está exibindo um
+		vídeo enquanto destaca as placas que está localizando (autoria própria).}
 	\label{fig:cap5_tela_player}
-	No momento que a tela foi capturada o \emph{software} está exibindo um
-	vídeo enquanto destaca as placas que está localizando (próprio autor).
 \end{figure}
 
 O quarto módulo de \emph{software} usa a rede neural treinada para reproduzir o
@@ -765,7 +780,7 @@ As placas veiculares estão sendo destacadas.
 O \emph{software} implementa o método de classificação proposto nesta
 monografia por completo. O método usado para gerar as coordenadas das placas a
 partir de todos os escores da imagem (mapeamento) é bastante simples: qualquer
-partição que possua valor maior que 0,8 (ver sessão \ref{sec:desemp_loc})
+partição que possua valor maior que 0,8 (ver seção \ref{sec:desemp_loc})
 e seja maior que que o valor das
 partições vizinhas, incluindo diagonais, deve estar mais próxima do centro de
 uma placa. O algoritmo vai assumir que a placa está no centro desta partição.
@@ -776,8 +791,9 @@ baixo.
 Não foi implementado nenhum método para usar a correlação temporal das
 informações coletadas ou rejeição de dados espúrios.
 
-Para o \emph{video1.avi} a rede neural é executada 288 vezes para \emph{frame}
-do vídeo, sendo que uma linha completa contendo 11 partições é fornecido para a
+Para o \emph{video1.avi} a rede neural é executada 253 vezes para
+cada \emph{frame}
+do vídeo, sendo que uma linha completa contendo 11 partições é fornecida para a
 rede neural por vez.
 
 O \emph{software} é capaz de operar em qualquer vídeo que possa ser lido pelo
@@ -785,7 +801,7 @@ O \emph{software} é capaz de operar em qualquer vídeo que possa ser lido pelo
 
 \section{Experimentos e Desempenho}
 
-Nesta sessão serão apresentados os experimentos realizados com a implementação
+Nesta seção serão apresentados os experimentos realizados com a implementação
 do \emph{software} e os seus resultados.
 
 \subsection{Desempenho de Localização} \label{sec:desemp_loc}
@@ -819,7 +835,7 @@ seguinte maneira:
 \item Quando o \emph{software} identificar uma placa em um ponto do
 	\emph{frame} e de fato houver uma placa entre as manualmente marcadas,
 	tal que a distância entre
-	os centros  das duas seja inferior ao erro, será contabilizado um
+	os centros das duas seja inferior ao erro, será contabilizado um
 	\emph{verdadeiro positivo}, ou \emph{vp} (figura \ref{fig:cap5_tp-fn-fp},
 	placa ``a'').
 	A placa é removida da lista de placas manualmente marcadas para não
@@ -839,16 +855,17 @@ seguinte maneira:
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.85]{cap5_tp-fn-fp.png}
-	\caption{Contagem de acertos e erros de localização}
+	\caption[Contagem de acertos e erros de localização]{
+		Contagem de acertos e erros de localização.
+		Cada círculo representa o centro de uma placa. Constam 1 \emph{verdadeiro
+		positivo} (B/a), 2 falsos positivos (b, c), e um \emph{falso negativo} (A).
+		Próximo a placa ``B'' foram localizadas duas placas, mas
+		só há uma, então uma delas é contada como \emph{falso positivo}
+		(autoria própria).}
 	\label{fig:cap5_tp-fn-fp}
-	Cada círculo representa o centro de uma placa. Constam 1 \emph{verdadeiro
-	positivo} (B/a), 2 falsos positivos (b, c), e um \emph{falso negativo} (A).
-	Próximo a placa ``B'' foram localizadas duas placas, mas
-	só há uma, então uma delas é contada como \emph{falso positivo}
-	(próprio autor).
 \end{figure}
 
-Para usar usar corretamente o método proposto é preciso escolher um limiar de
+Para usar corretamente o método proposto é preciso escolher um limiar de
 classificação. Se o escore de uma partição for maior que este limiar
 considera-se que a partição possui uma placa veicular. Como este escore afeta
 as métricas \emph{precision} e \emph{recall}, foi feito um levantamento da
@@ -890,21 +907,23 @@ por ser maior, gerando o gráfico da figura \ref{fig:cap5_res_curva-pr-train}.
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.75]{cap5_res_curva-pr-train.png}
-	\caption{Gráfico da curva \emph{Precision-Recall}
-		(amostras de treinamento)}
+	\caption[Gráfico da curva \emph{Precision-Recall}
+		(amostras de treinamento)]{
+		Gráfico da curva \emph{Precision-Recall} (amostras de treinamento).
+		Comparada com a mesma curva para os dados de teste esta é mais suave. Isso
+		se deve maior quantidade de dados no conjunto de treinamento, o que gera
+		menos incerteza (autoria própria).}
 	\label{fig:cap5_res_curva-pr-train}
-	Comparada com a mesma curva para os dados de teste esta é mais suave. Isso
-	se deve maior quantidade de dados no conjunto de treinamento, o que gera
-	menos incerteza (próprio autor).
 \end{figure}
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=1]{cap5_res_curva-pr.png}
-	\caption{Gráfico da curva \emph{Precision-Recall} (amostras de teste)}
+	\caption[Gráfico da curva \emph{Precision-Recall} (amostras de teste)]{
+		Gráfico da curva \emph{Precision-Recall} (amostras de teste).
+		Pode-se observar como o limiar de classificação afeta \emph{precision} e
+		\emph{recall} (autoria própria).}
 	\label{fig:cap5_res_curva-pr}
-	Pode-se observar como o limiar de classificação afeta \emph{precision} e
-	\emph{recall} (próprio autor).
 \end{figure}
 
 Tendo sido escolhido o limiar 0.8 para aceitar uma placa, as métricas
@@ -914,14 +933,14 @@ Os resultados obtidos estão apresentados na tabela
 \ref{tbl:vp-fp-fn}. Os indicadores de desempenho foram melhores no
 conjunto de dados de teste do que no conjunto de treinamento. Isso
 se deve ao fato de que a implementação, como foi feita, não detecta
-placas que estejam próximos a borda direita e
+placas que estejam próximas a borda direita e
 inferior da imagem. O conjunto de testes foi preparado tomando cuidado
 para não usar \emph{frames} onde veículos se encontrem nesta região.
 
-O resultado do \emph{precision}
+O resultado de \emph{precision}
 no video2 foi apenas 59,0\%, causado pela quantidade excessiva de falso
-positivos. Observou-se que uma única das sessões da imagem que pertence ao
-asfalto, foi marcada em aproximadamente 50\% das \emph{frames} como placa,
+positivos. Observou-se que uma única das partes da imagem que pertence ao
+asfalto, foi marcada em aproximadamente 50\% dos \emph{frames} como placa,
 gerando
 falso positivos. Atribui-se este problema a resolução deste vídeo, que é $1080
 \times 1920$, e portanto requer uma grande quantidade de marcações para que
@@ -958,7 +977,7 @@ tenta balancear a quantidade de exemplos positivos e negativos.
 
 \subsection{Função}
 
-O método proposto envolve fazer a regressão de uma função. Esta sessão tem com
+O método proposto envolve fazer a regressão de uma função. Esta seção tem com
 objetivo medir o desempenho da rede neural nesta tarefa. As
 figuras \ref{fig:cap5_res_func_1} e \ref{fig:cap5_res_func_2} mostram 3 carros,
 uma moto e um ônibus, sendo que o classificador foi aplicado
@@ -968,7 +987,7 @@ gráfico pode ser comparado com o gráfico mostrado na figura
 \ref{fig:func_a_modelar_3d}, que mostra o gráfico ideal.
 
 Estes dados foram todos levantados usando o vídeo3.avi, que não foi usado para
-treinamento. As cinco \emph{frames} foram escolhidos ao acaso, garantindo-se
+treinamento. Os cinco \emph{frames} foram escolhidos ao acaso, garantindo-se
 apenas que as cinco imagens sejam suficientemente diferentes umas das outras.
 
 A capacidade de produzir estes gráficos foi incluída no \emph{software}
@@ -978,40 +997,44 @@ vídeo.
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.75]{cap5_res_func_1.png}
-	\caption{Gráfico 3D da função aplicada a carros}
+	\caption[Gráfico 3D da função aplicada a carros]{
+		Gráfico 3D da função aplicada a carros.
+		São destacados três carros, um com boa textura, placa razoavelmente
+		visível, outra com imagem com perda resultante de compactação, e um
+		terceiro com orientação e cores diferentes, inclusive usando letras mais
+		claras que o \emph{frame} da placa. O gráfico mostra o resultado do
+		classificador quando ele está centrado em cada um dos \emph{pixels}
+		próximo à placa.
+		As abscissas referem-se as coordenadas do canto superior-esquerdo da
+		partição, não ao seu centro (autoria própria).}
 	\label{fig:cap5_res_func_1}
-	São destacados três carros, um com boa textura, placa razoavelmente
-	visível, outra com imagem com perda resultante de compactação, e um
-	terceiro com orientação e cores diferentes, inclusive usando letras mais
-	claras que o \emph{frame} da placa. O gráfico mostra o resultado do
-	classificador quando ele está centrado em cada um dos \emph{pixels}
-	próximo à placa.
-	As abscissas referem-se as coordenadas do canto superior-esquerdo da
-	partição, não ao seu centro (próprio autor).
 \end{figure}
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.75]{cap5_res_func_2.png}
-	\caption{Gráfico 3D da função aplicada a moto e ônibus}
+	\caption[Gráfico 3D da função aplicada a moto e ônibus]{
+		Gráfico 3D da função aplicada a moto e ônibus.
+		Observa-se uma moto e um veículo e o gráfico resultante de aplicar o
+		classificador em torno das placas. As abscissas referem-se as coordenadas
+		do canto superior-esquerdo da partição, não ao seu centro (autoria
+		própria).}
 	\label{fig:cap5_res_func_2}
-	Observa-se uma moto e um veículo e o gráfico resultante de aplicar o
-	classificador em torno das placas. As abiscissas referem-se as coordenadas
-	do canto superior-esquerdo da partição, não ao seu centro (próprio autor).
 \end{figure}
 
 A figura \ref{fig:cap5_res_func_frame} mostra a rede neural sendo aplicada
-na \emph{frame} 11.197 do video1. Esta \emph{frame} não faz parte do conjunto
+no \emph{frame} 11.197 do video1. Este \emph{frame} não faz parte do conjunto
 de treinamento. Pode-se verificar claramente onde estão as duas placas
 veiculares.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{cap5_res_func_frame.png}
-	\caption{Gráfico 3D mostrando a função aplicada à uma \emph{frame} inteira}
+	\caption[Gráfico 3D mostrando a função aplicada à um \emph{frame} inteiro]{
+		Gráfico 3D mostrando a função aplicada à um \emph{frame} inteiro.
+		Pode-se ver claramente onde as placas dos dois veículos se encontram.
+		(autoria própria).}
 	\label{fig:cap5_res_func_frame}
-	Pode-se ver claramente onde as placas dos dois veículos se encontram.
-	(próprio autor).
 \end{figure}
 
 \subsection{Tempo de Classificação}
@@ -1052,34 +1075,35 @@ testados o ganho aumenta quando a resolução do vídeo aumenta. A figura
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{cap5_player_fps.png}
-	\caption{Taxa de \emph{frames} por segundo no módulo \emph{Player}}
+	\caption[Taxa de \emph{frames} por segundo no módulo \emph{Player}]{
+		Taxa de \emph{frames} por segundo no módulo \emph{Player}.
+		Gráfico mostrando desempenho em \emph{frames} por segundo para localizar
+		placas na câmera VGA do computador, e nos três vídeos. Computador é um
+		Core i5 com placa de vídeo GTX 750M. Maior é melhor (autoria própria).}
 	\label{fig:cap5_player_fps}
-	Gráfico mostrando desempenho em \emph{frames} por segundo para localizar
-	placas na câmera VGA do computador, e nos três vídeos. Computador é um
-	Core i5 com placa de vídeo GTX 750M. Maior é melhor (próprio
-	autor).
 \end{figure}
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{cap5_frame_benchmark.png}
-	\caption{Tempo gasto em cada subtarefa no processamento de uma
-		\emph{frame}}
+	\caption[Tempo gasto em cada subtarefa no processamento de um \emph{frame}]
+	{
+		Tempo gasto em cada subtarefa no processamento de um \emph{frame}.
+		Gráfico mostra que, ao processar um vídeo $1080 \times 1920$ a grande
+		maioria do tempo é gasto executando o grafo do \emph{TensorFlow}. Outras
+		tarefas executadas pelo código em Python consomem um percentual
+		pequeno do tempo do \emph{frame}. Computador é um Core i5 com
+		placa de vídeo GTX 750M (autoria própria).}
 	\label{fig:cap5_frame_benchmark}
-	Gráfico mostra que, ao processar um vídeo $1080 \times 1920$ a grande
-	maioria do tempo é gasto executando o grafo do \emph{TensorFlow}. Outras
-	tarefas executadas pelo código em Python consomem um percentual
-	pequeno do tempo da \emph{frame}. Computador é um Core i5 com
-	placa de vídeo GTX 750M (próprio autor).
 \end{figure}
 
 O \emph{player} envia para o \emph{stdout} o tempo gasto em cada uma das
-tarefas durante o processamento da \emph{frame}. Coletando-se estes dados e
+tarefas durante o processamento do \emph{frame}. Coletando-se estes dados e
 calculando-se as médias do tempo gasto em cada tarefa foi gerado o
 gráfico na figura \ref{fig:cap5_frame_benchmark}.
 Pode-se ver claramente que a vasta maioria do tempo é gasta executando os
 grafos do \emph{TensorFlow}. Também foi possível confirmar que o ganho do
 desempenho no caso do uso do GPU foi consequência do \emph{TensorFlow}
 consumir menos tempo para executar. Observou-se que na implementação CPU
-o \emph{TensorFlow} tomou 94,9\% do tempo de processamento da \emph{frame},
+o \emph{TensorFlow} tomou 94,9\% do tempo de processamento do \emph{frame},
 e no caso que usa GPU tomou 88,1\%.

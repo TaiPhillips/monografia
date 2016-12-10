@@ -5,9 +5,9 @@
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.5]{cap1_resultado_esperado.png}
-	\caption{Resultado esperado}
+	\caption[Resultado esperado]{
+		Resultado esperado (autoria própria).}
 	\label{fig:cap1_resultado_esperado}
-	(próprio autor).
 \end{figure}
 
 Soluções de monitoração e fiscalização de veículos apresentam
@@ -21,14 +21,14 @@ possibilidade da busca por estratégias com menor custo ou melhor
 desempenho, à medida que avanços no campo do reconhecimento de
 imagens acontecem.
 
-Redes neurais convolucionais (\sigla{CNN}{\emph{Convolutional neural network},
+Redes neurais convolucionais (\sigla{CNN}{\emph{Convolutional Neural Network},
 rede neural convolucional}, convolutional neural networks)
 são tipos de redes neurais biologicamente inspiradas no conceito
 de campos receptivos \cite{hubel1968receptive}. Este tipo de
 rede neural pode ser alimentado
 diretamente com os \emph{pixels} da imagem \cite{lecun1998gradient}. O
 advento das Redes Neurais Convolucionais Profundas (\sigla{DCNN}{\emph{Deep
-convolutional neural network}, rede neural convolucional profunda}, deep CNN)
+Convolutional Neural Network}, rede neural convolucional profunda}, deep CNN)
 viabilizou um grande salto no desempenho de classificação para alguns casos.
 O uso de mais camadas permite níveis maiores de
 abstração na análise da imagem, o que resulta em maior taxa de
@@ -37,7 +37,7 @@ neural representa o atual estado-da-arte em reconhecimento de
 imagens \cite{szegedy2015going}.
 
 Este projeto demonstra uma abordagem para localização aproximada de placas
-veiculares mediante à aplicação direta de DCNN aos pixels de partições das
+veiculares mediante à aplicação direta de DCNN aos pixels de partições dos
 \emph{frames} de um vídeo. O sistema de particionamento da imagem evita a
 aplicação da rede neural usando janela deslizante \emph{pixel-a-pixel},
 permitindo que a localização das
@@ -47,7 +47,7 @@ placas veiculares em um vídeo de $480 \times 768$ a uma taxa de 14,8 FPS, ou
 O projeto demonstra um método que permite o treinamento da rede neural de forma
 que ela seja robusta contra alguns fatores, como ruído e iluminação, mesmo
 quando esta rede neural é treinada sem estes componentes. Isso permite que a
-rede neural seja aplicada às \emph{frames} sem necessidade de
+rede neural seja aplicada aos \emph{frames} sem necessidade de
 pré-processamento, como filtragem ou normalização.
 
 O método proposto usa a rede neural para fazer a regressão de uma função
@@ -57,10 +57,11 @@ que será proposto.
 
 Será apresentado o desempenho de localização de placas usando medidas
 padronizadas, especificamente \emph{precision} e \emph{recall}, juntamente com
-a curva PR. Também será analisada a capacidade da rede neural de reproduzir a
-função para a qual foi trienada. Finalmente será medido o desempenho em
+a curva PR \cite{powers2011evaluation}. Também será analisada a capacidade da
+rede neural de reproduzir a
+função para a qual foi treinada. Finalmente será medido o desempenho em
 \emph{frames} por segundo do sistema quando aplicado alguns vídeos diferentes,
-e quando rodando com e sem GPU.
+e quando executando com e sem GPU.
 
 \section{Objetivo}
 O objetivo deste trabalho é desenvolver uma abordagem para

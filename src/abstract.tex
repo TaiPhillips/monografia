@@ -9,12 +9,15 @@ of the whole system viability.
 This is a proposal for a method that obtains the approximate location of
 vehicle's license plates
 in a video using convolutional neural networks applied directly to
-the value of the RGB pixels. During the training, some random distortions are
+the value of the RGB pixels.
+In the implementation being presented the vehicle's license plate position can
+be determined with an error margin smaller than $ \pm 20 \times \pm 60 $.
+During the training, some random distortions are
 added to the images, such as noise and changing the image's brightness,
 contrast and saturation, to produce a robust model, even when used without any
 filter or normalization. This proposal includes a method for efficient image
 partitioning, in such a way that the number of times the neural network has to
-be applied is considerably reduced. Measured precision was 98.7\% and
-recall was 96.7\% for locating licence plates with error smaller than
-$60 \times 20$ pixels while processing each $480 \times 768$ frame in 67.6ms on
+be applied is considerably reduced.
+Measured precision was 98.9\% and recall was 96.7\% for locating license
+plates while processing each $480 \times 768$ frame in 67.6ms on
 a Core i5 notebook with a GTX 750M GPU.

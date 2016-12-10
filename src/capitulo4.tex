@@ -4,20 +4,21 @@
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.75]{etapas_metodo_proposto.png}
-	\caption{Etapas do método proposto para localização de placas veiculares}
+	\caption[Etapas do método proposto para localização de placas veiculares]{
+		Etapas do método proposto para localização de placas veiculares
+		(autoria própria).}
 	\label{fig:etapas_metodo_proposto}
-	(próprio autor).
 \end{figure}
 
 O método proposto para a localização de placas envolve uma série de etapas,
 conforme ilustrado na figura \ref{fig:etapas_metodo_proposto}.
-O processo ``extração'' é responsável por obter as \emph{frames} do vídeo.
-Uma \emph{frame} é equivalente a uma imagem 2D, e pode ser representada por
-tensores de dimensões \sigla{HWC}{\emph{Height X Width X Channel}, altura X
+O processo ``extração'' é responsável por obter os \emph{frames} do vídeo.
+Um \emph{frame} é equivalente a uma imagem 2D, e pode ser representado por
+tensor de dimensões \sigla{HWC}{\emph{Height X Width X Channel}, altura X
 largura X
 canal} (altura, largura e canais de cor). Todos os \emph{frames} de um mesmo
 vídeo geram tensores do mesmo tamanho.
-O processo ``particionamento'' toma como entrada uma \emph{frame} do
+O processo ``particionamento'' toma como entrada um \emph{frame} do
 vídeo e gera
 múltiplas sub imagens aqui denominadas ``partições'', geradas através de um
 recorte retangular de \emph{pixels} contíguos. As partições têm dimensões
@@ -34,8 +35,7 @@ valor 1, enquanto todas as vizinhas terão o valor 0. Quando o centro da placa
 está entre duas partições então ambas terão valor superior a zero. A
 implementação usada aqui considera apenas o maior valor. A posição do centro da
 placa é estimado como sendo a posição do centro da partição onde ela foi
-detectada. Portanto a resolução deste módulo é igual metade da largura da
-partição em $X$ e metade da altura em $Y$.
+detectada.
 
 O método aqui proposto inclui algumas opções na implementação do processo
 supradescrito. Elas dizem respeito:
@@ -52,13 +52,14 @@ supradescrito. Elas dizem respeito:
 \begin{figure}[!htb]
 	\centering
 	\includegraphics{ex_tres_segmentos.png}
-	\caption{Exemplo de três tamanhos de partições}
+	\caption[Exemplo de três tamanhos de partições]{
+		Exemplo de três tamanhos de partições.
+		Em (a) a partição possui um grande campo visual, porém tem baixa precisão.
+		Em (b) há um campo visual muito pequeno para permitir que a rede neural
+		opere corretamente. A terceira é apropriada, pois é relativamente pequena e
+		inclui a placa inteira e vários \emph{pixels} adicionais, permitindo que a
+		rede neural aprenda o contraste entre placa e o fundo (autoria própria).}
 	\label{fig:ex_tres_segmentos}
-	Em (a) a partição possui um grande campo visual, porém tem baixa precisão.
-	Em (b) há um campo visual muito pequeno para permitir que a rede neural
-	opere corretamente. A terceira é apropriada, pois é relativamente pequena e
-	inclui a placa inteira e vários \emph{pixels} adicionais, permitindo que a
-	rede neural aprenda o contraste entre placa e o fundo (próprio autor).
 \end{figure}
 
 O tamanho das partições define as dimensões do tensor da rede neural, portanto
@@ -84,19 +85,20 @@ encontrados em veículos.
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=1.75]{ex_placa.png}
-	\caption{Exemplo de partição com bom tamanho}
+	\caption[Exemplo de partição com bom tamanho]{
+		Exemplo de partição com bom tamanho.
+		(autoria própria).}
 	\label{fig:ex_placa}
-	(próprio autor).
 \end{figure}
 
 \section{\emph{Strides} das Partições}
 A abordagem que está sendo proposta envolve usar um detector para construir um
 localizador. Uma implementação ingênua desta abordagem seria treinar o detector
 para detectar placas de trânsito que estejam centradas na sua entrada e aplicar
-este detector como descrito na sessão \ref{sec:localiz_objetos}, usando
+este detector como descrito na seção \ref{sec:localiz_objetos}, usando
 \emph{stride} $1 \times 1$.  Isso iria requerer aplicar a rede neural centrada
 em cada \emph{pixel} da imagem. Se for feita a aplicação de um detector com
-campo visual $D_1 \times D_2$ em uma \emph{frame} com dimensões $F_1 \times
+campo visual $D_1 \times D_2$ em um \emph{frame} com dimensões $F_1 \times
 F_2$ com \emph{stride} $1 \times 1$ sem estender as bordas pode-se demonstrar
 que o detector terá que ser aplicado $N$ vezes, onde:
 
@@ -118,16 +120,17 @@ largura sobre dois, gerando partições como as ilustradas na figura
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.9]{ex_3_segmentos.png}
-	\caption{Ilustração de 3 partições sucessivas}
+	\caption[Ilustração de 3 partições sucessivas]{
+		Ilustração de 3 partições sucessivas.
+		Observar que o centro de uma partição está contido no perímetro das
+		partições vizinhas (autoria própria).}
 	\label{fig:ex_3_segmentos}
-	Observar que o centro de uma partição está contido no perímetro das
-	partições vizinhas (próprio autor).
 \end{figure}
 
 Uma propriedade dessa escolha é que o centro de uma partição de imagem está
 contido no perímetro de todas as partições vizinhas. Esta propriedade é
 justamente o objetivo do \emph{stride} de 50\%, conforme será descrito na
-sessão \ref{ses:funcao_a_modelar}.
+seção \ref{ses:funcao_a_modelar}.
 
 O número de partições na direção da altura será $T_H$, e na largura será
 $T_W$, sendo:
@@ -154,18 +157,36 @@ para $23 \cdot 11=253$.
 
 \section{Função a ser Modelada} \label{ses:funcao_a_modelar}
 
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.7]{cap4_posicao_funcao.png}
+	\caption[Imagem ilustrando como a posição da placa afeta a função]{
+		Imagem ilustrando como a posição da placa afeta a função.
+		O valor de saída da função depende da posição do centro da placa que
+		está sendo vista. Se estiver como em (a), centralizada, a função
+		produzirá o valor 1. Se estiver como em (c), onde o centro da placa
+		está no perímetro da partição, a função deve produzir o valor 0. No
+		ponto (b),  onde está precisamente entre os dois pontos anteriores,
+		também deve produzir o valor 1. Nesta ilustração a placa está sempre
+		centralizada horizontalmente (autoria própria).}
+	\label{fig:cap4_posicao_funcao}
+\end{figure}
+
 A rede neural vai ser treinada para modelar o valor de uma função $P$ que
-leva um tensor que representa uma partição da \emph{frame} a um real no
+leva um tensor que representa uma partição do \emph{frame} a um real no
 intervalo $[0;1]$:
 
 \begin{equation}
 	P:S \to [0;1] \in \mathbb{R} 
 \end{equation}
 
-O valor dessa função é resultante da presença de uma placa veicular. Devido ao
-fato de que o particionamento será feito com \emph{stride} maior que 1 não há
-garantia de que a placa estará centralizada, e ainda assim a função precisa
-identificar que ela está presente.
+A função deve produzir o valor 1 quando existe uma placa centralizada no
+seu campo visual, como ilustrado na figura \ref{fig:cap4_posicao_funcao}a.
+A função mantém o valor 1 até que a placa esteja como em
+\ref{fig:cap4_posicao_funcao}b, precisamente na metade da distância para a
+posição \ref{fig:cap4_posicao_funcao}c, quando a placa está com o seu centro,
+na borda da imagem de entrada. Esta imagem ilustra apenas o efeito da placa
+estar fora de centro em uma dimensão.
 
 A função proposta foi construída baseada na forma com que a placa veicular
 passa de uma partição para a partição vizinha. A função deve possuir as
@@ -187,44 +208,47 @@ quando uma placa é movida horizontalmente entre duas partições.
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.7]{placa_movida_entre_segmentos.png}
-	\caption{Placa veicular sendo movida entre duas partições}
+	\caption[Placa veicular sendo movida entre duas partições]{
+		Placa veicular sendo movida entre duas partições.
+		Ilustração dos pontos críticos para a definição da função a ser modelada
+		pela rede neural, mostrando duas partições vizinhas, uma pintada de verde e
+		o outro amarelo com borda pontilhada. Em (a) a placa está centrada na
+		partição da esquerda e no perímetro da partição da direita.
+		Em (b) o centro da placa está no meio caminho entre os centros dos duas
+		partições. Em (c) o centro da placa está no centro da partição da direita e
+		perímetro da partição da esquerda (autoria própria).}
 	\label{fig:placa_movida_entre_segmentos}
-	Ilustração dos pontos críticos para a definição da função a ser modelada
-	pela rede neural, mostrando duas partições vizinhas, uma pintada de verde e
-	o outro amarelo com borda pontilhada. Em (a) a placa está centrada na
-	partição da esquerda e no perímetro da partição da direita.
-	Em (b) o centro da placa está no meio caminho entre os centros dos duas
-	partições. Em (c) o centro da placa está no centro da partição da direita e
-	perímetro da partição da esquerda (próprio autor).
 \end{figure}
 
 A figura \ref{fig:func_a_modelar_2_seg} mostra o valor da função para
 duas partições vizinhas à medida que a placa é movida. Pode-se observar que
-apenas uma das partições possui valor 1 por vez, exceto no ponto cuja vizinhança
-é menor que 1. Também observa-se
+apenas uma das partições possui valor 1 por vez, exceto no ponto cuja
+vizinhança é menor que 1. Também observa-se
 que quando a placa está centrada em uma partição, a função possui valor zero
 na outra partição.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.9]{func_a_modelar_2_seg.png}
-	\caption{Valor da função em duas partições a medida que a placa se move
-	entre elas}
+	\caption[Valor da função em duas partições a medida que a placa se move
+	entre elas]{
+		Valor da função em duas partições a medida que a placa se move entre elas.
+		Observa-se que valor da saída da função para duas partições a medida que a
+		placa é movida do centro da partição 1 (a da esquerda) para a partição 2 (a
+		da direita) (autoria própria).}
 	\label{fig:func_a_modelar_2_seg}
-	Observa-se que valor da saída da função para duas partições a medida que a
-	placa é movida do centro da partição 1 (a da esquerda) para a partição 2 (a
-	da direita) (próprio autor).
 \end{figure}
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.9]{func_a_modelar_1_seg.png}
-	\caption{Valor da função a modelar, de $\infty$ a $+\infty$}
+	\caption[Valor da função a modelar, de $\infty$ a $+\infty$]{
+		Valor da função a modelar, de $\infty$ a $+\infty$.
+		Observa-se que o valor da variável dependente a medida que a placa
+		é deslocada desde $-\infty$ até $+\infty$ da esquerda para a direita,
+		enquanto a mesma está centrada na altura. A abscissa é a distância
+		normalizada entre os centros da partição e da placa (autoria própria).}
 	\label{fig:func_a_modelar_1_seg}
-	Observa-se que o valor da variável dependente a em medida que a placa
-	é deslocada desde $-\infty$ até $+\infty$ da esquerda para a direita,
-	enquanto a mesma está centrada na altura. A abscissa é a distância
-	normalizada entre os centros da partição e da placa (próprio autor).
 \end{figure}
 
 Na figura \ref{fig:func_a_modelar_1_seg} observa-se o valor de uma função
@@ -273,17 +297,22 @@ O gráfico \emph{3D} desta função está representado na figura
 efeito simultâneo dos eixos $x$ e $y$.  Observa-se que quando a placa
 está com o seu centro a uma distância normalizada inferior 1/4 em $x$ e em $y$
 simultaneamente, a função vai produzir o valor 1. O gráfico não possui
-descontinuidades, mostrando que a função é classe $C0$. Quando a distância
-normalizada supera 1/2 em qualquer direção o valor da função é 0.
+descontinuidades, portanto pertence a classe $C_0$, mas não pertence à classe
+$C_1$, por que as derivadas não são contínuas. Não seria apropriado usar uma
+função descontínua por que isso geraria problemas durante o treinamento.
+
+Quando a distância
+normalizada supera $^1/_2$ em qualquer direção o valor da função é 0.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[scale=0.9]{func_a_modelar_3d.png}
-	\caption{Gráfico 3D da função à modelar}
+	\caption[Gráfico 3D da função à modelar]{
+		Gráfico 3D da função
+		que a rede neural deve modelar. As abscissas representam
+		a distância normalizada entre o centro da partição e da placa em cada
+		direção (autoria própria).}
 	\label{fig:func_a_modelar_3d}
-	Gráfico da função que a rede neural deve modelar. As abscissas representam
-	a distância normalizada entre o centro da partição e da placa em cada
-	direção (próprio autor).
 \end{figure}
 
 
