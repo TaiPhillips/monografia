@@ -7,7 +7,7 @@ Orientador: Prof. Dr. Bogdan Tomoyuki Nassu
 
 Este documento foi escrito em LaTeX. Para compilar existem duas opções:
 
-=Usando Docker
+# Usando Docker
 É possível compilar usando uma imagem docker que já possui a versão correta do
 texlive e o template de TCC da UTFPR. Para compilar usando essa opção digitar:
 
@@ -20,7 +20,7 @@ Para compilar usando uma instalação local do texlive é necessário instalar
 também o template da UTFPR e o abnTex. Procurar detalhes específicos nos sites
 de documentação.
 
-# Para compilar usando instalação local:
+Para compilar usando instalação local:
 
 ```
 make local-build
