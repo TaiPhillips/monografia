@@ -3,6 +3,7 @@ Informática e Eletrônica como requisito parcial para obtenção do grau de
 Bacharel em Engenharia de Computação da Universidade Tecnológica Federal do
 Paraná.
 
+Aluno: Francisco Delmar Kurpiel
 Orientador: Prof. Dr. Bogdan Tomoyuki Nassu
 
 Este documento foi escrito em LaTeX. Para compilar existem duas opções:
