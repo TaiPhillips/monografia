@@ -1,5 +1,4 @@
-# Localização de Placas Veiculares em Vídeo Usando Redes Neurais Convolucionais
-# Profundas
+# Localização de Placas Veiculares em Vídeo Usando Redes Neurais Convolucionais Profundas
 
 Monografia do Trabalho de Conclusão de Curso apresentado aos Departamentos
 Acadêmicos de Informática e Eletrônica como requisito parcial para obtenção do
