@@ -1,52 +1,24 @@
-Template Latex para escrita do TCC - TSI/UTFPR/GP
+Trabalho de Conclusão de Curso apresentado aos Departamentos Acadêmicos de
+Informática e Eletrônica como requisito parcial para obtenção do grau de
+Bacharel em Engenharia de Computação da Universidade Tecnológica Federal do
+Paraná.
 
-1. Instalação e Configuração
+Orientador: Prof. Dr. Bogdan Tomoyuki Nassu
 
-  1.1 Usuários Ubuntu/Linux
-    
-    Pule para o passo 1.3
+Este documento foi escrito em LaTeX. Para compilar existem duas opções:
 
-  1.2 Usuários Windows
-  
-    http://goo.gl/WNFm27
-  
-  1.3 Pacotes necessários:
-  
-    $ sudo apt-get install texlive-full
-    $ sudo apt-get install abntex
-  
-  1.4 IDE Texmaker (opcional):
-  
-    $ sudo apt-get install texmaker
-    
-    Configuração do texmaker: Options >> Configure Texmaker >> Quick Build >> User >> Wizard >> adicionar (nesta ordem) : "PDFLatex, BibTex, PDFLatex, PDF Viewer"
-  
-  1.5 Gerenciador de referências bibliográficas JabRef (opcional):
-  
-    $ sudo apt-get install jabref
-    
-    As referências se encontram no arquivo bib/bibliografia.bib (abra-o no jabref)
-    
-    Documentação: http://jabref.sourceforge.net/documentation.php
-  
-2. Utilização do Template
-  
-  1.1 Compilação via Makefile: 
-  
-    $ make
-  
-    Nota: o comando deve ser executado com o terminal localizado na pasta do arquivo "tcc.tex"
-    
-  1.2 Limpeza dos arquivos de compilação:
-  
-    $ make clean
-    
-    Nota: o comando "make" padrão está configurado para compilar e realizar a limpeza automaticamente
-    
-  1.3 Onde devo escrever meu TCC?
-  
-    O template vem configurado com vários arquivos, o principal deles é o "tcc.tex", onde são inseridas as informações básicas do documento e, carregados os capítulos, anexos, apêndices e referencias bibliográficas.
-    
-    Uma vez configurado o arquivo tcc.tex, o texto pode ser escrito nos arquivos ".tex" da pasta "src".
-    
-    As referências bibliográficas são escritas no formato bibtex e armazenadas no arquivo bib/bibliografia.bib. O uso do aplicativo JabRef facilita a organização deste tipo de recurso.
+=Usando Docker
+É possível compilar usando uma imagem docker que já possui a versão correta do
+texlive e o template de TCC da UTFPR. Para compilar usando essa opção digitar:
+
+ make
+
+=Usando texlive local
+Para compilar usando uma instalação local do texlive é necessário instalar
+também o template da UTFPR e o abnTex. Procurar detalhes específicos nos sites
+de documentação.
+
+Para compilar usando instalação local:
+
+make local-build
+

@@ -2,9 +2,9 @@
 FILE=tcc
 
 all: cleanlogs
-	docker run --rm -it -v $(shell pwd):/mnt gcr.io/fdk-pub-docker/utfpr-latex-builder bash -c "cd /mnt; make docker-build"
+	docker run --rm -it -v $(shell pwd):/mnt gcr.io/fdk-pub-docker/utfpr-latex-builder bash -c "cd /mnt; make local-build"
 
-docker-build: $(FILE).pdf cleanlogs
+local-build: $(FILE).pdf cleanlogs
 
 clean:
 	rm -f *.aux *.blg *.log *.bbl *.out *.lof *.toc *.lsg
