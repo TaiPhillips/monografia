@@ -1,9 +1,10 @@
-# Localização de Placas Veiculares em Vídeo Usando Redes Neurais Convolucionais Profundas
+# Localização de Placas Veiculares em Vídeo Usando Redes Neurais Convolucionais
+# Profundas
 
-Trabalho de Conclusão de Curso apresentado aos Departamentos Acadêmicos de
-Informática e Eletrônica como requisito parcial para obtenção do grau de
-Bacharel em Engenharia de Computação da Universidade Tecnológica Federal do
-Paraná.
+Monografia do Trabalho de Conclusão de Curso apresentado aos Departamentos
+Acadêmicos de Informática e Eletrônica como requisito parcial para obtenção do
+grau de Bacharel em Engenharia de Computação da Universidade Tecnológica Federal
+do Paraná.
 
 Aluno: Francisco Delmar Kurpiel
 
@@ -11,7 +12,9 @@ Orientador: Prof. Dr. Bogdan Tomoyuki Nassu
 
 # Como Compilar
 
-Este documento foi escrito em LaTeX. Para compilar existem duas opções:
+Este documento foi escrito em LaTeX. Este repositório possui o código-fonte
+e os recursos. Para obter é necessário compilar. Abaixo seguem as instruções
+para copilação.
 
 ## Usando Docker
 É possível compilar usando uma imagem docker que já possui a versão correta do
