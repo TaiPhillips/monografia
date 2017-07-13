@@ -9,6 +9,12 @@ Aluno: Francisco Delmar Kurpiel
 
 Orientador: Prof. Dr. Bogdan Tomoyuki Nassu
 
+# Videos
+Alguns vídeos foram feitos para demonstrar o projeto funcionando:
+
+1. https://www.youtube.com/watch?v=xA9tAQVTVM0 (vídeo original, com código apresentado na monografia)
+2. https://www.youtube.com/watch?v=K91QsELclac (com melhorias, aceito no ICIP 2017)
+
 # Como Compilar
 
 Este documento foi escrito em LaTeX. Este repositório possui o código-fonte
