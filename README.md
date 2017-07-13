@@ -1,5 +1,4 @@
-# titulo Localização de Placas Veiculares em Vídeo Usando Redes Neurais Convolucionais Profundas
-# title License Plate Localization From Video Using Convolutional Neural Networks
+# Localização de Placas Veiculares em Vídeo Usando Redes Neurais Convolucionais Profundas
 
 Trabalho de Conclusão de Curso apresentado aos Departamentos Acadêmicos de
 Informática e Eletrônica como requisito parcial para obtenção do grau de
@@ -10,9 +9,11 @@ Aluno: Francisco Delmar Kurpiel
 
 Orientador: Prof. Dr. Bogdan Tomoyuki Nassu
 
+# Como Compilar
+
 Este documento foi escrito em LaTeX. Para compilar existem duas opções:
 
-# Usando Docker
+## Usando Docker
 É possível compilar usando uma imagem docker que já possui a versão correta do
 texlive e o template de TCC da UTFPR. Para compilar usando essa opção digitar:
 
@@ -20,7 +21,7 @@ texlive e o template de TCC da UTFPR. Para compilar usando essa opção digitar:
  make
 ```
 
-# Usando texlive local
+## Usando texlive local
 Para compilar usando uma instalação local do texlive é necessário instalar
 também o template da UTFPR e o abnTex. Procurar detalhes específicos nos sites
 de documentação.
