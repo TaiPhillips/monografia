@@ -1,3 +1,6 @@
+# titulo Localização de Placas Veiculares em Vídeo Usando Redes Neurais Convolucionais Profundas
+# title License Plate Localization From Video Using Convolutional Neural Networks
+
 Trabalho de Conclusão de Curso apresentado aos Departamentos Acadêmicos de
 Informática e Eletrônica como requisito parcial para obtenção do grau de
 Bacharel em Engenharia de Computação da Universidade Tecnológica Federal do
