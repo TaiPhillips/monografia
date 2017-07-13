@@ -1,7 +1,7 @@
 # para detectar duplicados: "multiply"
 FILE=tcc
 
-all: $(FILE).pdf cleanlogs
+all: cleanlogs
 	docker run --rm -it -v $(shell pwd):/mnt gcr.io/site-fdk/utfpr-latex-builder bash -c "cd /mnt; make docker-build"
 
 docker-build: $(FILE).pdf cleanlogs
